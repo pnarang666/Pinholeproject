@@ -1,0 +1,13 @@
+Running PSF-level metrics sweep: 15 apertures x 7 myopia levels at 550nm, gap=12mm...
+  10/105 (36s elapsed)
+  20/105 (68s elapsed)
+  30/105 (101s elapsed)
+  40/105 (133s elapsed)
+  50/105 (167s elapsed)
+  60/105 (200s elapsed)
+  70/105 (234s elapsed)
+  80/105 (268s elapsed)
+  90/105 (300s elapsed)
+  100/105 (337s elapsed)
+  105/105 (362s elapsed)
+Wrote 105 rows to /Users/parikshitnarang/Pinholeproject/stage3_human_vision/outputs/metrics_sweep.csv

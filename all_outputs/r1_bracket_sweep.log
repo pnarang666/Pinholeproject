@@ -1,0 +1,35 @@
+Running Airy-disk validation gate before sweeping...
+  r_EE_50: rel_error=1.139% (tolerance 2%) -> PASS
+  r_EE_80: rel_error=4.558% (tolerance 8%) -> PASS
+  r_EE_90: rel_error=0.548% (tolerance 2%) -> PASS
+Validation gate PASSED.
+
+Sweeping 252 configurations (6 apertures x 3 wavelengths x 2 gaps x 7 myopia levels), grid_N=2048...
+  10/252 (24s elapsed)
+  20/252 (54s elapsed)
+  30/252 (77s elapsed)
+  40/252 (99s elapsed)
+  50/252 (122s elapsed)
+  60/252 (145s elapsed)
+  70/252 (167s elapsed)
+  80/252 (201s elapsed)
+  90/252 (230s elapsed)
+  100/252 (252s elapsed)
+  110/252 (275s elapsed)
+  120/252 (297s elapsed)
+  130/252 (320s elapsed)
+  140/252 (345s elapsed)
+  150/252 (368s elapsed)
+  160/252 (390s elapsed)
+  170/252 (413s elapsed)
+  180/252 (435s elapsed)
+  190/252 (458s elapsed)
+  200/252 (480s elapsed)
+  210/252 (503s elapsed)
+  220/252 (526s elapsed)
+  230/252 (551s elapsed)
+  240/252 (573s elapsed)
+  250/252 (596s elapsed)
+  252/252 (601s elapsed)
+
+Wrote 252 rows to outputs/r1_bracket_sweep.csv

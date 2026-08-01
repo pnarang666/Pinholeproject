@@ -1,0 +1,104 @@
+{
+  "citations": {
+    "watson_yellott_2012": {
+      "title": "A unified formula for light-adapted pupil size",
+      "year": 2012,
+      "doi": "10.1167/12.10.12"
+    },
+    "ies_troland": {
+      "title": "Illuminating Engineering Society troland definition",
+      "year": 2026,
+      "url": "https://ies.org/definitions/troland/"
+    },
+    "barten_1999": {
+      "title": "Contrast sensitivity of the human eye and its effects on image quality",
+      "year": 1999,
+      "doi": "10.6100/IR523072"
+    },
+    "mannos_sakrison_1974": {
+      "title": "The effects of a visual fidelity criterion on the encoding of images",
+      "year": 1974
+    },
+    "iskander_2006": {
+      "title": "Computational Aspects of the Visual Strehl Ratio",
+      "year": 2006,
+      "doi": "10.1097/01.opx.0000195563.82891.3b"
+    },
+    "rose_devies": {
+      "title": "Rose / DeVries photon-noise scaling",
+      "year": 1948
+    },
+    "tidbury_2016_illuminance_slope": {
+      "title": "Fiat Lux: the effect of illuminance on acuity testing",
+      "year": 2016,
+      "doi": "10.1007/s00417-016-3329-7"
+    },
+    "van_nes_bouman_1967_weber_knee": {
+      "title": "Spatial Modulation Transfer in the Human Eye",
+      "year": 1967,
+      "journal": "J Opt Soc Am 57(3):401-406"
+    }
+  },
+  "pupil": {
+    "reference_age_years": 28.58,
+    "monocular_attenuation": 0.1,
+    "binocular_attenuation": 1.0,
+    "stanley_davies_numerator": 846.0,
+    "stanley_davies_exponent": 0.41,
+    "stanley_davies_max_mm": 7.75,
+    "stanley_davies_span_mm": 5.75,
+    "stanley_davies_offset": 2.0,
+    "age_slope_intercept": 0.02132,
+    "age_slope_dsd_coeff": 0.009562,
+    "young_age_offset": 19.291,
+    "young_age_exp_coeff": 44.03,
+    "young_age_exp_denominator": 4.8441,
+    "minimum_diameter_mm": 1.5,
+    "maximum_diameter_mm": 9.0
+  },
+  "adaptation": {
+    "r_max": 1.0,
+    "semi_saturation_trolands": 1000.0,
+    "exponent": 0.74
+  },
+  "csf": {
+    "default_model": "barten",
+    "watson_peak_cpd": 4.0,
+    "watson_bandwidth_octaves": 2.0,
+    "mannos_scale": 2.6,
+    "mannos_offset": 0.0192,
+    "mannos_slope": 0.114,
+    "mannos_exponent": 1.1,
+    "barten_c": 0.06,
+    "barten_k": 3.0,
+    "barten_temporal_integration_s": 0.1,
+    "barten_x0_deg": 60.0,
+    "barten_xmax_deg": 12.0,
+    "barten_nmax": 15.0,
+    "barten_sigma0_deg": 0.5
+  },
+  "photon_noise": {
+    "planck_constant_j_s": 6.62607015e-34,
+    "speed_of_light_m_s": 299792458.0,
+    "ocular_transmission": 0.9,
+    "quantum_efficiency": 1.0,
+    "integration_time_s": 0.1,
+    "integration_area_mm2": 0.01
+  },
+  "acuity": {
+    "cycles_per_degree_at_20_20": 30.0
+  },
+  "brightness_acuity": {
+    "logmar_per_log10_illuminance": 0.060,
+    "weber_knee_td": 300.0
+  },
+  "pipeline": {
+    "default_scene_luminance_cdm2": 10000.0,
+    "default_field_diameter_deg": 20.0,
+    "default_age_years": 28.58,
+    "default_eyes": 2,
+    "default_pupil_mode": "photopic",
+    "pupil_iteration_max_iter": 20,
+    "pupil_iteration_tol_mm": 1e-4
+  }
+}

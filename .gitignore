@@ -1,0 +1,23 @@
+# --- OS/editor junk ---
+.DS_Store
+__pycache__/
+*.pyc
+.vscode/
+.claude/
+
+# --- Raw simulation field dumps: large (~32MB per condition), regeneratable from the
+# sweep scripts themselves -- the CSVs and plots derived from them are the actual
+# results worth versioning, not these raw arrays. Re-run the relevant sweep script
+# to regenerate if ever needed. ---
+outputs/stage1/sweep_fields/
+**/sweep_fields/
+*.npy
+
+# --- Python virtual environments, if you ever create one ---
+venv/
+env/
+.venv/
+
+# --- Jupyter/streamlit local state ---
+.streamlit/
+.ipynb_checkpoints/

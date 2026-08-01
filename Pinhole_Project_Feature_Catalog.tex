@@ -1,0 +1,186 @@
+\documentclass[10pt]{report}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\definecolor{hbblue}{HTML}{2A4D8F}
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{6pt}{\Large}
+\newcommand{\feat}[1]{\subsection*{#1}}
+
+\title{\textbf{\Large Pinhole Sunglasses Project}\\[0.2cm]\textcolor{hbblue}{\large Complete Feature Catalog}\\[0.3cm]
+\normalsize\itshape Every metric computed across every stage, and why it was computed}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Purpose of this document}
+This catalogs every distinct quantity (``feature'') computed anywhere in the project's ten analysis folders, organized by stage. For each: what it is, why it was computed (the scientific question it answers), and what it found where a real result exists. This is an inventory, not a re-derivation --- every quantity here traces to real code and real output files already on disk, cross-referenced by folder.
+
+\chapter{Stage 1 (stage1\_v2) --- Cornea-plane diffraction}
+Answers exactly one question: given a circular pinhole, what is the diffracted intensity at the corneal plane, before the eye's own optics are involved.
+
+\feat{Fresnel number ($N_F$)}
+$N_F = a^2/(\lambda z)$. Classifies which diffraction regime applies (Fraunhofer, Fresnel transition, near-geometric) --- used as a sanity/regime-tracking quantity on every sweep row, not a live branching variable, since the production propagator (ASM) needs no regime selection.
+
+\feat{Radial intensity profile}
+Angular-averaged intensity vs.\ radius, sampled by bilinear interpolation (not histogram binning, which was found to blur sharp peaks and leave empty near-axis bins). The base quantity every downstream blur metric is extracted from.
+
+\feat{Encircled energy, $r_{EE}(P)$}
+Radius containing energy fraction $P$ (50/70/80/90\% reported). \textbf{Why this is the primary metric}: it is a cumulative-energy measure, directly interpretable as ``how much of the light landed within this radius,'' and is exactly invertible from the closed-form Airy formula for validation.
+
+\feat{FWHM / threshold-radius, disambiguated}
+A fixed bug from this project's own predecessor code: naive FWHM could jump tens of microns between apertures differing by 1$\mu$m once a diffraction pattern has more than one comparably bright ring. Fixed via a threshold-crossing search that stops at either a genuine crossing or a confirmed local minimum, with sub-bin parabolic refinement. \textbf{Why it matters}: FWHM later turned out (Model Comparison, below) to track real clinical acuity far better than $r_{EE}(50\%)$ does, making this fix load-bearing well beyond Stage 1 itself.
+
+\feat{Second-moment (RMS) radius}
+$\sqrt{\langle r^2\rangle}$ --- a standard alternative spot-size definition, used as a cross-check against $r_{EE}(P)$ and as an input to the junction wraparound-safety estimate in Stage 2.
+
+\feat{Energy conservation / band-limit suppression checks}
+Validation-only quantities confirming the ASM propagator (with Matsushima anti-aliasing) is behaving correctly at a given grid resolution before trusting any output from it.
+
+\chapter{Stage 2 (stage2, stage2\_fixed) --- Full eye model}
+Extends Stage 1 through the eye lens and a second ASM propagation to the retina, with an axial-length myopia model.
+
+\feat{Axial myopia model ($L_0$, $L_{ax}$, $\Delta L$)}
+$L_0 = n'/P_0$ (emmetropic axial length), $L_{ax} = n'/(P_0-M)$ (myopic axial length). \textbf{Why axial, not refractive}: the eye's optical power is held fixed and only the retina's physical distance changes --- the standard clinical model of simple axial myopia, and the quantity that directly sets how far to propagate in Stage 2's second ASM call.
+
+\feat{Junction validation gate (band-limit at $v_r$, wraparound estimate)}
+Re-propagates a diagnostic copy of the actual cornea field to the retina distance to check spectral adequacy \emph{at that distance specifically}, rather than assuming the gap-stage grid/window choice remains valid at the (typically longer) retina distance. Two real bugs were found and fixed here: the energy-conservation check was mathematically redundant with the band-limit check (proven, correlation 1.000000 against real data), and the wraparound safety margin used a Gaussian-beam minimum-divergence formula mislabeled as conservative when it is actually a lower bound.
+
+\feat{Retina-plane $r_{EE}(P)$, closed-form validated}
+At zero gap/zero myopia the full chain reduces exactly to the textbook Fraunhofer/Airy case. $r_{EE}(50\%)$/$r_{EE}(90\%)$ validated to 2\%; $r_{EE}(80\%)$ needed an explicitly justified 8\% tolerance, since it sits near the Airy pattern's first null where the closed-form curve has zero slope and any numerical residual is amplified --- confirmed empirically across grid sizes 1024--8192, not simply asserted.
+
+\feat{R1 sweep: optimum aperture by pure blur minimization}
+The headline early result: 300$\mu$m (M=1--4D) to 400$\mu$m (M=5--8D) minimizes $r_{EE}(50\%)$ alone. \textbf{Significance}: this is deliberately the wrong final answer on its own --- it ignores brightness entirely, which the next stage exists to fix.
+
+\feat{Deprecated closed-form chain ($a_{eff}$, $r_{geo}$, $r_{diff}$, $r_{total}$, $a^*$)}
+Retained specifically to support the Model Comparison audit (below), not used in production. $a_{eff}$ tracks the exact cornea-plane result reasonably well (13.8\% mean divergence); the RSS combination $r_{total}=\sqrt{r_{geo}^2+r_{diff}^2}$ diverges from the exact retina-plane result by 64.8\% mean, 192.8\% max --- because two independent blur sources should be convolved, not root-sum-squared.
+
+\chapter{Stage 3a --- Brightness-constrained optimum}
+\feat{Relative retinal illuminance, $E_{rel}$}
+$E_{rel} = (\min(a_{hole},D_{pupil})/D_{pupil})^2$. A pure area-ratio, since diffraction redistributes power spatially but does not destroy it --- total transmitted power through an aperture depends on physical area, not on any diffraction-broadened spot-size estimate.
+
+\feat{Brightness-constrained optimum, $a^*_{practical}(M,T_{min})$}
+$\operatorname{argmin}$ of $r_{EE}(50\%)$ subject to $E_{rel}(a_{hole})\ge T_{min}$. \textbf{Key finding}: a $T_{min}$ of 6.25--9\% moves the optimum from 300--400$\mu$m into the verified clinical bracket (940--1750$\mu$m), and this holds regardless of which $r_{EE}$ percentile (50/70/80/90\%) is used once the constraint binds --- confirming the brightness floor matters far more than the metric choice.
+
+\chapter{Stage 3 Human Vision --- Comprehensive optical/perceptual metrics}
+\feat{MTF, OTF, PTF (radial)}
+Modulus, complex value, and phase of the Fourier transform of the PSF --- a full spatial-frequency-domain description of image quality, a stronger validation target than any single blur radius since it captures the entire frequency response, not one threshold.
+
+\feat{MTF50, MTF10}
+Spatial frequencies where contrast has fallen to 50\%/10\% of DC --- standard single-number image-quality summaries, later used as the base input to acuity prediction.
+
+\feat{RMS spot radius, Strehl ratio}
+Strehl (peak intensity ratio to the diffraction-limited case at the same aperture/wavelength) is the conventional diffraction-limited-performance metric (Mar\'echal criterion: $S\ge0.8$). \textbf{Confirmed anomaly}: Strehl is genuinely, not artifactually, non-monotonic at this project's aperture scales --- a tenfold finer sweep showed \emph{more} oscillation, the signature of real ring interference, not sampling noise.
+
+\feat{Photopic CSF (two independent models)}
+A simplified band-pass model peaked at 4~cpd, and the Mannos--Sakrison parametrization peaked at 8~cpd --- deliberately never merged into one curve, since their peak-location disagreement is a genuine, reported feature of the published literature, not a discrepancy to hide.
+
+\feat{Photometry (Trolands)}
+Full chain from scene luminance to retinal illuminance via the standard troland definition (luminance $\times$ pupil area). Both models' default scene luminance (10{,}000 cd/m$^2$) was later found (Section~\ref{sec:luminance}) to be the wrong value for comparing against clinical acuity data.
+
+\feat{Three independent acuity models}
+(1) MAR from MTF cutoff via the exact identity MAR(arcmin)$=30/f_{cutoff}$; (2) an approximate Visual Strehl (VSX-style), CSF-weighting actual vs.\ diffraction-limited MTF; (3) a Rose--DeVries photon-noise SNR bound. \textbf{Why three}: no single model was assumed correct --- all three were built so they could be compared and, later, all three were tested against real clinical data.
+
+\feat{Pareto fronts (blur vs.\ throughput)}
+Multi-objective analysis treating blur (minimize) and light throughput (maximize) as competing objectives --- the set of non-dominated apertures, extended to all seven tested myopia levels and later overlaid to show how the front's shape itself shifts with $M$.
+
+\chapter{Stage 3 Integrated --- Cross-validated merge and two confirmed anomalies}
+\feat{Combined grid (all metrics on one shared aperture$\times M$ table)}
+Merges Stage 3a and Stage 3 Human Vision after confirming their two independently-written illuminance formulas agree exactly at four test points --- with an explicit row-count assertion so the merge fails loudly rather than silently truncating.
+
+\feat{Retina-plane FWHM, reapplied}
+Stage 1's own ring-hopping fix, applied at the retina plane for the first time. \textbf{Confirmed real, not fixed by the Stage 1 patch}: a jump from 4.7 to 154.7$\mu$m between two adjacent 250$\mu$m-spaced test apertures at M=4D --- meaning retina-plane FWHM is not a reliable single-value metric for this system.
+
+\feat{Fine Strehl sweep (10$\times$ finer aperture grid)}
+Purpose-built to test whether the coarse-grid Strehl non-monotonicity was genuine or a sampling artifact. It was genuine (Section 3, above) --- confirmed here rather than assumed.
+
+\feat{Sensitivity heatmaps (aperture$\times M$, wavelength$\times$aperture)}
+Two-dimensional maps of $r_{EE}(50\%)$, MTF50, Strehl, and relative illuminance --- shows which metrics are smooth vs.\ volatile across the parameter space at a glance, using all three tested wavelengths rather than defaulting to 550nm everywhere.
+
+\feat{Uncertainty propagation}
+For every citation-flagged heuristic constant (ocular transmission 0.85--0.95, CSF peak-location disagreement), propagated its stated range into the primary optimum-aperture number --- turning a docstring caveat into a quantified sensitivity (e.g.\ ocular transmission has zero effect on $r_{EE}(50\%)$ since that metric is purely geometric, but an $\sim$11\% effect on photon-flux-derived quantities).
+
+\chapter{Stage 4 Human Vision --- Physiological calibration layer}
+\feat{Watson--Yellott pupil model}
+Real published formula (Stanley--Davies core plus age/young-age corrections), constants independently verified correct against the literature, including a non-trivial continuity check (the young-age correction converges smoothly to the adult formula exactly at age 20). \textbf{Why}: replaces a fixed pupil-diameter assumption with a physiologically real, luminance/age/field-dependent one.
+
+\feat{Iterative pupil--illuminance solver}
+Since pupil size depends on retinal illuminance and illuminance depends on pupil size, solved via fixed-point iteration (converged in 5--9 steps across a 600-point stress sweep, cap 20; zero non-convergence found).
+
+\feat{Naka--Rushton brightness adaptation}
+A saturating response function modeling neural brightness adaptation, optional/disableable --- an \emph{uncited, first-principles construction} in this specific feedback definition (flagged explicitly, not hidden), distinct from the cited Watson--Yellott pupil formula it feeds.
+
+\feat{Barten (1999) CSF, full model}
+The genuine, fully-parametrized published CSF (not the peak-matched heuristic used elsewhere) --- necessary specifically because the heuristic model was later found to break down at the low spatial frequencies the ghosting analysis needed (Chapter~\ref{ch:ghost}).
+
+\feat{Visual Strehl (VSOTF)}
+CSF-weighted ratio of actual to diffraction-limited OTF integrals --- the neurally-weighted analogue of the pure-optical Strehl ratio.
+
+\feat{Photon flux and shot-noise SNR}
+Full radiometric chain to expected photon count and Poisson shot-noise SNR at the retina --- the physical basis for the (separately validated) brightness--acuity correction below.
+
+\feat{Calibrated acuity prediction with cited brightness correction}
+Base MAR from MTF10 cutoff, VSOTF-adjusted, plus an \emph{additive} brightness correction below the Van Nes \& Bouman (1967) 300~Td Weber-onset knee, using the Tidbury (2016) cited slope (0.060 logMAR per log$_{10}$-unit of illuminance) --- replacing an earlier uncited, arbitrary exponent-based correction.
+
+\feat{Validation against real clinical data (Wang 2009)}
+\textbf{The single most important negative result in the project}: $R^2=-2.84$ to $-6.39$ (worse than predicting the mean), $p=0.50$--$0.51$ (no significant correlation), at every myopia level, using the calibrated predictor above. A subsequent leave-one-out calibration attempt also failed ($R^2=-0.54$ to $-0.59$, Pearson $r$ sign-flips under cross-validation), and an independent external check (Kim et al.\ 2017) missed by $+0.30$ logMAR. Root causes diagnosed: $n=5$, one non-monotonic outlier point in the source data, no dataset anywhere recording per-subject refractive error.
+
+\feat{Luminance re-sweep test}
+\label{sec:luminance}
+Tested whether the project's default 10{,}000~cd/m$^2$ (bright daylight) scene luminance --- used throughout every Stage 3/4 sweep --- was itself contributing to the validation failure, by re-running at Wang (2009)'s own stated testing condition (``15 foot-candles,'' converted properly to 43.7~cd/m$^2$). \textbf{Result: $R^2$ got worse, not better} (e.g.\ $-7.88$ vs.\ $-6.68$ at M=0D) --- ruling out the luminance-mismatch hypothesis as the fix, while confirming the default luminance is still the wrong value for any \emph{absolute} comparison against clinical data (a separate, correct finding, kept distinct from the acuity-validation question).
+
+\chapter{Model Comparison --- Independent audit}
+\feat{RSS vs.\ exact numerical divergence}
+Quantified, not asserted: 13.8\% mean (23.7\% max) at the cornea plane, 64.8\% mean (192.8\% max) at the retina plane, with the root cause identified as $a_{eff}$'s own non-monotonicity at small apertures producing a spurious secondary minimum.
+
+\feat{Reference-point reconciliation (5-way comparison)}
+This project's exact numerical optimum (300--400$\mu$m), the deprecated closed-form $a^*$ (473--1339$\mu$m), the independent Rayleigh pinhole-camera formula (210--225$\mu$m), the verified clinical bracket (940--1750$\mu$m), and commercial products (900--1200$\mu$m) --- all plotted together to show every pure-blur-optimizing model clusters well below real-world designs, diagnosed as a missing-throughput-constraint problem, not a modeling error.
+
+\feat{Acuity metric comparison against real clinical data}
+$r_{EE}(50\%)$ overestimates real clinical blur by $\sim$7$\times$; FWHM (core-width, not cumulative-energy) tracks the same clinical point to within $\sim$1.6$\times$. \textbf{Significance}: identifies a genuine metric-selection error --- $r_{EE}(P)$ counts diffuse peripheral energy in faint outer rings that does not meaningfully impair legibility.
+
+\chapter{Array Ghosting Theory --- Multi-hole perceptibility}
+\label{ch:ghost}
+\feat{Discrete pupil-alignment enumeration, $N_{eff}$}
+Exact lattice-point counting of holes under the pupil at a given alignment, swept across a full unit cell to find worst/mean/best-case hole count --- \textbf{key finding}: sparse (KR-patent-style) pitch has a genuine zero-holes-under-pupil failure mode at worst-case alignment, invisible to the naive continuum (average-density) approximation.
+
+\feat{Ghost ripple frequency, $f_0$}
+$f_0=1/\Delta r$, $\Delta r=s\cdot v_r/d_{gap}$ --- the Fourier-domain consequence of a periodic train of shifted PSF copies, derived from the convolution theorem (the multi-copy retinal image is a PSF convolved with a Dirac comb, so its spectrum is the single-hole MTF sampled at every harmonic of $f_0$).
+
+\feat{Three-regime ghosting classification (A/B/C)}
+Regime A: $N_{eff}\le1$, no ghosting possible. Regime B: MTF($f_0$) below the CSF detection threshold at $f_0$. Regime C: neither --- the danger zone. \textbf{Went through two real revisions}: first pass (heuristic CSF) found zero Regime C anywhere, traced to the heuristic CSF being evaluated 4+ octaves outside its fitted range; second pass (real Barten CSF) reclassified every previously-safe dense point as Regime C, including the entire real CN patent pitch range --- now directionally consistent with Kim et al.\ (2017)'s directly-reported real ghosting symptoms.
+
+\feat{Full harmonic-series margin analysis}
+Extends the single-frequency check to every harmonic $n f_0$ up to the eye's resolution limit. \textbf{Key finding}: the most dangerous harmonic is never $n=1$ --- it is whichever harmonic lands near 1.9--2.3~cpd (the CSF peak), a location essentially independent of pitch and robust across every tested myopia level, since MTF's smooth envelope times a fixed-location CSF peak gives a margin curve whose peak sits at a fixed absolute frequency regardless of pitch.
+
+\chapter{Brightness Reconciliation --- Absolute vs.\ percentage thresholds}
+\feat{Van Nes \& Bouman (1967) absolute floor, 300~Td}
+The real, cited Weber/de~Vries--Rose transition threshold, converted to a minimum-aperture requirement at a given scene luminance via $a_{min}=2000\sqrt{T_{floor}/(\pi L)}\,\mu$m.
+
+\feat{CIE 191:2010 photopic/mesopic boundary, Td-equivalent}
+A second, more permissive absolute floor ($\sim$3--5~cd/m$^2$ adapting luminance, converted to $\sim$38--63~Td via a natural 4mm pupil) --- kept explicitly distinct from the Van Nes \& Bouman floor since the two encode different physiological criteria and disagree by 2--3$\times$.
+
+\feat{Reconciliation against the reverse-engineered percentage floor}
+\textbf{Key finding}: at this project's own bright-daylight default (10{,}000~cd/m$^2$), both absolute floors are cleared by apertures far smaller than even the blur-only optimum. At a realistic clinical testing luminance ($\sim$300~cd/m$^2$), the Van Nes \& Bouman floor predicts $\sim$1128$\mu$m --- landing almost exactly inside the reverse-engineered 900--1250$\mu$m range, without that number ever being tuned to match it.
+
+\chapter{Single Illuminate --- Standalone illuminance module}
+\feat{Percent illumination (single-hole, standalone)}
+A deliberately scoped-down, single-hole-only wrapper around Stage 3a's illuminance formula, built with an explicit, marked extension seam for array support rather than a half-implemented stub --- kept separate so it can be swapped for the array model later without restructuring callers.
+
+\chapter{Master Compilation --- The consolidation layer}
+\feat{Six-sheet master workbook}
+Deliberately not one flat table: aperture$\times M$ data (Master Grid, Model Comparison, Stage 4 Validation), aperture$\times$pitch data (Ghosting), and luminance-only data (Brightness Reconciliation) are genuinely different shapes, and forcing them together would silently produce NaN-filled rows or misaligned joins --- every sheet is read directly from its real source file via pandas, never retyped, so there is no transcription-error risk.
+
+\feat{Provenance index}
+A dedicated sheet stating, for every other sheet, its exact source file and producing script --- makes the whole compilation auditable rather than a black box, and lets any number here be traced back to the exact code that produced it.
+
+\chapter{Summary: what this catalog shows}
+Across roughly 45 distinct computed features spanning ten stages, three patterns recur and are worth naming explicitly. First, several early metrics were later found to be unreliable in ways only discovered by deliberately stress-testing them (Strehl's non-monotonicity, retina-plane FWHM's ring-hopping, the heuristic CSF's low-frequency breakdown) --- each was investigated to a specific, checked mechanism rather than assumed away. Second, the project's two most important results (the brightness-floor reconciliation and the harmonic ghosting analysis) both emerged from combining features from different stages that had never been checked against each other before, not from any single stage in isolation. Third, the acuity-prediction chain (Stage 3/4) was built, calibrated, and honestly failed real-world validation --- a genuine, diagnosed negative result, not a gap glossed over, and the clearest indication in this whole catalog of where theory has reached its limit and the physical experiment becomes necessary rather than optional.
+
+\end{document}

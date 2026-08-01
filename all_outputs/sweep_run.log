@@ -1,0 +1,26 @@
+Running Airy-disk validation gate before sweeping...
+  r_EE_50: rel_error=1.139% (tolerance 2%) -> PASS
+  r_EE_80: rel_error=4.558% (tolerance 8%) -> PASS
+  r_EE_90: rel_error=0.548% (tolerance 2%) -> PASS
+Validation gate PASSED.
+
+Sweeping 168 configurations (4 apertures x 3 wavelengths x 2 gaps x 7 myopia levels), grid_N=2048...
+  10/168 (26s elapsed)
+  20/168 (53s elapsed)
+  30/168 (76s elapsed)
+  40/168 (98s elapsed)
+  50/168 (121s elapsed)
+  60/168 (143s elapsed)
+  70/168 (165s elapsed)
+  80/168 (190s elapsed)
+  90/168 (215s elapsed)
+  100/168 (239s elapsed)
+  110/168 (262s elapsed)
+  120/168 (284s elapsed)
+  130/168 (307s elapsed)
+  140/168 (329s elapsed)
+  150/168 (352s elapsed)
+  160/168 (374s elapsed)
+  168/168 (392s elapsed)
+
+Wrote 168 rows to /Users/parikshitnarang/Pinholeproject/stage2/outputs/myopia_sweep_168pts.csv

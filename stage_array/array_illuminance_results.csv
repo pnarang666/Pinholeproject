@@ -1,0 +1,16 @@
+config,a_hole_um,pitch_s_um,N_continuum,N_eff_worst,N_eff_mean,N_eff_best,E_rel_array_worst,E_rel_array_mean,E_rel_single_hole,array_gain_worst_x
+KR patent pitch,300,3200,1.23,0,1.23,2,0.0,0.692,0.5625,0.0
+KR patent pitch,400,3200,1.23,0,1.23,2,0.0,1.23,1.0,0.0
+KR patent pitch,1000,3200,1.23,0,1.23,2,0.0,7.69,6.25,0.0
+KR patent pitch (upper),300,4800,0.55,0,0.55,1,0.0,0.307,0.5625,0.0
+KR patent pitch (upper),400,4800,0.55,0,0.55,1,0.0,0.546,1.0,0.0
+KR patent pitch (upper),1000,4800,0.55,0,0.55,1,0.0,3.41,6.25,0.0
+CN patent pitch,300,700,25.65,23,25.65,28,12.938,14.426,0.5625,23.0
+CN patent pitch,400,700,25.65,23,25.65,28,23.0,25.646,1.0,23.0
+CN patent pitch,1000,700,25.65,23,25.65,28,100.0,100.0,6.25,16.0
+CN patent pitch (upper),300,1200,8.73,8,8.72,12,4.5,4.904,0.5625,8.0
+CN patent pitch (upper),400,1200,8.73,8,8.72,12,8.0,8.718,1.0,8.0
+CN patent pitch (upper),1000,1200,8.73,8,8.72,12,50.0,54.49,6.25,8.0
+Fine pitch (continuum-valid),300,200,314.16,308,314.11,318,100.0,100.0,0.5625,177.78
+Fine pitch (continuum-valid),400,200,314.16,308,314.11,318,100.0,100.0,1.0,100.0
+Fine pitch (continuum-valid),1000,200,314.16,308,314.11,318,100.0,100.0,6.25,16.0

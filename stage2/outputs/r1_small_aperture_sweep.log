@@ -1,0 +1,47 @@
+Running Airy-disk validation gate before sweeping...
+  r_EE_50: rel_error=1.139% (tolerance 2%) -> PASS
+  r_EE_80: rel_error=4.558% (tolerance 8%) -> PASS
+  r_EE_90: rel_error=0.548% (tolerance 2%) -> PASS
+Validation gate PASSED.
+
+Sweeping 378 configurations (9 apertures x 3 wavelengths x 2 gaps x 7 myopia levels), grid_N=2048...
+  10/378 (22s elapsed)
+  20/378 (45s elapsed)
+  30/378 (67s elapsed)
+  40/378 (90s elapsed)
+  50/378 (112s elapsed)
+  60/378 (135s elapsed)
+  70/378 (158s elapsed)
+  80/378 (180s elapsed)
+  90/378 (203s elapsed)
+  100/378 (226s elapsed)
+  110/378 (248s elapsed)
+  120/378 (271s elapsed)
+  130/378 (294s elapsed)
+  140/378 (316s elapsed)
+  150/378 (339s elapsed)
+  160/378 (362s elapsed)
+  170/378 (384s elapsed)
+  180/378 (407s elapsed)
+  190/378 (429s elapsed)
+  200/378 (452s elapsed)
+  210/378 (475s elapsed)
+  220/378 (498s elapsed)
+  230/378 (521s elapsed)
+  240/378 (544s elapsed)
+  250/378 (566s elapsed)
+  260/378 (589s elapsed)
+  270/378 (612s elapsed)
+  280/378 (635s elapsed)
+  290/378 (657s elapsed)
+  300/378 (681s elapsed)
+  310/378 (704s elapsed)
+  320/378 (727s elapsed)
+  330/378 (750s elapsed)
+  340/378 (773s elapsed)
+  350/378 (795s elapsed)
+  360/378 (822s elapsed)
+  370/378 (850s elapsed)
+  378/378 (868s elapsed)
+
+Wrote 378 rows to outputs/r1_small_aperture_sweep.csv
