@@ -1,5 +1,61 @@
 # Changes to stage4_human_vision/ made while running it end-to-end for the first time
 
+## Pass 3: Module 10 validation audit (pupil, CSF, radiometric, Blackwell)
+
+Triggered by an audit finding that Module 10 (Validation) was 1-of-5 target
+validation sets complete (only acuity vs. Wang 2009, which had already failed).
+Full detail, per-set results, and the honest final assessment are in the new
+`stage4_human_vision/MODULE10_VALIDATION.md`; this entry covers only the code/data
+changes. `sensitivity.py` (Module 11) was explicitly NOT touched, per instruction --
+formal sensitivity analysis around a predictor with no demonstrated real-world
+correlation would produce false precision, not rigor.
+
+1. **tests/test_stage4.py** — replaced/supplemented 3 directional-only or
+   positivity-only smoke tests with real quantitative tests against embedded,
+   cited reference data:
+   - `test_watson_yellott_matches_winn_1994_reference_table` (RMSE=0.115mm vs
+     Winn et al. 1994's real measured data, N=91, as tabulated in Watson & Yellott
+     2012 Table 1) and `test_watson_yellott_matches_figure17_demonstration`
+     (exact match, diff=0.0004mm, vs. the paper's own interactive-demo worked
+     example) — both new, supplementing (not replacing)
+     `test_watson_yellott_shrinks_with_luminance`.
+   - `test_mannos_sakrison_matches_published_formula_and_peak` (exact algebraic
+     match to the published closed form, plus a peak-frequency check against the
+     commonly-cited ~8cpd figure) and
+     `test_barten_simplified_peak_and_cutoff_in_known_photopic_ranges` (checks
+     peak/cutoff frequency fall in commonly-cited photopic ranges) — both new,
+     supplementing (not replacing) `test_csf_models_positive`.
+   - `test_photometric_td_matches_radiometric_retinal_irradiance_at_555nm` (exact
+     cross-check, 1.9e-16 relative difference, between illuminance.py's
+     photometric path and photon_noise.py's radiometric path against the
+     standard Psychtoolbox/CIE identity) — new, supplementing (not replacing)
+     `test_troland_definition`.
+2. **literature.py** — 5 new citation entries: `watson_yellott_2012_winn_table_and_figures`,
+   `mannos_sakrison_1974_formula`, `barten_1999_full_model_via_colour_science`,
+   `blackwell_1946_contrast_threshold`, `psychtoolbox_radiometric_troland_crosscheck`.
+   One entry (`blackwell_1946_contrast_threshold`) documents real, verified data
+   that was found but could NOT be used to validate any currently-implemented
+   function, due to a genuine psychophysical-task mismatch (disc-detection
+   threshold-vs-area/luminance vs. this project's grating-based CSF-vs-spatial-
+   frequency) — reported honestly rather than forcing an uncited bridging
+   assumption or silently dropping the finding.
+3. **No changes to any computational module** (`pupil.py`, `csf.py`,
+   `illuminance.py`, `photon_noise.py`, `acuity.py`, etc.) — this pass was purely
+   validation (finding and checking against real reference data), not remediation.
+   One real anomaly was found in a THIRD-PARTY source during this process (Watson
+   & Yellott 2012's own Figure 18 calculator widget is internally inconsistent
+   with the rest of their own paper — see MODULE10_VALIDATION.md Set 2) and
+   confirmed to NOT indicate a bug in this project's code.
+4. **Vestigial config noted, not removed**: `constants.json`'s `barten_k`,
+   `barten_temporal_integration_s`, `barten_x0_deg`, `barten_xmax_deg`,
+   `barten_nmax`, `barten_sigma0_deg` are declared but never used by
+   `barten_simplified_csf()` (only `barten_c` is used) — left in place rather than
+   deleted, since they may reflect an earlier intent to wire up the full Barten
+   model and deleting them would lose that context; documented instead in
+   `literature.py` and MODULE10_VALIDATION.md, including a latent unit mismatch
+   in `barten_sigma0_deg` (currently inert since unused) that would need fixing
+   if the full model is ever wired up.
+
 ## Pass 2: literature search + replacing the uncited brightness/SNR term
 
 Triggered by RESULTS.md's finding that the acuity predictor fails clinical validation
