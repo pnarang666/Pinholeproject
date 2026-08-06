@@ -1,0 +1,5 @@
+Airy-disk validation gate (a_hole=150um, wavelength=550nm, grid_N=4096, window_L_mm=6.0):
+  r_EE_50: numeric=33.056 um  closed_form=32.684 um  rel_error=1.139%  (tolerance 2%)  -> PASS
+  r_EE_80: numeric=57.311 um  closed_form=54.813 um  rel_error=4.558%  (tolerance 8%)  -> PASS
+  r_EE_90: numeric=116.790 um  closed_form=116.153 um  rel_error=0.548%  (tolerance 2%)  -> PASS
+gate result: PASS
