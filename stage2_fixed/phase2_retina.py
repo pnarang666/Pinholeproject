@@ -24,7 +24,20 @@ def pupil_clip(field, dx, D_pupil_um):
 
 def lens_phase(field, dx, wavelength, f_eye):
     """Thin-lens phase transmittance exp(-i k (x^2+y^2) / (2 f_eye)) -- converging lens,
-    consistent with the ASM propagator's +i k z forward-propagation sign convention."""
+    consistent with the ASM propagator's +i k z forward-propagation sign convention.
+
+    `wavelength` here MUST be the image-space effective wavelength (wavelength/n_prime
+    when refractive_index_correction is honored -- identical to what propagate_to_retina
+    below is given), never the raw vacuum wavelength. f_eye = n_prime/P0 (myopia_axial.py)
+    is already a vergence-equation distance measured through the vitreous -- i.e. it
+    implicitly assumes the lens phase is applied at the vitreous's own wavenumber
+    k' = 2*pi*n_prime/lambda_vacuum. Pairing that f_eye with the vacuum k instead
+    under-applies the lens's converging phase by a factor of n_prime, which shifts the
+    wave's true geometric focus to f_eye*n_prime instead of f_eye -- while
+    propagate_to_retina still only propagates to f_eye at zero defocus, so the retina
+    plane is evaluated short of the (wrongly shifted) focus. See PHYSICS_AUDIT.md item A
+    for the full derivation and why the zero-defocus Airy validation gate, run at exact
+    focus, did not surface it (item D)."""
     N = field.shape[0]
     L = N * dx
     X, Y, _, _ = junction.make_grid(N, L)
@@ -69,10 +82,23 @@ def run_pipeline_point(a_hole, wavelength, d_gap, grid_N, window_L_mm, M_diopter
 
     Never drops a failing point silently: junction_check_passed=False rows carry
     junction_fail_reason and retina_EE=None for the caller (the sweep) to log as-is.
+
+    The image-space effective wavelength (wavelength/n_prime when
+    refractive_index_correction, else wavelength unchanged) is resolved ONCE here and
+    threaded through both lens_phase and propagate_to_retina -- see lens_phase's
+    docstring for why the lens phase screen needs the same effective wavelength as the
+    retina propagation, not the vacuum one (this was previously not the case -- see
+    PHYSICS_AUDIT.md item A). propagate_to_retina is called below with
+    refractive_index_correction=False because the correction has already been applied
+    to the wavelength it receives; this keeps propagate_to_retina's own (unchanged)
+    ternary a documented no-op from this call site rather than re-deriving the same
+    correction a second time from raw inputs -- one evaluation, not two that could
+    silently drift apart.
     """
     myopia = myopia_axial.axial_length_for_myopia(M_diopters, P0=P0, n_prime=n_prime)
     v_r = myopia["L_ax"]
     f_eye = myopia["f_eye"]
+    effective_wavelength = (wavelength / n_prime) if refractive_index_correction else wavelength
 
     cornea_result = junction.run_gap_to_cornea(a_hole, wavelength, d_gap, grid_N, window_L_mm)
     check = junction.validate_junction(cornea_result, v_r, wavelength)
@@ -92,9 +118,9 @@ def run_pipeline_point(a_hole, wavelength, d_gap, grid_N, window_L_mm, M_diopter
 
     dx = cornea_result["dx"]
     field = pupil_clip(cornea_result["U_cornea"], dx, D_pupil_um)
-    field = lens_phase(field, dx, wavelength, f_eye)
+    field = lens_phase(field, dx, effective_wavelength, f_eye)
     U_retina, retina_band_info = propagate_to_retina(
-        field, dx, wavelength, v_r, refractive_index_correction, n_prime)
+        field, dx, effective_wavelength, v_r, refractive_index_correction=False, n_prime=n_prime)
     I_retina = np.abs(U_retina) ** 2
 
     result["retina_EE"] = retinal_encircled_energy(I_retina, dx)
