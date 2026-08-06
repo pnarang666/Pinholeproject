@@ -332,3 +332,104 @@ legacy, OR calibrated) as clinically predictive. This caveat is carried into the
 dashboard as a permanent, visible note next to the acuity readout, not just left in
 this file -- and per Section 4c's result, that note's honest-failure wording was
 kept as-is, not replaced with a success message.
+
+---
+
+## Re-run against corrected optics: Section 2's numbers were computed against the wrong optics module
+
+**Section 2's R^2/RMSE/Pearson numbers above were computed against `stage2/`, the
+deprecated optics module `stage2_fixed/` was created to replace -- not against
+`stage2_fixed/` itself**, despite `pipeline.py` living in this project's "Stage 4"
+directory specifically to sit "on top of the existing Stage 2/3 pipeline." This
+section documents the bug, the fix, and the full before/after.
+
+### The bug
+
+`stage4_human_vision/pipeline.py` inserted the deprecated `stage2/` directory into
+`sys.path` and imported `phase2_retina` from there (`import phase2_retina as
+stage2_retina`) -- not `stage2_fixed/`, the module this project's own `CHANGES.md`
+and `PHYSICS_AUDIT.md` document as the corrected one. `stage2/phase2_retina.py`
+independently confirmed to carry the lens-phase/retina-propagation wavelength bug
+(`PHYSICS_AUDIT.md` item A): the eye's lens phase was applied using the raw vacuum
+wavelength while the retina propagation used the vitreous's reduced wavelength
+(`wavelength/n_prime`), under-applying the lens's converging phase by a factor of
+`n_prime` (~1.336) whenever `refractive_index_correction=True` (this project's
+default) -- shifting the wave's true geometric focus away from where the retina is
+actually evaluated, at every myopia level and aperture this project's `run_stage4_point`
+was ever called with, including every point behind Section 2's table above.
+
+This also had a second-order consequence documented in full in `R7acuity/RESULTS.md`'s
+own matching section: because `pipeline.py`'s import runs first whenever anything
+under `stage4_human_vision` is imported (via `__init__.py`), it silently shadowed
+`R7acuity`'s own, correctly-targeted `stage2_fixed/` import too, via Python's
+bare-module-name caching in `sys.modules`. Both models' validation failures, reported
+independently in each project's own `RESULTS.md`, trace to this one shared root cause.
+
+### The fix
+
+`stage4_human_vision/pipeline.py`'s `sys.path` insertion was repointed at
+`stage2_fixed/`. `stage3_human_vision/metrics.py` (imported by `pipeline.py` for RMS
+radius / Strehl / MTF) had the identical issue and was fixed the same way, plus one
+directly-buggy internal function (`find_best_focus_v_r`, confirmed to have zero
+callers anywhere in the codebase) fixed for consistency. Verified before fixing
+(`sys.modules['phase2_retina'].__file__`) that the shadowing reproduced, and after
+fixing that it resolves to `stage2_fixed/phase2_retina.py`. No dependency on `stage2/`'s
+specific behavior was found in either file (`myopia_axial.py` is byte-identical between
+the two modules; `pipeline_junction.py` differs only in comment/docstring wording, not
+executable logic -- confirmed by diff). Full detail in `PHYSICS_AUDIT.md`.
+
+`model_comparison/` was found to have the identical `stage2/` import but was
+deliberately left unchanged: it explicitly, by its own documented design, represents
+"Model 2 wraps `stage2/phase2_retina.py`" as a named, versioned comparison point, with
+extensive README prose tied to `stage2/`'s specific numbers -- repointing it would
+silently invalidate that documented comparison, not a contained fix.
+
+### Re-run: `run_wang2009_validation.py` (new -- no dedicated runner existed for this
+before; Section 2's original numbers came from a one-off script that was never
+committed)
+
+Same dataset (Wang 2009, 5 apertures x M=[0,2,5]D), same predictor
+(`predict_acuity`'s "recommended" model, `mtf10_vsotf_brightness_adjusted` --
+config-selected, not chosen post-hoc), same 10,000 cd/m^2 default scene luminance.
+No calibration parameter exists in this model to retune (Section 4c's calibration
+fit is reported separately below, also not re-touched here) -- `predict_acuity`'s
+brightness correction slope (0.060 logMAR per log10-illuminance unit, Tidbury 2016)
+and every other constant are exactly as before.
+
+| M (D) | predictor | n | R^2 (pre-fix, Section 2) | R^2 (post-fix) | Pearson r (pre) | Pearson r (post) | p (pre) | p (post) |
+|---|---|---|---|---|---|---|---|---|
+| 0 | Stage 4 recommended | 5 | -6.39 | **-4.80** | 0.395 | -0.375 | 0.510 | 0.533 |
+| 2 | Stage 4 recommended | 5 | -4.98 | **-1.41** | 0.393 | -0.180 | 0.513 | 0.772 |
+| 5 | Stage 4 recommended | 5 | -2.84 | **-0.68** | 0.405 | 0.426 | 0.499 | 0.474 |
+
+Full predicted-vs-observed table: `outputs/wang2009_validation_postfix_predicted.csv`;
+full stats: `outputs/wang2009_validation_postfix_stats.csv`.
+
+**Verdict: still fails the stated bar (R^2>0 and p<0.05) at every M -- but a real,
+substantial, and consistent improvement in the right direction at every M tested.**
+R^2 moved closer to zero by 1.6 (M=0), 3.6 (M=2), and 2.2 (M=5) points respectively --
+not a rounding-level shift. This is neither "still fails, nothing changed" nor "now
+passes" -- it is the third, explicitly anticipated outcome: a partial, genuine
+improvement that does not cross the significance bar. Notably, Pearson r *worsened* or
+flipped sign at M=0 and M=2 (0.395->-0.375, 0.393->-0.180) even as R^2 improved --
+because R^2 penalizes systematic bias/offset (Section 2's own diagnosis: "every single
+predicted point sits above the diagonal") while Pearson r measures only rank
+correlation; the corrected optics reduced the bias enough to improve R^2 while
+disturbing whatever weak rank-ordering existed before. This is reported as-is, not
+smoothed over by picking whichever statistic looks better.
+
+### What this means
+
+The corrected optics measurably narrow, but do not close, Section 2's central gap.
+This is evidence *against* pure data-scarcity being the whole story (a purely
+data-limited problem would not systematically improve when the underlying optics are
+corrected) and evidence *for* at least part of the original failure being attributable
+to real, fixable upstream optical-model error, not solely to `n=5` and one
+non-monotonic clinical point. It does not resolve which combination of causes explains
+the *remaining* gap (R^2 still well below zero at every M) -- data scarcity, the
+uncalibrated brightness-correction offset (Section 2's own diagnosis), and whatever
+else is still unaccounted for all remain live, undistinguished explanations. No
+parameter was retuned to produce this improvement; it is a direct consequence of the
+optics fix alone.
+
+No aperture recommendation is made anywhere in this section either.
