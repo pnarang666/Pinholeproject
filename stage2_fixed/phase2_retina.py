@@ -101,7 +101,15 @@ def run_pipeline_point(a_hole, wavelength, d_gap, grid_N, window_L_mm, M_diopter
     effective_wavelength = (wavelength / n_prime) if refractive_index_correction else wavelength
 
     cornea_result = junction.run_gap_to_cornea(a_hole, wavelength, d_gap, grid_N, window_L_mm)
-    check = junction.validate_junction(cornea_result, v_r, wavelength)
+    # Item B (PHYSICS_AUDIT.md): validate_junction's own diagnostic re-propagation to
+    # v_r_target must use the SAME wavelength the real retina propagation will actually
+    # use (effective_wavelength), not the raw vacuum wavelength -- otherwise its
+    # Matsushima band-limit check (f_limit ~ 1/wavelength) and its divergence estimate
+    # (~ wavelength/w) are evaluated at the wrong wavelength, over-predicting suppression
+    # / divergence at the true (smaller, n_prime-reduced) effective wavelength. This is
+    # conservative, not corrupting (it can only make the gate too strict, never too
+    # lenient), but it hides real headroom -- see PHYSICS_AUDIT.md item B.
+    check = junction.validate_junction(cornea_result, v_r, effective_wavelength)
 
     result = {
         "cornea_result": cornea_result,
