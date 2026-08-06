@@ -5,6 +5,32 @@ Only imports stage1_v2 primitives through pipeline_junction, never directly. The
 focal length is always the emmetropic value from myopia_axial (fixed regardless of M);
 only the propagation distance to the retina (v_r = L_ax) changes with myopia, per the
 axial-length model in myopia_axial.py.
+
+PHYSICS_AUDIT.md item E1 -- reduced-eye geometry, stated explicitly (a defensible
+modeling choice, not a bug -- the problem is a reader otherwise can't tell it was
+deliberate): pupil_clip, lens_phase, and the start of the retinal propagation all occur
+at ONE plane (cornea_result's plane). A real eye has a physical anterior chamber
+(cornea to iris/pupil, ~3.6mm) and the crystalline lens sits behind that, with the
+cornea itself contributing roughly 2/3 of the eye's total refractive power and the lens
+the rest -- neither of those anatomical distances or the power split is represented
+here. This is the standard "reduced eye" schematic simplification (a single lumped
+refracting plane of power P0, matching e.g. the Gullstrand-Emsley reduced eye), and it
+is what makes P0=60D a meaningful single number in the first place -- but it means every
+pupil-plane / lens-plane distance in this module is a modeling convenience, not an
+anatomical one.
+
+PHYSICS_AUDIT.md item E4 -- effects deliberately not modeled, listed in one place: (1)
+longitudinal chromatic aberration (the eye's refractive power is wavelength-dependent,
+~2D of variation across the visible band; this module uses one fixed P0 per run,
+independent of the wavelength argument -- running at several wavelengths separately, as
+some later stages do, is not the same as modeling dispersion within one field); (2)
+higher-order aberrations (lens_phase is a pure quadratic/defocus term -- no astigmatism,
+coma, spherical aberration, etc.); (3) Stiles-Crawford apodization (pupil_clip is a
+binary hard-edged mask; no directional falloff toward the pupil edge -- a different,
+independent Stiles-Crawford term IS applied elsewhere in stage4_human_vision/csf.py's
+own retinal-illuminance calculation, but not here, in the core PSF); (4) finite aperture
+thickness / vignetting (stage1_v2.circular_aperture is an infinitely-thin binary 0/1
+mask -- no membrane-thickness diffraction or oblique-angle vignetting).
 """
 
 import numpy as np
@@ -134,6 +160,54 @@ def validate_lens_sampling(dx, wavelength, f_eye, D_pupil_um, cornea_result):
     }
 
 
+def energy_escape_estimate(a_hole, cornea_result, I_retina, dx):
+    """
+    Item E2 (PHYSICS_AUDIT.md): an INTEGRATED energy-escape estimate, complementing
+    encircled_energy()'s own normalization (which measures P% of whatever power
+    remains captured on the grid, not P% of what was originally emitted -- see that
+    function's docstring in stage1_v2/physics.py) and the existing wraparound check
+    (peak-relative, not an energy integral -- see pipeline_junction.validate_junction).
+
+    Compares the analytically-known input power at the aperture plane (a uniform
+    circular aperture of amplitude 1, so power = pi*(a_hole/2)^2 exactly, no grid
+    quadrature needed) against the grid-captured power at the cornea plane (after the
+    first ASM propagation) and at the retina plane (after pupil clip + lens + second ASM
+    propagation), reporting the escaped fraction at each stage. A large escaped fraction
+    already at the cornea stage flags gap-propagation energy loss (band-limit
+    suppression or genuine window truncation); a large ADDITIONAL escaped fraction by
+    the retina stage flags loss specific to the pupil clip / lens / retina propagation
+    -- including the pupil clipping away real energy when a_hole's diffracted spread
+    exceeds D_pupil, which is physically correct energy removal, not a numerical
+    artifact. This function reports the number either way and leaves the
+    interpretation (physical clipping vs. numerical loss) to the caller.
+    """
+    input_power = float(np.pi * (a_hole / 2.0) ** 2)
+
+    dx_c = cornea_result["dx"]
+    I_cornea = np.abs(cornea_result["U_cornea"]) ** 2
+    cornea_power = float(np.sum(I_cornea) * dx_c ** 2)
+
+    retina_power = float(np.sum(I_retina) * dx ** 2)
+
+    frac_escaped_at_cornea = (1.0 - cornea_power / input_power) if input_power > 0 else 0.0
+    frac_escaped_at_retina = (1.0 - retina_power / input_power) if input_power > 0 else 0.0
+
+    return {
+        "input_power_aperture": input_power,
+        "captured_power_cornea": cornea_power,
+        "captured_power_retina": retina_power,
+        "fraction_escaped_by_cornea": frac_escaped_at_cornea,
+        "fraction_escaped_by_retina": frac_escaped_at_retina,
+        "detail": (
+            f"{frac_escaped_at_cornea * 100:.4f}% of the aperture's analytic input "
+            f"power is not captured in the cornea-plane grid; "
+            f"{frac_escaped_at_retina * 100:.4f}% is not captured in the retina-plane "
+            f"grid (cumulative -- includes pupil clipping if a_hole's diffracted "
+            f"spread exceeds D_pupil, see docstring)."
+        ),
+    }
+
+
 def retinal_encircled_energy(I_retina, dx):
     N = I_retina.shape[0]
     L = N * dx
@@ -193,6 +267,7 @@ def run_pipeline_point(a_hole, wavelength, d_gap, grid_N, window_L_mm, M_diopter
         "retina_band_info": None,
         "I_retina": None,
         "lens_sampling_check": None,
+        "energy_escape_estimate": None,
     }
     if not check["ok"]:
         return result
@@ -209,4 +284,5 @@ def run_pipeline_point(a_hole, wavelength, d_gap, grid_N, window_L_mm, M_diopter
     result["retina_EE"] = retinal_encircled_energy(I_retina, dx)
     result["retina_band_info"] = retina_band_info
     result["I_retina"] = I_retina
+    result["energy_escape_estimate"] = energy_escape_estimate(a_hole, cornea_result, I_retina, dx)
     return result
