@@ -1,0 +1,58 @@
+=== Step 1: calibrate noise sigma against reference condition ===
+(diffraction-limited, emmetropic, 3mm aperture, target 1.0 arcmin MAR / 20/20)
+This MUST happen before any Wang 2009 data is used -- no post-hoc tuning.
+
+bracket search: sigma=0.000100 -> threshold=0.0556 arcmin
+bracket search: sigma=1.000000 -> threshold=13.3088 arcmin
+bisect: sigma=0.010000 -> threshold=0.6842 arcmin
+bisect: sigma=0.100000 -> threshold=1.8839 arcmin
+bisect: sigma=0.031623 -> threshold=1.1073 arcmin
+bisect: sigma=0.017783 -> threshold=0.8491 arcmin
+bisect: sigma=0.023714 -> threshold=0.9529 arcmin
+bisect: sigma=0.027384 -> threshold=0.9949 arcmin
+bisect: sigma=0.029427 -> threshold=1.0627 arcmin
+bisect: sigma=0.028387 -> threshold=1.0911 arcmin
+bisect: sigma=0.027881 -> threshold=1.0476 arcmin
+bisect: sigma=0.027632 -> threshold=1.0121 arcmin
+bisect: sigma=0.027508 -> threshold=1.0434 arcmin
+bisect: sigma=0.027446 -> threshold=1.0097 arcmin
+CALIBRATED sigma=0.027415 -> reference threshold=1.0050 arcmin (target 1.0)
+
+LOCKED sigma = 0.027415 (reference threshold achieved: 1.0050 arcmin)
+
+=== Step 2: predict logMAR for Wang 2009 apertures x M=0,2,5D ===
+  a=500um M=0.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.280)
+  a=750um M=0.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.310)
+  a=1000um M=0.0D ... threshold=0.835arcmin logMAR_r7=-0.078 (observed=1.000)
+  a=1200um M=0.0D ... threshold=0.070arcmin logMAR_r7=-1.155 (observed=0.400)
+  a=1500um M=0.0D ... threshold=0.070arcmin logMAR_r7=-1.155 (observed=0.500)
+  a=500um M=2.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.280)
+  a=750um M=2.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.310)
+  a=1000um M=2.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=1.000)
+  a=1200um M=2.0D ... threshold=0.070arcmin logMAR_r7=-1.155 (observed=0.400)
+  a=1500um M=2.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.500)
+  a=500um M=5.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.280)
+  a=750um M=5.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.310)
+  a=1000um M=5.0D ... threshold=0.835arcmin logMAR_r7=-0.078 (observed=1.000)
+  a=1200um M=5.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.400)
+  a=1500um M=5.0D ... threshold=0.150arcmin logMAR_r7=-0.825 (observed=0.500)
+
+Wrote /Users/parikshitnarang/Pinholeproject/R7acuity/outputs/validation_predicted_vs_observed.csv
+
+=== Step 3: regression stats (in-sample == leave-one-out here; see below) ===
+ M_diopters                      predictor      kind  n     rmse      mae          r2  pearson_r  pearson_p_value
+        0.0       logmar_r7_ideal_observer in_sample  5 1.328627 1.305427  -24.621963   0.787181         0.114018
+        0.0 logmar_from_strehl_closed_form in_sample  5 0.562939 0.498000   -3.599686        NaN              NaN
+        0.0  logmar_from_vsotf_closed_form in_sample  5 0.562939 0.498000   -3.599686        NaN              NaN
+        2.0       logmar_r7_ideal_observer in_sample  5 1.414864 1.388682  -28.055970   0.186681         0.763699
+        2.0 logmar_from_strehl_closed_form in_sample  5 7.062845 6.810667 -723.044584   0.253352         0.680907
+        2.0  logmar_from_vsotf_closed_form in_sample  5 1.292381 1.262669  -23.243038   0.434890         0.464267
+        5.0       logmar_r7_ideal_observer in_sample  5 1.176791 1.173317  -19.100388   0.956262         0.010908
+        5.0 logmar_from_strehl_closed_form in_sample  5 7.804598 6.632962 -883.111561  -0.083469         0.893848
+        5.0  logmar_from_vsotf_closed_form in_sample  5 3.754508 3.720184 -203.603021   0.156775         0.801209
+
+Wrote /Users/parikshitnarang/Pinholeproject/R7acuity/outputs/validation_regression_stats.csv
+
+=== BOTTOM LINE ===
+R7 ideal-observer model: R^2 range [-28.056, -19.100], p range [0.011, 0.764] across M=[0.0, 2.0, 5.0]
+DOES NOT clear the stated bar (R^2>0 AND p<0.05) at every M tested.
