@@ -173,6 +173,18 @@ def main():
                   "(~2.5x the grid spacing), not a genuine plateau in the physics. "
                   "See RMS radius (Fig. 2) in this regime."))
     plot_metric_vs_aperture(
+        blur, "r_EE_70_um", "$r_{EE}$(70%) at retina ($\\mu$m)",
+        "Figure 1b -- Encircled-energy blur radius (70%) vs. aperture",
+        "fig1b_blur_ree70_vs_aperture.png", logy=True)
+    plot_metric_vs_aperture(
+        blur, "r_EE_80_um", "$r_{EE}$(80%) at retina ($\\mu$m)",
+        "Figure 1c -- Encircled-energy blur radius (80%) vs. aperture",
+        "fig1c_blur_ree80_vs_aperture.png", logy=True)
+    plot_metric_vs_aperture(
+        blur, "r_EE_90_um", "$r_{EE}$(90%) at retina ($\\mu$m)",
+        "Figure 1d -- Encircled-energy blur radius (90%) vs. aperture",
+        "fig1d_blur_ree90_vs_aperture.png", logy=True)
+    plot_metric_vs_aperture(
         blur, "rms_radius_um", "RMS spot radius at retina ($\\mu$m)",
         "Figure 2 -- RMS spot radius vs. aperture",
         "fig2_blur_rms_vs_aperture.png", logy=True)
