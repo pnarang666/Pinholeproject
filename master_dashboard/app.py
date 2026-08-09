@@ -348,7 +348,16 @@ def main():
 
         # Special-case surfaces for stages whose "notes" promise them:
         if stage_key == "r7acuity":
-            cal = w.r7acuity_attempt_calibration(n_trials=100)
+            # This itself takes real time (a bisection over noise-calibration trials,
+            # same underlying MC cost class as the sweep above) -- found via a live
+            # browser test that the page otherwise sits on "Done" with nothing below
+            # it for 20-30s with no explanation. The spinner is the fix, not making
+            # this call faster (it needs to actually run, fresh, every time -- see
+            # its own docstring on why this is never skipped or cached).
+            with st.spinner("Attempting fresh ideal-observer calibration (not cached -- "
+                            "re-run every time, per this project's own no-post-hoc-"
+                            "tuning discipline)..."):
+                cal = w.r7acuity_attempt_calibration(n_trials=100)
             if cal["ok"]:
                 st.success(f"Ideal-observer calibration succeeded: sigma={cal['sigma']:.6f}")
             else:

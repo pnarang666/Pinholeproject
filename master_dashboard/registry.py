@@ -226,7 +226,17 @@ REGISTRY = {
         "plot_type": "line_vs_aperture",
         "y_metrics": ["logmar_from_strehl", "logmar_from_vsotf", "strehl_ratio", "vsotf"],
         "color_by": "M_diopters",
-        "cost_per_point_s": 0.3,
+        # Was wrongly set to 0.3 (assumed "closed-form = cheap"). Live-browser-tested
+        # via the actual UI (not just the isolated wrapper call) and found running at
+        # ~8.5s/point, ~28x the original estimate -- R7acuity/threshold.py's own
+        # closed_form_approximations() calls get_real_psf() AND
+        # get_diffraction_limited_reference() per point (TWO full ASM propagations,
+        # roughly 2x stage2_blur's own per-point cost) despite the "closed-form" name
+        # -- it is closed-form only in how it COMBINES Strehl/VSOTF into a logMAR
+        # number, not in how it gets those inputs. Fixed here after a live UI test
+        # showed "Estimated runtime: 5s" still running well past a minute -- exactly
+        # the kind of mismatch that looks like a hang, not a fast tool.
+        "cost_per_point_s": 8.5,
         "notes": ("R7acuity/corrections/ and R7acuity/core/ (the registered-strategy "
                   "plugin system) are EMPTY on this branch -- confirmed, not "
                   "committed here; this tab uses the flat-layout functions that DO "
@@ -282,7 +292,15 @@ REGISTRY = {
         "plot_type": "regime_map",
         "y_metrics": ["regime", "N_eff_worst", "worst_harmonic_margin"],
         "color_by": "regime",
-        "cost_per_point_s": 4.5,
+        # Was 4.5 (base classify_ghosting_regime() cost only). Live-browser-tested with
+        # the widget's own default (aperture=500, default pitch/M) and found 4 points in
+        # 27s (~6.75s/point average), not the estimated 18s -- 3 of those 4 points landed
+        # in Regime C, each triggering wrappers.sweep_array_ghosting()'s extra
+        # harmonic_analysis.harmonic_margin_profile() call (see that function's own
+        # "only computed for points already classified Regime C" note two lines below --
+        # Regime C is this stage's actual regime of interest, not a rare edge case, so
+        # most real sweeps here will pay this cost on most points, not just some).
+        "cost_per_point_s": 7.0,
         "notes": ("Requires the colour-science package (installed for this "
                   "dashboard -- it is a pre-existing dependency of "
                   "array_ghosting_theory/contrast_barten.py's real Barten (1999) "
