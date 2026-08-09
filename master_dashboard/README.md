@@ -130,7 +130,7 @@ prose has.
   calibration), clearly labeled as that and never presented as R7's real
   ideal-observer answer.
 
-## Custom graphs: free axis picker + overlay comparison
+## Custom graphs: free axis picker, chart-style variety, overlay comparison
 
 For `line_vs_aperture` and `heatmap` stages, the plot's X-axis, Y-axis (and, for
 `line_vs_aperture`, color-by) are free dropdowns populated from whichever columns
@@ -138,15 +138,33 @@ the sweep actually returned — not limited to the registry's own `y_metrics` li
 `regime_map` stays fixed-shape (aperture vs. pitch, colored by regime) since it's a
 domain-specific plot, not a generic metric pair.
 
+Any `line_vs_aperture` stage with a real color_by dimension (e.g. myopia M) gets a
+"Chart style" picker with three views of the same data:
+- **Line chart** — the original view, one line per color_by value.
+- **Heatmap** — the same (x_col, color_by) grid as a `pivot_table` heatmap, reusing
+  `plot_heatmap()` (previously only wired to `stage3_integrated`).
+- **Optimal `x_col` vs `color_by`** — `compute_optimum_table()` finds, for each
+  color_by value (e.g. each M), the x_col that minimizes y_col: "which aperture
+  minimizes this blur metric, per myopia level." Never silently reports an
+  arbitrary tie: if multiple x_col values achieve the exact same minimum (this
+  project's own recurring failure mode — r_EE(50%), and even r_EE(70%)/r_EE(80%),
+  pin to the same grid/histogram-bin-width floor for well-focused, large-aperture
+  conditions, confirmed at M=0/1 in Stage 2's own data), that row is flagged
+  `saturated=True` with the full `tied_range`, and drawn as a hollow triangle
+  instead of a filled circle on the chart — a shape encoding, orthogonal to the
+  color/linestyle already used for primary-vs-overlay identity below.
+
 Any two cached sweeps from the same session that share both the chosen X and Y
 columns — any stage, any parameters, e.g. the deprecated Stage 2 tab vs. the
 corrected one, or the same stage at two different myopia ranges — can be overlaid
 on one chart via the "Overlay another cached sweep" picker beneath the axis
-selectors. Color still encodes `color_by`'s magnitude (identical hue = identical
-value in either series); linestyle (solid vs. dashed) encodes which series is
-which, so the two encodings never conflict. Session-cached sweeps carry a
-human-readable label (`_param_summary()` in `app.py`) for this picker; the cache
-itself is still keyed by the exact `(stage, parameter tuple)`, unchanged.
+selectors (available for Line chart and Optimal-vs-M; not for Heatmap, which
+doesn't compose two grids onto one image). Color still encodes `color_by`'s
+magnitude (identical hue = identical value in either series); linestyle (solid vs.
+dashed) encodes which series is which, so the two encodings never conflict.
+Session-cached sweeps carry a human-readable label (`_param_summary()` in
+`app.py`) for this picker; the cache itself is still keyed by the exact `(stage,
+parameter tuple)`, unchanged.
 
 ## Constraints this dashboard follows (do not relax)
 

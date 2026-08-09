@@ -272,6 +272,84 @@ def plot_heatmap(df, y_col, x_col="a_hole_um", row_col="M_diopters"):
     return fig
 
 
+def compute_optimum_table(df, x_col, y_col, group_col, rel_tol=1e-6):
+    """
+    For each group_col value (e.g. each myopia M), find the x_col that minimizes
+    y_col -- the "which aperture minimizes this blur metric, per myopia level"
+    calculation. Never silently picks an arbitrary tie: if multiple x_col values
+    achieve the SAME minimum y_col (within floating-point tolerance), that's flagged
+    explicitly (saturated=True, tied_range spanning all of them) rather than reported
+    as if it were a genuine unique optimum. This is a real, recurring failure mode in
+    this project's own data -- r_EE(50%), and even r_EE(70%)/r_EE(80%), pin to the
+    same grid/histogram-bin-width floor for well-focused, large-aperture conditions
+    (confirmed at M=0/1 in stage2_blur's own sweep: apertures 700-2000um all read the
+    exact same r_EE(50%), and 1000-2000um all read the exact same r_EE(70%) too) --
+    the smallest tied aperture is reported as "the" optimum only because a single
+    number has to go in that column, not because it is somehow more correct than the
+    other tied apertures.
+    """
+    rows = []
+    for g_val in sorted(df[group_col].dropna().unique()):
+        sub = df[df[group_col] == g_val].dropna(subset=[x_col, y_col])
+        if len(sub) == 0:
+            continue
+        y_min = sub[y_col].min()
+        tied = sub[np.isclose(sub[y_col], y_min, rtol=rel_tol, atol=1e-9)]
+        saturated = len(tied) > 1
+        rows.append({
+            group_col: g_val,
+            f"optimal_{x_col}": tied[x_col].min(),
+            f"{y_col}_at_optimum": y_min,
+            "n_tied_at_minimum": len(tied),
+            "tied_range": f"{tied[x_col].min():g}–{tied[x_col].max():g}" if saturated else "",
+            "saturated": saturated,
+        })
+    return pd.DataFrame(rows)
+
+
+def plot_optimum_vs_group(opt_df, group_col, x_col, overlay_opt_df=None,
+                          overlay_label=None, primary_label=None):
+    """
+    Optimal-x_col-vs-group_col curve (e.g. optimal aperture vs myopia M) from
+    compute_optimum_table()'s output. Saturated (tied/plateau, not a genuine unique
+    minimum) points are drawn as hollow triangles instead of filled circles -- a
+    shape encoding, orthogonal to the color/linestyle already used for primary-vs-
+    overlay identity, so the two never conflict.
+    """
+    fig, ax = plt.subplots(figsize=(7.5, 4.6), dpi=150)
+    y_col = f"optimal_{x_col}"
+
+    def _plot_one(d, color, linestyle, label):
+        if d is None or len(d) == 0:
+            return
+        d = d.sort_values(group_col)
+        ax.plot(d[group_col], d[y_col], color=color, linewidth=1.8, linestyle=linestyle,
+                zorder=1, label=label)
+        genuine = d[~d["saturated"]]
+        sat = d[d["saturated"]]
+        if len(genuine):
+            ax.scatter(genuine[group_col], genuine[y_col], color=color, marker="o",
+                       s=55, zorder=2, edgecolor=SURFACE, linewidth=0.8)
+        if len(sat):
+            ax.scatter(sat[group_col], sat[y_col], facecolor="none", edgecolor=color,
+                       marker="^", s=90, zorder=3, linewidth=1.6)
+
+    _plot_one(opt_df, CATEGORICAL_1, "-", primary_label or "this sweep")
+    has_overlay = overlay_opt_df is not None and len(overlay_opt_df) > 0
+    if has_overlay:
+        _plot_one(overlay_opt_df, CATEGORICAL_2, "--", overlay_label or "overlay")
+
+    ax.set_xlabel(group_col)
+    ax.set_ylabel(f"Optimal {x_col}")
+    if has_overlay or opt_df["saturated"].any():
+        leg = ax.legend(frameon=False, fontsize=8, loc="best")
+        for t in leg.get_texts():
+            t.set_color(INK_SECONDARY)
+    _style_axes(ax)
+    fig.tight_layout()
+    return fig
+
+
 def plot_regime_map(df, x_col="a_hole_um", y_col="pitch_um", regime_col="regime"):
     fig, ax = plt.subplots(figsize=(7.5, 4.6), dpi=150)
     if regime_col not in df.columns:
@@ -487,33 +565,72 @@ def main():
                                                    key=f"{stage_key}__colorby")
                 color_by = None if color_choice == "None" else color_choice
 
+                # Chart style: Heatmap and Optimal-X-vs-color_by both need a real
+                # color_by dimension (a grouping to lay out rows / to take an argmin
+                # within) -- Line chart is always available.
+                chart_options = ["Line chart"]
+                if color_by:
+                    chart_options += ["Heatmap", f"Optimal {x_col} vs {color_by}"]
+                chart_style = st.radio("Chart style", chart_options, horizontal=True,
+                                       key=f"{stage_key}__chartstyle")
+
                 # Overlay another cached sweep from THIS session (any stage, any
                 # params) on the same axes for direct comparison -- e.g. the
                 # deprecated stage2/ tab against the corrected Stage 2 tab, or two
                 # different parameter sets of the same stage. Only offered when a
-                # compatible cached sweep (same X and Y columns) actually exists.
-                compatible = {k2: v2 for k2, v2 in st.session_state.sweep_cache.items()
-                             if k2 != key and x_col in v2["df"].columns and y_col in v2["df"].columns}
+                # compatible cached sweep (same X and Y columns) actually exists, and
+                # not for Heatmap (a 2D grid doesn't compose with a second one on the
+                # same image the way two lines/points do).
                 overlay_df = overlay_label = None
-                if compatible:
-                    overlay_choice = st.selectbox(
-                        "Overlay another cached sweep for comparison (optional)",
-                        ["None"] + [v2["label"] for v2 in compatible.values()],
-                        key=f"{stage_key}__overlay")
-                    if overlay_choice != "None":
-                        overlay_key = next(k2 for k2, v2 in compatible.items()
-                                           if v2["label"] == overlay_choice)
-                        overlay_df = compatible[overlay_key]["df"]
-                        overlay_label = overlay_choice
-                else:
-                    st.caption("Run another sweep sharing this X/Y axis (any stage, any "
-                              "parameters -- e.g. the deprecated Stage 2 tab vs. this "
-                              "one) to unlock overlay comparison here.")
+                if chart_style != "Heatmap":
+                    compatible = {k2: v2 for k2, v2 in st.session_state.sweep_cache.items()
+                                 if k2 != key and x_col in v2["df"].columns and y_col in v2["df"].columns}
+                    if compatible:
+                        overlay_choice = st.selectbox(
+                            "Overlay another cached sweep for comparison (optional)",
+                            ["None"] + [v2["label"] for v2 in compatible.values()],
+                            key=f"{stage_key}__overlay")
+                        if overlay_choice != "None":
+                            overlay_key = next(k2 for k2, v2 in compatible.items()
+                                               if v2["label"] == overlay_choice)
+                            overlay_df = compatible[overlay_key]["df"]
+                            overlay_label = overlay_choice
+                    else:
+                        st.caption("Run another sweep sharing this X/Y axis (any stage, any "
+                                  "parameters -- e.g. the deprecated Stage 2 tab vs. this "
+                                  "one) to unlock overlay comparison here.")
 
-                fig = plot_line_vs_aperture(df, y_col, color_by, x_col=x_col,
-                                            overlay_df=overlay_df, overlay_label=overlay_label,
-                                            primary_label=cached["label"])
-                st.pyplot(fig, use_container_width=True)
+                if chart_style == "Line chart":
+                    fig = plot_line_vs_aperture(df, y_col, color_by, x_col=x_col,
+                                                overlay_df=overlay_df, overlay_label=overlay_label,
+                                                primary_label=cached["label"])
+                    st.pyplot(fig, use_container_width=True)
+
+                elif chart_style == "Heatmap":
+                    fig = plot_heatmap(df, y_col, x_col=x_col, row_col=color_by)
+                    st.pyplot(fig, use_container_width=True)
+
+                else:  # f"Optimal {x_col} vs {color_by}"
+                    opt_df = compute_optimum_table(df, x_col, y_col, color_by)
+                    if opt_df["saturated"].any():
+                        n_sat = int(opt_df["saturated"].sum())
+                        st.warning(
+                            f"⚠️ At {n_sat} of {len(opt_df)} {color_by} value(s), "
+                            f"`{y_col}` ties across MULTIPLE `{x_col}` values at its "
+                            f"minimum -- a grid/histogram resolution floor (see this "
+                            f"stage's Notes), not a genuine unique optimum. The "
+                            f"smallest tied `{x_col}` is reported below (see "
+                            f"`tied_range`); hollow triangles on the chart mark these "
+                            f"points.")
+                    overlay_opt_df = None
+                    if overlay_df is not None and color_by in overlay_df.columns:
+                        overlay_opt_df = compute_optimum_table(overlay_df, x_col, y_col, color_by)
+                    fig = plot_optimum_vs_group(opt_df, color_by, x_col,
+                                                overlay_opt_df=overlay_opt_df,
+                                                overlay_label=overlay_label,
+                                                primary_label=cached["label"])
+                    st.pyplot(fig, use_container_width=True)
+                    st.dataframe(opt_df, use_container_width=True)
 
         elif entry["plot_type"] == "heatmap":
             numeric_cols = _numeric_cols(df)
