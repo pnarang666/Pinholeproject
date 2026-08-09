@@ -21,6 +21,7 @@ import wrappers as w
 MINIMAL_OVERRIDES = {
     "stage1": {"a_hole_um": [300, 750], "d_gap_mm": [12.0], "wavelength_nm": [550.0]},
     "stage2_blur": {"a_hole_um": [300, 750], "M_diopters": [2.0]},
+    "stage2_deprecated": {"a_hole_um": [300, 750], "M_diopters": [2.0]},
     "stage3a_brightness": {"a_hole_um": [300, 750, 1000], "M_diopters": [2.0], "T_min": 0.0625},
     "stage3_human_vision": {"a_hole_um": [300, 750], "M_diopters": [2.0], "grid_N": 512},
     "stage3_integrated": {"a_hole_um": [300, 750, 1000], "M_diopters": [2.0], "grid_N": 512, "T_min": 0.0625},
@@ -48,9 +49,19 @@ for stage_key, entry in registry.REGISTRY.items():
             y_options = [c for c in entry["y_metrics"] if c in df.columns]
             if y_options:
                 try:
-                    fig = dash_app.PLOT_DISPATCH[entry["plot_type"]](df, entry, y_options[0])
+                    import matplotlib.pyplot as plt
+                    # Mirrors app.py's own dispatch: line_vs_aperture/heatmap are
+                    # called directly (they take user-picked axes there, registry
+                    # defaults here), regime_map/table_only still go through
+                    # PLOT_DISPATCH -- same split as main()'s results block.
+                    if entry["plot_type"] == "line_vs_aperture":
+                        x_col = "a_hole_um" if "a_hole_um" in df.columns else "scene_luminance_cdm2"
+                        fig = dash_app.plot_line_vs_aperture(df, y_options[0], entry.get("color_by"), x_col=x_col)
+                    elif entry["plot_type"] == "heatmap":
+                        fig = dash_app.plot_heatmap(df, y_options[0])
+                    else:
+                        fig = dash_app.PLOT_DISPATCH[entry["plot_type"]](df, entry, y_options[0])
                     if fig is not None:
-                        import matplotlib.pyplot as plt
                         plt.close(fig)
                 except Exception as pe:  # noqa: BLE001
                     plot_ok, plot_err = False, str(pe)

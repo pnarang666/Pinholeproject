@@ -35,7 +35,7 @@ master_dashboard/
   README.md                this file
 ```
 
-## Adding a 12th stage
+## Adding a new stage
 
 1. Write one function in `wrappers.py`: `sweep_my_stage(params: dict, progress_cb) ->
    pd.DataFrame`. It should call your stage's own real compute function(s) in a loop
@@ -56,7 +56,8 @@ master_dashboard/
    script's `MINIMAL_OVERRIDES` dict.
 4. `app.py` needs no changes. That's the whole addition.
 
-## The one non-negotiable rule: `stage2_fixed/`, never `stage2/`
+## The rule: `stage2_fixed/`, never `stage2/` -- with exactly one deliberate,
+## isolated exception
 
 This project fixed a real bug (see `PHYSICS_AUDIT.md` and both `RESULTS.md` files'
 "corrected optics" sections) where importing things in the wrong order silently
@@ -82,6 +83,19 @@ wired in:
 - **No optics dependency, not applicable**: `stage3a` (its own
   `combine_and_select.py` script defaults to reading a *stale* precomputed CSV —
   also routed around, see below), `brightness_reconciliation`, `singleilluminate`.
+- **The one deliberate exception**: the `stage2_deprecated` tab ("⚠️ [DEPRECATED]
+  Stage 2") runs the broken `stage2/` pipeline ON PURPOSE, for side-by-side
+  reference/comparison against the corrected Stage 2 tab (see "Overlay" below). It
+  is the only place in this file that ever loads `stage2/`. Because `stage2/` and
+  `stage2_fixed/` both define `phase2_retina.py`, `myopia_axial.py`, and
+  `pipeline_junction.py` under the same bare names, a plain `sys.path` insert would
+  risk *permanently* shadowing the corrected copy that every other tab depends on
+  for the rest of the running process. `wrappers._isolated_stage2_deprecated_import()`
+  instead swaps those three names in and out of `sys.modules` for the duration of
+  one sweep call only, and asserts (fatal, not silent) that the corrected pipeline
+  is back in place before returning — see that function's own docstring for the
+  full mechanism. `_verify_all_stages.py` exercises this stage in the middle of the
+  full 12-stage sequence specifically to catch any leakage into neighboring stages.
 
 Every optics-touching tab displays, live, which `phase2_retina.py` is actually
 loaded (`wrappers.verify_phase2_retina_source()`, checking `sys.modules` directly —
@@ -115,6 +129,24 @@ prose has.
   Strehl/VSOTF cross-check (`closed_form_approximations()`, which needs no
   calibration), clearly labeled as that and never presented as R7's real
   ideal-observer answer.
+
+## Custom graphs: free axis picker + overlay comparison
+
+For `line_vs_aperture` and `heatmap` stages, the plot's X-axis, Y-axis (and, for
+`line_vs_aperture`, color-by) are free dropdowns populated from whichever columns
+the sweep actually returned — not limited to the registry's own `y_metrics` list.
+`regime_map` stays fixed-shape (aperture vs. pitch, colored by regime) since it's a
+domain-specific plot, not a generic metric pair.
+
+Any two cached sweeps from the same session that share both the chosen X and Y
+columns — any stage, any parameters, e.g. the deprecated Stage 2 tab vs. the
+corrected one, or the same stage at two different myopia ranges — can be overlaid
+on one chart via the "Overlay another cached sweep" picker beneath the axis
+selectors. Color still encodes `color_by`'s magnitude (identical hue = identical
+value in either series); linestyle (solid vs. dashed) encodes which series is
+which, so the two encodings never conflict. Session-cached sweeps carry a
+human-readable label (`_param_summary()` in `app.py`) for this picker; the cache
+itself is still keyed by the exact `(stage, parameter tuple)`, unchanged.
 
 ## Constraints this dashboard follows (do not relax)
 
@@ -152,9 +184,11 @@ prose has.
   outputs — correct as long as both legs are run at the same wavelength/gap/pupil
   (the UI does not currently prevent selecting different values per leg, since they
   share one parameter panel).
-- No browser-based end-to-end UI test was performed for this dashboard (the Chrome
-  browser extension was unavailable in this environment). Verification instead
-  exercised every stage's real `sweep_fn` and plot-dispatch function directly, with
-  a minimal parameter set, via `_verify_all_stages.py` — confirmed 11/11 passing,
-  including live `stage2_fixed` resolution for every optics-touching stage. A
-  human should still click through the actual running app at least once.
+- `_verify_all_stages.py` exercises every stage's real `sweep_fn` and plot-dispatch
+  function directly, with a minimal parameter set — confirmed 12/12 passing,
+  including live `stage2_fixed` resolution for every optics-touching stage
+  (`stage2_deprecated` included, immediately after its own sweep restores it). The
+  app has also been exercised end-to-end through the actual running UI via the
+  Chrome browser extension (widget interactions, the runtime confirm-gate flow, the
+  deprecated-optics badge, the axis picker, and the overlay comparison) — not just
+  this isolated script.

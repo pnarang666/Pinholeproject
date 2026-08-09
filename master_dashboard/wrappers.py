@@ -19,12 +19,20 @@ and re-verifying sys.modules['phase2_retina'].__file__ after every optics-touchi
 import (never assumed), keeps one tab's import order from silently affecting another
 tab loaded earlier in the same long-running Streamlit process.
 
-CRITICAL: stage2/ (the deprecated copy) is NEVER inserted into sys.path anywhere in
-this file. Every optics call goes through stage2_fixed/. model_comparison/
-stage2_runner.py imports the deprecated stage2/ directly (verified by grep) and is
-deliberately NOT called anywhere below -- see wrap_model_comparison()'s docstring for
-what is used instead.
+CRITICAL: stage2/ (the deprecated copy) is loaded in exactly ONE place below --
+sweep_stage2_deprecated(), via _isolated_stage2_deprecated_import() -- and nowhere
+else. Every other wrapper still goes exclusively through stage2_fixed/. The one
+exception exists because a user of this dashboard explicitly asked for a dedicated,
+clearly red-flagged tab that runs the known-broken pre-fix pipeline on purpose (for
+reference/comparison, never as a recommendation) -- see that context manager's own
+docstring for how it stops stage2/'s same-named modules (phase2_retina, myopia_axial,
+pipeline_junction) from leaking into and permanently shadowing stage2_fixed/'s cached
+copies that every OTHER tab in this file depends on. model_comparison/stage2_runner.py
+also imports the deprecated stage2/ directly (verified by grep) and is deliberately NOT
+called anywhere below -- see wrap_model_comparison()'s docstring for what is used
+instead there.
 """
+import contextlib
 import os
 import sys
 
@@ -482,3 +490,137 @@ def sweep_singleilluminate(params, progress_cb=None):
     if progress_cb:
         progress_cb(len(df), len(df))
     return df
+
+
+# ---------------------------------------------------------------------------------
+# 12. stage2 (DEPRECATED) -- pre-fix, known-broken optics, isolated on purpose
+# ---------------------------------------------------------------------------------
+
+_STAGE2_DEPRECATED_COLLIDING_NAMES = ("phase2_retina", "myopia_axial", "pipeline_junction")
+
+
+@contextlib.contextmanager
+def _isolated_stage2_deprecated_import():
+    """
+    Loads the DEPRECATED stage2/'s phase2_retina (+ its own myopia_axial,
+    pipeline_junction) under their bare names for the duration of this context ONLY,
+    then restores whatever was cached under those names before entry -- so no other
+    tab's trust in sys.modules['phase2_retina'] pointing at stage2_fixed/ (verified
+    live by verify_phase2_retina_source(), asserted by the Project Physics Status
+    panel on every rerun) is ever permanently disturbed by this one deliberately-
+    broken tab.
+
+    Why this is needed at all, not just _ensure_path("stage2"): stage2/ and
+    stage2_fixed/ both define phase2_retina.py, myopia_axial.py, and
+    pipeline_junction.py under the SAME bare names (confirmed: myopia_axial.py is
+    byte-identical between the two dirs today; pipeline_junction.py and
+    phase2_retina.py are not -- phase2_retina.py is where the actual lens-phase/
+    retina-propagation wavelength fix lives). Python caches imports by bare name in
+    sys.modules regardless of which directory they came from -- this project's own
+    documented failure mode (see this file's module docstring). Simply inserting
+    stage2/ onto sys.path is not enough if stage2_fixed/ is already cached: a bare
+    `import phase2_retina` would just return the ALREADY-cached stage2_fixed module,
+    silently handing back the CORRECTED pipeline's numbers while believing you're
+    looking at the broken one.
+
+    (pipeline_junction.py's own physics primitives -- make_grid, encircled_energy,
+    r_for_EE, second_moment_radius -- are themselves re-exported from stage1_v2/
+    physics.py via an absolute path anchored to pipeline_junction.py's own __file__,
+    not a bare-name lookup, and BOTH stage2/'s and stage2_fixed/'s copies point at
+    that same stage1_v2/ -- so "physics" is not a fourth colliding name here; it
+    resolves identically and correctly either way.)
+    """
+    saved_modules = {name: sys.modules.get(name) for name in _STAGE2_DEPRECATED_COLLIDING_NAMES}
+    saved_path = list(sys.path)
+    for name in _STAGE2_DEPRECATED_COLLIDING_NAMES:
+        sys.modules.pop(name, None)
+    stage2_fixed_dir = os.path.join(ROOT, "stage2_fixed")
+    # Strip stage2_fixed/ from the path for the duration -- otherwise a bare
+    # `import myopia_axial`/`import pipeline_junction` inside stage2/'s own
+    # phase2_retina.py could resolve to stage2_fixed/'s copy instead of stage2/'s own,
+    # just because stage2_fixed/ happens to sit earlier on sys.path from an earlier tab.
+    sys.path = [p for p in sys.path if os.path.abspath(p) != stage2_fixed_dir]
+    stage2_dir = os.path.join(ROOT, "stage2")
+    if stage2_dir not in sys.path:
+        sys.path.insert(0, stage2_dir)
+    try:
+        import phase2_retina as deprecated_p2  # noqa
+        import pipeline_junction as deprecated_junction  # noqa
+        loaded_path = os.path.abspath(deprecated_p2.__file__)
+        expected_path = os.path.join(ROOT, "stage2", "phase2_retina.py")
+        if loaded_path != expected_path:
+            raise RuntimeError(
+                f"Isolated deprecated-stage2 import resolved to the wrong file "
+                f"({loaded_path}, expected {expected_path}) -- refusing to proceed, "
+                f"this would silently mislabel one pipeline's results as the other.")
+        yield deprecated_p2, deprecated_junction
+    finally:
+        for name in _STAGE2_DEPRECATED_COLLIDING_NAMES:
+            sys.modules.pop(name, None)
+            if saved_modules[name] is not None:
+                sys.modules[name] = saved_modules[name]
+        sys.path = saved_path
+        # Re-verify the CORRECTED pipeline's cache is exactly as it was before this
+        # context ran -- fatal if not, never a silent pass-through. This is the one
+        # invariant every other tab in this dashboard trusts.
+        path, is_correct = verify_phase2_retina_source()
+        if path is not None and not is_correct:
+            raise RuntimeError(
+                f"Isolated deprecated-stage2 import failed to restore the corrected "
+                f"phase2_retina afterward -- sys.modules['phase2_retina'] now points "
+                f"at {path}. This must never happen; every other tab in this "
+                f"dashboard trusts this module stays stage2_fixed/. Restart the "
+                f"Streamlit process before trusting any other tab's results.")
+
+
+def sweep_stage2_deprecated(params, progress_cb=None):
+    """
+    Runs the SAME sweep as sweep_stage2_blur() -- same params, same output columns,
+    same r_EE metrics, so results from the two are directly comparable/overlayable --
+    but through the DEPRECATED, pre-fix stage2/ pipeline instead of stage2_fixed/,
+    isolated to this one call via _isolated_stage2_deprecated_import() (see that
+    context manager's own docstring for why a plain sys.path insert would not be
+    enough here). This is the ONLY place in this dashboard that ever loads stage2/'s
+    optics; every other tab still goes exclusively through stage2_fixed/ -- unchanged,
+    still verified live by the Project Physics Status panel after this function
+    returns (the context manager asserts this itself, on exit, every call).
+
+    Exists so this deliberately-broken pipeline has its OWN clearly red-flagged tab
+    (registry.py's "deprecated_optics" flag), never silently mixed into any
+    corrected-optics tab's results. See PHYSICS_AUDIT.md / RESULTS.md for what is
+    actually wrong with it: the lens-phase/retina-propagation effective-wavelength
+    handling fixed in stage2_fixed/phase2_retina.py's run_pipeline_point (this file's
+    own docstring there) is what stage2/'s copy still gets wrong.
+    """
+    apertures = params["a_hole_um"]
+    m_values = params["M_diopters"]
+    wavelength_nm = params.get("wavelength_nm", 550.0)
+    d_gap_mm = params.get("d_gap_mm", 12.0)
+    D_pupil_um = params.get("D_pupil_um", 4000.0)
+    grid_N = params.get("grid_N", 2048)
+    window_L_mm = params.get("window_L_mm", 6.0)
+
+    combos = [(a, M) for M in m_values for a in apertures]
+    rows = []
+    with _isolated_stage2_deprecated_import() as (p2, junction):
+        for i, (a_um, M) in enumerate(combos):
+            result = p2.run_pipeline_point(
+                a_hole=a_um * 1e-6, wavelength=wavelength_nm * 1e-9, d_gap=d_gap_mm * 1e-3,
+                grid_N=grid_N, window_L_mm=window_L_mm, M_diopters=M, P0=60.0, n_prime=1.336,
+                D_pupil_um=D_pupil_um, refractive_index_correction=True,
+            )
+            row = {"a_hole_um": a_um, "M_diopters": M, "junction_ok": result["junction_check_passed"]}
+            if result["junction_check_passed"]:
+                I_retina = result["I_retina"]
+                dx = result["cornea_result"]["dx"]
+                N = I_retina.shape[0]
+                L = N * dx
+                _, _, R, _ = junction.make_grid(N, L)
+                r_edges, EE, _ = junction.encircled_energy(I_retina, R, dx)
+                for pct in (0.50, 0.70, 0.80, 0.90):
+                    row[f"r_EE_{int(pct*100)}_um"] = junction.r_for_EE(r_edges, EE, pct) * 1e6
+                row["rms_radius_um"] = junction.second_moment_radius(I_retina, R, dx) * 1e6
+            rows.append(row)
+            if progress_cb:
+                progress_cb(i + 1, len(combos))
+    return pd.DataFrame(rows)

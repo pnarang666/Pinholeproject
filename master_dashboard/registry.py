@@ -117,6 +117,43 @@ REGISTRY = {
                   "Fresh_Sweep_Analysis.pdf for the documented case)."),
     },
 
+    "stage2_deprecated": {
+        "label": "⚠️ [DEPRECATED] Stage 2 — Pre-fix broken optics (reference only)",
+        "modules": ["stage2 (DEPRECATED)"],
+        "uses_optics": True,
+        # Tells app.py to render the red "known-broken, on purpose" badge instead of
+        # the normal green stage2_fixed check (which would otherwise misreport this
+        # DELIBERATE use of stage2/ as a regression). See wrappers.py's
+        # _isolated_stage2_deprecated_import() for how this stays contained to only
+        # this one tab -- every other tab is unaffected and still verified live.
+        "deprecated_optics": True,
+        "sweep_fn": w.sweep_stage2_deprecated,
+        "params": {
+            "a_hole_um": _APERTURE_PARAM,
+            "M_diopters": _M_PARAM,
+            "wavelength_nm": _WAVELENGTH_PARAM_SCALAR,
+            "d_gap_mm": _GAP_PARAM_SCALAR,
+            "D_pupil_um": _PUPIL_PARAM_SCALAR,
+        },
+        "plot_type": "line_vs_aperture",
+        "y_metrics": ["r_EE_50_um", "r_EE_70_um", "r_EE_80_um", "r_EE_90_um", "rms_radius_um"],
+        "color_by": "M_diopters",
+        "cost_per_point_s": 4.3,
+        "notes": ("⚠️ KNOWN-BROKEN, kept only for reference/comparison -- never the "
+                  "recommended pipeline, never used by any other tab in this "
+                  "dashboard. Same params and output columns as Stage 2 (corrected) "
+                  "on purpose, so a run here can be overlaid against a Stage 2 "
+                  "(corrected) run for direct comparison using the 'overlay another "
+                  "cached sweep' picker below the chart. What's actually wrong with "
+                  "it: the lens-phase/retina-propagation step does not use the same "
+                  "effective (n_prime-corrected) wavelength as the retina "
+                  "propagation itself -- fixed in stage2_fixed/phase2_retina.py's "
+                  "run_pipeline_point (see PHYSICS_AUDIT.md item A, RESULTS.md). "
+                  "Expect meaningfully different r_EE numbers from Stage 2 "
+                  "(corrected) at the same parameters -- that divergence IS the "
+                  "point of this tab, not a bug in the tab itself."),
+    },
+
     "stage3a_brightness": {
         "label": "Stage 3a — Brightness-constrained optimum",
         "modules": ["stage2_fixed", "stage3a"],
