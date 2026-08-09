@@ -3,7 +3,14 @@ Master interactive dashboard -- runs live sweeps across every registered stage o
 pinhole-sunglasses project (see registry.py for the stage list and README.md for how
 to add a 12th). Run with:
 
-    streamlit run master_dashboard/app.py
+    python3 -m streamlit run master_dashboard/app.py
+
+(the `streamlit` console script is not on PATH in every environment this project has
+been run in -- confirmed in this one: `which streamlit` finds nothing even though
+`python3 -c "import streamlit"` works fine, because the script that provides the bare
+`streamlit` command lives in a directory PATH doesn't include. `python3 -m streamlit`
+sidesteps that entirely. If `which streamlit` finds something in yours, the plain
+`streamlit run master_dashboard/app.py` works too -- see README.md.)
 
 Every stage is registered in registry.REGISTRY; this file contains NO stage-specific
 physics, sweep loops, or plotting math -- only generic UI plumbing (widgets, caching,
