@@ -145,7 +145,7 @@ with tabs[4]:
         st.plotly_chart(fig, use_container_width=True)
         st.markdown("**Finding**: every dense-pitch point (N_eff>1) classifies as danger zone once the "
                      "real Barten CSF and full harmonic series are used -- including the entire real CN "
-                     "patent pitch range. See `array_ghosting_theory/RESULTS.md`.")
+                     "patent pitch range. See `Array_Design/ghosting/RESULTS.md`.")
         st.dataframe(df, use_container_width=True)
 
 # ---------------------------------------------------------------------------

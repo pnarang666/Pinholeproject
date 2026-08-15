@@ -1,0 +1,27 @@
+\chapter{Single-Hole Illumination}
+\label{ch:singleilluminate}
+
+\texttt{singleilluminate/} provides the unified illumination interface for this
+project's single-hole case (its multi-hole array extension is explicitly out of scope
+for this report --- see Chapter~\ref{ch:introduction}). It reuses
+Equation~\eqref{eq:erel} directly, cross-checked at import time against
+\texttt{photometry.py}'s independently-implemented version of the same formula (both
+must agree to $10^{-12}$ relative tolerance, checked automatically, or the module
+refuses to run) --- a real, executable consistency check between two independently
+written implementations of the same physical relationship, not merely a documented
+claim that they agree.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig_singleilluminate.png}
+\caption{Percent illumination vs.\ aperture, for three natural pupil diameters (3, 4, 5\,mm).}
+\label{fig:singleilluminate}
+\end{figure}
+
+\input{tables/singleilluminate_table}
+
+As expected from Equation~\eqref{eq:erel}, percent illumination grows quadratically
+with aperture up to $a_{hole}=D_{pupil}$ and saturates at $100\%$ beyond it; a larger
+natural pupil shifts the saturation point outward and lowers percent illumination at
+any fixed aperture below it, since the same physical aperture area represents a
+smaller fraction of a larger pupil's area.

@@ -70,7 +70,7 @@ wired in:
 - **Direct and safe**: `stage2_fixed`, `stage1_v2`, `stage3_human_vision` (its own
   `metrics.py` was the file this project's fix repointed), `stage3_integrated`,
   `stage4_human_vision` (`pipeline.py` was the file this project's fix repointed),
-  `array_ghosting_theory`, `stage_array`, `R7acuity` (its `ideal_observer.py`
+  `Array_Design/ghosting`, `Array_Design/photometry`, `R7acuity` (its `ideal_observer.py`
   correctly targets `stage2_fixed/`, and must be imported as a proper package —
   `import R7acuity.ideal_observer`, not a bare `sys.path` insert — since its own
   internal modules use relative imports).

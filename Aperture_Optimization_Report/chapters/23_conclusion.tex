@@ -1,0 +1,31 @@
+\chapter{Conclusion}
+
+This report has consolidated every single-aperture optimization model this project has
+built: an exact wave-optics blur-minimization pipeline, a brightness-constrained
+variant of it, a full human-vision acuity layer built on standard photometric and
+contrast-sensitivity theory, and a structurally independent ideal-observer Monte Carlo
+model built specifically to cross-check the others. It has also consolidated this
+project's own audit of itself --- a real, confirmed optical bug, independently
+re-derived two ways and fixed, whose correction moved the headline optimum-aperture
+number by as much as $150\%$ at some myopia levels; and a separate import-shadowing
+bug that meant two of the project's own acuity-validation efforts had, for a period,
+never actually tested the pipeline they were built to validate.
+
+The physics is internally consistent and, where checkable against closed-form theory
+(the zero-defocus Airy disk, the Fresnel on-axis oscillation formula), matches it
+closely. Two independent, physically-motivated corrections --- the wavelength fix and a
+brightness-admission floor --- each move the naive blur-only optimum substantially
+toward the externally observed clinical bracket, without either fully explaining it
+alone. Where this project's models are tested against real clinical acuity data,
+however, they do not yet pass: this is reported plainly, with the specific numbers,
+rather than reframed as a partial success. The most defensible, load-bearing
+conclusion this report can draw is therefore not a single aperture number, but a map
+of exactly which models predict what, under which explicit assumptions, and precisely
+where each one is --- and is not --- currently validated. Table~\ref{tab:synthesis}
+(Chapter~\ref{ch:synthesis}) is that map.
+
+Closing this project's remaining gap between theory and clinical fact, per
+Chapter~\ref{ch:limitations}, does not appear to require a fifth acuity model or a
+more cleverly parametrized correction term. It requires new, real, per-subject
+clinical data, and eventually a physical prototype tested against it --- the one step
+this entire body of theoretical work has been building toward and has not yet taken.

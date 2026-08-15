@@ -108,19 +108,19 @@ def main():
     # Sheet 4: Ghosting regime sweep (aperture x pitch -- a genuinely different key
     # space from every sheet above, kept separate rather than force-merged)
     # ------------------------------------------------------------------
-    ghost = load_csv("array_ghosting_theory/ghosting_sweep_harmonic.csv",
+    ghost = load_csv("Array_Design/ghosting/ghosting_sweep_harmonic.csv",
                       "Ghosting regime sweep (harmonic-corrected)")
     if ghost is not None:
         sheets["Ghosting_Regime_Aperture_x_Pitch"] = ghost
         provenance.append({
             "sheet": "Ghosting_Regime_Aperture_x_Pitch",
-            "source_file": "array_ghosting_theory/ghosting_sweep_harmonic.csv",
-            "produced_by": "array_ghosting_theory/harmonic_analysis.py",
+            "source_file": "Array_Design/ghosting/ghosting_sweep_harmonic.csv",
+            "produced_by": "Array_Design/ghosting/harmonic_analysis.py",
             "key_columns": "a_hole_um, pitch_um (NOT M_diopters -- different key space "
                             "from the sheets above, do not attempt to merge on M)",
             "contains": "three-regime (A/B/C) ghosting classification using the real "
                         "Barten(1999) CSF and the full harmonic series, not just the "
-                        "fundamental frequency -- see array_ghosting_theory/RESULTS.md"
+                        "fundamental frequency -- see Array_Design/ghosting/RESULTS.md"
         })
 
     # ------------------------------------------------------------------

@@ -1,0 +1,34 @@
+\appendix
+\chapter{Symbol Table}
+
+\begin{longtable}{@{}lp{7.2cm}l@{}}
+\toprule
+Symbol & Meaning & Typical value/units \\
+\midrule
+\endhead
+$a_{hole}$ & pinhole diameter & $75$--$2000\um$ \\
+$D_{pupil}$ & natural (unobstructed) pupil diameter & $4000\um$ default \\
+$d_{gap}$ & pinhole-to-cornea air gap & $12\mm$ default \\
+$\lambda$ & vacuum wavelength & $550\,$nm default ($450$/$650\,$nm also used) \\
+$\lambda_{eff}$ & effective (vitreous-reduced) wavelength & $\lambda/n'$ \\
+$n'$ & vitreous refractive index & $1.336$ \\
+$P_0$ & eye's fixed emmetropic power & $60\,$D \\
+$M$ & myopia magnitude (excess power) & $0$--$8\,$D \\
+$L_0$, $f_{eye}$ & emmetropic axial length / eye focal length & $\approx22.27\mm$ \\
+$L_{ax}$, $v_r$ & myopic axial length / retina distance & $n'/(P_0-M)$ \\
+$N$, $L$, $dx$ & grid points / window size / pixel pitch & $2048$, $6\mm$, $\approx2.93\um$ \\
+$N_F$ & Fresnel number & $(a_{hole}/2)^2/(\lambda z)$ \\
+$r_{EE}(P)$ & encircled-energy radius at fraction $P$ & \textmu m \\
+$r_{rms}$ & second-moment (RMS) spot radius & \textmu m \\
+$S$ & Strehl ratio (this project's own-$M{=}0$-reference convention) & dimensionless \\
+$\text{MTF}(f)$, $\text{OTF}(f)$ & modulation/optical transfer function & dimensionless, cycles/degree \\
+$\text{CSF}(f)$ & contrast sensitivity function & dimensionless \\
+$\text{VSOTF}$ & visual Strehl via OTF (CSF-weighted) & dimensionless \\
+$E_{rel}$ & relative retinal illuminance vs.\ full pupil & $[0,1]$ \\
+$\text{Td}$ & retinal illuminance, trolands & photopic trolands \\
+$\text{MAR}$ & minimum angle of resolution & arcmin \\
+$\text{logMAR}$ & $\log_{10}(\text{MAR})$ & dimensionless \\
+$T_{min}$ & minimum admissible relative illuminance & $6.25$--$9\%$ \\
+$\sigma$ & R7acuity's calibrated neural noise & dimensionless \\
+\bottomrule
+\end{longtable}

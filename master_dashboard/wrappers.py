@@ -6,7 +6,7 @@ them reimplement physics, a model, or a metric. Where a stage already exposes a 
 "give me a range, get a DataFrame" sweep function (stage3_human_vision.run_metrics_sweep
 .run_sweep, singleilluminate.run_illumination_sweep.run_single_hole_sweep), that
 function is called directly. Where a stage only exposes a per-point function
-(stage2_fixed.phase2_retina.run_pipeline_point, array_ghosting_theory
+(stage2_fixed.phase2_retina.run_pipeline_point, Array_Design/ghosting
 .classify_ghosting_regime, ...), the loop-over-the-UI-selected-range here is the only
 "new" code -- orchestration, not physics.
 
@@ -414,12 +414,15 @@ def sweep_model_comparison(params, progress_cb=None):
 
 
 # ---------------------------------------------------------------------------------
-# 9. array_ghosting_theory / stage_array -- aperture x pitch, A/B/C regime, harmonics
+# 9. Array_Design/ghosting + Array_Design/photometry -- aperture x pitch, A/B/C
+#    regime, harmonics. (These two folders were array_ghosting_theory/ and
+#    stage_array/ at the project root before the Array_Design consolidation; only
+#    the paths below changed, no wrapper logic.)
 # ---------------------------------------------------------------------------------
 
 def sweep_array_ghosting(params, progress_cb=None):
-    _ensure_path("array_ghosting_theory")
-    _ensure_path("stage_array")
+    _ensure_path("Array_Design", "ghosting")
+    _ensure_path("Array_Design", "photometry")
     import ghosting_regime  # noqa
     import harmonic_analysis  # noqa
 

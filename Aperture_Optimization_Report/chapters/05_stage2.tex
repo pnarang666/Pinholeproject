@@ -1,0 +1,75 @@
+\chapter{Stage 2 --- Full Retina-Plane Blur Model}
+\label{ch:stage2}
+
+\section{Pipeline}
+
+Stage 2 (\texttt{stage2\_fixed/}) extends Stage 1 through the eye: pupil clipping,
+thin-lens phase, and a second ASM propagation to the retina, using the axial myopia
+model of Chapter~\ref{ch:optical_system}. The full chain, per point $(a_{hole}, M)$:
+
+\begin{enumerate}
+\item \textbf{Gap propagation}: ASM-propagate the pinhole field $d_{gap}=12\mm$ to the
+  corneal plane (identical to Stage 1's own propagation, reused not re-derived).
+\item \textbf{Junction validation}: before the lens is ever applied, check (a) the
+  cornea field is finite and carries positive energy; (b) the Matsushima band limit at
+  the \emph{target} retina distance $v_r$ suppresses under $5\%$ of propagating energy;
+  (c) a diffraction-limited minimum-divergence estimate of the beam at $v_r$ stays
+  within $40\%$ of the half-window --- a wraparound risk pre-check. Any point failing
+  any check is recorded with its specific failure reason and \emph{never silently
+  dropped}.
+\item \textbf{Pupil clip}: binary circular clip at diameter $D_{pupil}$.
+\item \textbf{Lens phase}: thin-lens transmittance
+  $\exp\!\big(-ik(x^2+y^2)/(2f_{eye})\big)$, $k=2\pi/\lambda_{eff}$.
+\item \textbf{Retina propagation}: second ASM propagation, distance $v_r=L_{ax}(M)$, at
+  the same effective wavelength $\lambda_{eff}$.
+\item \textbf{Retinal encircled energy}: $r_{EE}(50\%)$, $r_{EE}(70\%)$,
+  $r_{EE}(80\%)$, $r_{EE}(90\%)$, and RMS radius, all per
+  Section~\ref{sec:effective-radius}.
+\end{enumerate}
+
+\textbf{The effective wavelength.} With \texttt{refractive\_index\_correction=True}
+(default), $\lambda_{eff}=\lambda/n'$ --- the vitreous's own reduced wavelength ---
+and it must be used identically in \emph{both} the lens-phase step and the
+retina-propagation step. Getting this one consistency wrong, silently, for an
+extended period of this project's history, is the subject of
+Chapter~\ref{ch:physics_audit}.
+
+\section{Validation against the closed-form Airy disk}
+
+At zero defocus ($M=0$, $d_{gap}=0$), $v_r=f_{eye}$ by construction and the retinal
+PSF should match the classical Airy-disk closed form. The validation gate compares
+$r_{EE}(50\%)$, $r_{EE}(80\%)$, and $r_{EE}(90\%)$ against that closed form at stated
+tolerances (2\%, 8\%, 2\% respectively --- the wider $r_{EE}(80\%)$ tolerance reflects
+genuine ill-conditioning near the Airy pattern's first null, not a looser standard).
+The gate \textbf{passes}, and passes at improved accuracy after the Chapter~\ref{ch:physics_audit}
+fix ($r_{EE}(50\%)$ error $1.14\%\to0.30\%$; $r_{EE}(80\%)$ $4.56\%\to0.38\%$;
+$r_{EE}(90\%)$ $0.55\%\to0.94\%$).
+
+\section{Unmodeled effects, stated explicitly}
+\label{sec:unmodeled}
+
+Four simplifications are deliberately built into this pipeline and documented in one
+place (\texttt{phase2\_retina.py}'s own module docstring), so a reader never mistakes
+them for oversights:
+
+\begin{enumerate}[label=(E\arabic*)]
+\item \textbf{Reduced-eye geometry} (Section~\ref{ch:optical_system}): no anterior
+  chamber distance, no cornea/lens power split.
+\item \textbf{Grid-captured, not emitted, power normalization}: $r_{EE}(P)$'s
+  denominator is the power present on the simulation grid at measurement time, not the
+  power originally emitted at the aperture. A separate, additive integrated
+  energy-escape estimate is provided (comparing against the aperture's exact analytic
+  input power $\pi(a_{hole}/2)^2$) and found negligible ($<0.12\%$) at every tested
+  configuration.
+\item \textbf{Domain mismatch between $r_{EE}(P)$ and threshold-crossing radii}: the
+  former bins to the grid corner, the latter search only the inscribed circle ---
+  roughly $1.41\times$ smaller in radius. This matters most at high percentiles.
+\item \textbf{No chromatic aberration, no higher-order aberrations, no
+  Stiles--Crawford apodization in the core PSF, no finite aperture-membrane
+  thickness}: the lens phase is a pure quadratic (defocus-only) term; the pupil mask
+  is an infinitely-thin binary 0/1 mask.
+\end{enumerate}
+
+None of these were found to change any qualitative conclusion in this report, but all
+four are genuine simplifications a reader should carry forward, not assume were
+checked away.

@@ -1,0 +1,82 @@
+\chapter{The Optical System and Myopia Model}
+\label{ch:optical_system}
+
+\section{Reduced-eye schematic}
+
+Every model in this report represents the human eye with the standard \emph{reduced
+eye} simplification (Gullstrand--Emsley convention): the cornea, aqueous humour,
+pupil, and crystalline lens are collapsed into a single equivalent thin lens of power
+$P_0$, imaging onto a single retinal plane at posterior distance $v_r$. This is a
+deliberate, explicitly documented modeling choice, not an oversight --- it is what
+makes a single number $P_0$ meaningful at all, but it means no anterior-chamber
+distance, no cornea/lens power split (roughly $2/3$ vs.\ $1/3$ of $P_0$ in a real eye),
+and no off-axis retinal curvature are represented. Table~\ref{tab:optical-path} lists
+the complete optical path this project's pipeline models.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{llll}
+\toprule
+Element & Purpose & Refractive index & Role in this model \\
+\midrule
+Pinhole (opaque film) & Angular filtering & opaque (n/a) & the only design freedom \\
+Air gap $d_{gap}$ & Near-field propagation & $n=1.000$ & first ASM propagation stage \\
+Cornea + aqueous & Primary refraction & $n\approx1.336$--$1.376$ & absorbed into $P_0$ \\
+Pupil (iris aperture) & Variable stop & n/a & clips the effective aperture \\
+Crystalline lens & Refracting element & $n\approx1.386$--$1.406$ & absorbed into $P_0$ (fixed) \\
+Vitreous humour & Fills posterior chamber & $n'=1.336$ & image-side medium for $v_r$ \\
+Retina & Image/sensing plane & n/a & observation plane, $z=v_r$ \\
+\bottomrule
+\end{tabular}
+\caption{Complete optical path from pinhole to retina, and how each element enters the reduced-eye model.}
+\label{tab:optical-path}
+\end{table}
+
+\section{Myopia as axial elongation}
+
+This project models myopia as purely \emph{axial}: the eye's optical power $P_0$ is
+held fixed at its emmetropic (non-myopic) value for every degree of myopia $M$, and
+only the eye's physical axial length grows to push the retina past the fixed focal
+point. This is the defining assumption of an axial myopia model, as opposed to a
+\emph{refractive} one (where $P_0$ itself would change and axial length would stay
+fixed); the codebase's own \texttt{myopia\_axial.py} documents this choice explicitly
+since no earlier stage in the pipeline had established a convention to match.
+
+Let $n'$ be the vitreous refractive index and $P_0$ the eye's fixed emmetropic power
+(diopters). The emmetropic axial length and the myopic axial length at excess power
+$M$ (diopters) are
+\begin{align}
+L_0 &= \frac{n'}{P_0} \label{eq:emmetropic-length}\\
+L_{ax}(M) &= \frac{n'}{P_0 - M} \label{eq:myopic-length}
+\end{align}
+with the eye's fixed focal length $f_{eye}=L_0$ used at \emph{every} myopia level, and
+the retina-plane propagation distance for a given $M$ set to $v_r = L_{ax}(M)$. At
+default values $P_0=60\,$D, $n'=1.336$: $L_0 \approx 22.27\mm$ ($f_{eye}$), and, e.g.,
+at $M=4\,$D, $L_{ax}(4) = 1.336/56 \approx 23.86\mm$ --- the retina sits
+$\Delta L \approx 1.59\mm$ further back than the emmetropic focal plane. Equation
+\eqref{eq:myopic-length} is singular as $M\to P_0$ and undefined beyond it; the model
+raises an explicit error rather than silently returning a negative or infinite length
+in that regime, which is never reached at any myopia level swept in this report
+($M\le8\,$D $\ll P_0=60\,$D).
+
+\textbf{Refractive-index convention.} Two conventions are supported: with
+\texttt{refractive\_index\_correction=True} (this project's default throughout), all
+retina-side propagation distances and wavelengths are scaled by the vitreous's own
+refractive index $n'=1.336$, the anatomically-scaled convention. With it disabled,
+$n'$ is forced to $1.0$ (an air-equivalent convention). \textbf{This one convention
+choice, and precisely how it must be threaded consistently through every downstream
+calculation, is the exact site of the single most consequential bug found in this
+project's history} --- see Chapter~\ref{ch:physics_audit}.
+
+\section{Diopters and the far point}
+
+By definition $D = 1/f$ (focal length in meters). For an eye with power in excess of
+emmetropic by $M$ diopters, the far point --- the object distance at which the
+\emph{unaccommodated} eye focuses exactly on the retina --- is finite:
+\begin{equation}
+u_{far} = \frac{1}{M}.
+\end{equation}
+This project models only unaccommodated, distance-vision viewing (the reduced eye's
+$f$ is fixed throughout every chapter), consistent with the ``distant objects'' clause
+of the governing problem statement; near-vision/accommodated performance is not
+modeled anywhere in this report.

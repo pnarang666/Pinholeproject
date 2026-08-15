@@ -1,0 +1,64 @@
+\documentclass[10.5pt]{report}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{microtype}
+\definecolor{hbblue}{HTML}{2A4D8F}
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{6pt}{\Large}
+\titleformat{\section}{\bfseries\large\color{hbblue}}{\thesection}{6pt}{}
+\captionsetup{font=small,labelfont=bf}
+\setlist[itemize]{topsep=2pt,itemsep=2pt}
+\setlist[enumerate]{topsep=2pt,itemsep=2pt}
+
+\newcommand{\um}{\,\mu\text{m}}
+\newcommand{\mm}{\,\text{mm}}
+
+\title{\textbf{\LARGE Aperture Optimization for Pinhole Sunglasses}\\[0.25cm]
+\textcolor{hbblue}{\Large A Complete Theoretical and Computational Study}\\[0.4cm]
+\normalsize\itshape Wave-optics blur minimization, brightness constraints, human-vision
+acuity modeling, and clinical validation --- scoped strictly to single-aperture
+optimization; multi-hole array/ghosting questions are out of scope for this document.}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\input{chapters/00_abstract}
+\input{chapters/01_introduction}
+\input{chapters/02_optical_system}
+\input{chapters/03_wave_optics}
+\input{chapters/04_stage1}
+\input{chapters/05_stage2}
+\input{chapters/06_physics_audit}
+\input{chapters/07_r1_sweep}
+\input{chapters/08_stage3a}
+\input{chapters/09_brightness_reconciliation}
+\input{chapters/10_singleilluminate}
+\input{chapters/11_mtf_strehl}
+\input{chapters/12_csf}
+\input{chapters/13_acuity_models}
+\input{chapters/14_stage4}
+\input{chapters/15_stage3_integrated}
+\input{chapters/16_classical_model}
+\input{chapters/17_r7acuity}
+\input{chapters/18_validation}
+\input{chapters/19_optimal_by_percentile}
+\input{chapters/20_deprecated_vs_corrected}
+\input{chapters/21_cross_model_synthesis}
+\input{chapters/22_limitations}
+\input{chapters/23_conclusion}
+\input{chapters/appendix_symbols}
+\input{chapters/appendix_data}
+\input{chapters/appendix_software}
+
+\end{document}

@@ -1,0 +1,37 @@
+regime,N_eff_worst,N_eff_mean,f0_cpd,mtf_f0,csf_threshold_contrast,reason,a_hole_um,pitch_um
+C,23,25.604444444444443,0.2991993003418851,0.9652435989308736,0.01013143387468407,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,300,700
+C,13,15.577777777777778,0.2327105669325773,0.974730169654329,0.012963802246117494,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,300,900
+C,8,8.715555555555556,0.17453292519943295,0.9839864712633916,0.017229217304930555,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,300,1200
+C,4,5.586666666666667,0.13962634015954636,0.9894300216533222,0.021504145330370063,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,300,1500
+C,2,3.151111111111111,0.10471975511965978,0.9948690425313388,0.02863858213000378,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,300,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,4800
+C,23,25.604444444444443,0.2991993003418851,0.9718319786199927,0.01013143387468407,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,400,700
+C,13,15.577777777777778,0.2327105669325773,0.9797046218770834,0.012963802246117494,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,400,900
+C,8,8.715555555555556,0.17453292519943295,0.9872159041516237,0.017229217304930555,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,400,1200
+C,4,5.586666666666667,0.13962634015954636,0.9915712178628944,0.021504145330370063,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,400,1500
+C,2,3.151111111111111,0.10471975511965978,0.9959203080723499,0.02863858213000378,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,400,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,4800
+C,23,25.604444444444443,0.2991993003418851,0.9753623827866289,0.01013143387468407,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,700,700
+C,13,15.577777777777778,0.2327105669325773,0.9831534699613018,0.012963802246117494,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,700,900
+C,8,8.715555555555556,0.17453292519943295,0.989802070917037,0.017229217304930555,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,700,1200
+C,4,5.586666666666667,0.13962634015954636,0.9933442448726774,0.021504145330370063,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,700,1500
+C,2,3.151111111111111,0.10471975511965978,0.9968680515903586,0.02863858213000378,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,700,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,4800
+C,23,25.604444444444443,0.2991993003418851,0.9684041802469773,0.01013143387468407,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,1000,700
+C,13,15.577777777777778,0.2327105669325773,0.9793501321524295,0.012963802246117494,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,1000,900
+C,8,8.715555555555556,0.17453292519943295,0.987958639251709,0.017229217304930555,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,1000,1200
+C,4,5.586666666666667,0.13962634015954636,0.9922179883705173,0.021504145330370063,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,1000,1500
+C,2,3.151111111111111,0.10471975511965978,0.9964401188802204,0.02863858213000378,N_eff>1 AND MTF(f0) still above CSF threshold -- danger zone,1000,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,4800
