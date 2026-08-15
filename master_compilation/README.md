@@ -57,7 +57,7 @@ re-running the compile script.
 
 Does not recompute any sweep. Every sheet here is a VIEW over work already done in
 `stage2_fixed/`, `stage3a/`, `stage3_integrated/`, `stage4_human_vision/`,
-`array_ghosting_theory/`, `model_comparison/`, and `brightness_reconciliation/`. If a
+`Array_Design/ghosting/`, `model_comparison/`, and `brightness_reconciliation/`. If a
 number here looks wrong, the fix belongs in the stage that produced it, not in this
 compilation layer -- re-run that stage's own sweep, then re-run
 `compile_master_results.py` to pick up the change.

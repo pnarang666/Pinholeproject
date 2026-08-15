@@ -1,0 +1,97 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\titleformat{\section}{\bfseries\large\color{hbblue}}{\thesection}{8pt}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape IYPT Pinhole Sunglasses -- Handbook 2, Ch.\ 13 Verification Addendum}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{\Huge IYPT Pinhole Sunglasses}\\[0.3cm]\textcolor{hbblue}{\huge Theoretical Handbook 2 --- Chapter 13 Verification Addendum}\\[0.5cm]
+\large\itshape Section 13.3: Implementation Verification of the Vignetting Geometry}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section*{A note on this file}
+\addcontentsline{toc}{section}{A note on this file}
+This is a \textbf{new, standalone} document, not an edit to any existing handbook source.
+Chapter 13 (``Field of View'', \S13.1--13.2, the pupil-displacement and circle-overlap
+formulas this section verifies) exists in \texttt{IYPT\_Pinhole\_Theoretical\_Handbook\_2.pdf},
+which has no \LaTeX{} source anywhere in this project -- it cannot be edited in place.
+\texttt{IYPT\_Pinhole\_Handbook\_2\_source.tex} (the file with an editable source) is a
+\emph{different} document (single-aperture diffraction/defocus/photometry/acuity, 19
+chapters, no Chapter 13) and was left untouched, per instruction. This file is written to
+be inserted as Section 13.3 wherever Chapter 13's source is eventually made editable, and
+stands on its own in the meantime. Preamble matches \texttt{IYPT\_Pinhole\_Handbook\_2\_source.tex}'s
+style (margins, heading colour/format, package set) for visual consistency.
+
+\setcounter{chapter}{12}
+\chapter{Field of View (Chapter 13 continued)}
+\setcounter{section}{2}
+
+\section{Implementation Verification}
+\label{sec:ch13-verification}
+
+The \S13.1/\S13.2 formulas were implemented in \texttt{array\_optimization/vignetting.py}
+as pure ray/aperture geometry, decoupled from the wave-optics propagator, and validated
+against an independent Monte Carlo estimate (no shared code) -- converging to
+$0.177$ percentage points of full hole area (tolerance $0.5$) after an initial,
+statistically ill-conditioned tolerance metric (a naive relative-area ratio, which blows
+up as true area $\to 0$ with no actual bias) was replaced with one normalized against
+full hole area throughout. A boundary defect was also found and fixed: floating-point
+roundoff at $\Delta = R_p{+}R_h$ produced a small negative area ($-0.059\,\mu\text{m}^2$);
+the final combination is now clamped to $[0,\infty)$, and no negative values remain.
+
+Applied to this project's 20 Pareto-optimal array candidates, gaze-angle field-averaging
+over $\pm25^\circ$ (the validated range) does \textbf{not} change Pareto-front membership
+for any candidate, under \emph{both} the uniform-placeholder and the
+literature-grounded \texttt{gaussian\_centered} distribution (saccade-amplitude/center-bias
+sourced; see \texttt{GAZE\_DISTRIBUTION\_SENSITIVITY.md} for citations). The two
+distributions' field-averaged transmission estimates agree to within $0.02$ percentage
+points -- a materially stronger robustness claim than one placeholder alone.
+
+Secondary finding, held under both distributions: of the 13/20 candidates dark at primary
+gaze ($N_{\text{eff,worst}}(\phi{=}0)=0$, ghosting-safe but momentarily lightless), 11--12
+show measurably \emph{increased} $N_{\text{eff}}$ once realistic gaze movement is
+integrated -- rotation can bring a hole into view, not only vignette one. Reported as a
+real result, not smoothed into ``no change.''
+
+Unresolved: $w(\phi)$ is grounded in saccade-\emph{amplitude}/center-bias literature, not
+a direct measurement of gaze-\emph{dwell-time} while wearing pinhole sunglasses -- flagged
+for future refinement, not presented as closed.
+
+\begin{table}[h!]
+\centering\small
+\caption{Chapter 13 implementation verification: headline numbers.}
+\begin{tabular}{p{7.7cm}p{2.3cm}p{2.3cm}}
+\toprule
+\textbf{Check} & \textbf{Uniform} & \textbf{Gaussian ($\sigma{=}6^\circ$)} \\
+\midrule
+Candidates on Pareto front, static ($\phi{=}0$) & 20/20 & 20/20 \\
+Candidates on Pareto front, field-averaged $T$ & 20/20 & 20/20 \\
+Candidates with ranking changed (static vs.\ field-avg.) & 0/20 & 0/20 \\
+$T_{\text{field}}/T_{\text{static}}$ range across the 20 & 99.918--100.184\% & 99.924--100.163\% \\
+Dark-at-$\phi{=}0$ candidates ($N_{\text{eff,worst}}=0$) & \multicolumn{2}{c}{13/20} \\
+\quad of those, now lit under field-averaging & 11/13 & 12/13 \\
+MC cross-check, max error (of full hole area) & \multicolumn{2}{c}{0.177 pct.\ points (tol.\ 0.5)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

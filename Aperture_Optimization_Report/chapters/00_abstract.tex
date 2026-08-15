@@ -1,0 +1,44 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This report consolidates every theoretical model, numerical sweep, and validation
+result this project has produced on a single question: \emph{for a myopic eye viewing
+through a single circular pinhole aperture in an otherwise opaque film, what aperture
+diameter is optimal, and by which criterion?} It deliberately excludes the project's
+separate multi-hole array, ghosting, packing-geometry, and lens-material work, which
+answer a different question (how to \emph{tile} many holes safely) and are documented
+elsewhere.
+
+Four largely independent modeling efforts are covered, each with its own governing
+equations, numerical implementation, and full-grid sweep across 15 apertures
+($75$--$2000\um$) and 8 myopia levels ($0$--$8\,$D): (1) an exact scalar
+Angular-Spectrum-Method wave-optics pipeline from pinhole to retina, whose blur-only
+optimum is the project's headline number; (2) a brightness-constrained variant of the
+same pipeline, which shows that a minimum-illuminance floor moves the optimum by
+roughly $2$--$3\times$ into the clinically-observed bracket; (3) a human-vision layer
+(MTF, contrast sensitivity, Strehl ratio, Watson--Yellott pupil model, troland
+photometry) built on top of the same optics, producing a predicted logMAR acuity
+surface; and (4) a structurally independent ideal-observer Monte Carlo acuity model
+(R7acuity), built specifically to cross-check (3) with a different architecture.
+
+A significant fraction of this project's actual scientific content is a documented
+\emph{physics audit}: a real lens-phase/retina-propagation wavelength bug was found,
+independently re-derived two ways, and fixed, moving the blur-only optimum aperture by
+up to $+150\%$ at some myopia levels; a separate Python import-shadowing bug meant two
+previously-published acuity-validation results had silently never been evaluated
+against the corrected optics at all, and both were re-run once the shadowing was
+fixed. Both corrections, and their full before/after numbers, are reported here in
+full --- including the honest result that neither acuity model achieves statistical
+significance against the two available clinical datasets (Wang 2009, $n=5$; Kim et al.
+2017, one aggregate point), a negative result this report does not soften.
+
+The synthesis chapters bring these efforts together: an aperture-optimum comparison
+across four different blur-percentile definitions ($r_{EE}50\%/70\%/80\%/90\%$),
+including a previously-undocumented numerical saturation artifact at low myopia that
+is identified and quantified rather than silently averaged over; a full corrected-vs-deprecated
+optics comparison; and a cross-model summary table spanning every method in this
+report. No single "recommended aperture" is asserted anywhere in this document --- each
+chapter reports what its own model predicts, under its own stated assumptions, and the
+final synthesis chapter shows how those predictions relate to one another and to the
+two independently-documented patents in this space, without collapsing them into one
+number.

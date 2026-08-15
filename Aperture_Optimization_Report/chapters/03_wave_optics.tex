@@ -1,0 +1,109 @@
+\chapter{Wave-Optics Foundations}
+\label{ch:wave_optics}
+
+Every blur-radius number in this report ultimately comes from one numerical engine:
+the exact scalar Angular Spectrum Method (ASM), applied twice per point (pinhole to
+cornea, then cornea/pupil/lens to retina). This chapter states that engine's governing
+equations once; later chapters reference it rather than re-deriving it.
+
+\section{Circular aperture and sampling grid}
+
+A circular pinhole of diameter $a_{hole}$ is represented as a binary transmittance
+mask on a square grid of $N\times N$ points spanning physical window size $L$ (pixel
+pitch $dx=L/N$):
+\begin{equation}
+U_0(x,y) = \begin{cases} 1 & \sqrt{x^2+y^2} \le a_{hole}/2 \\ 0 & \text{otherwise} \end{cases}.
+\end{equation}
+Every sweep in this report uses $N=2048$ over $L=6\mm$ ($dx\approx2.93\um$) unless
+stated otherwise --- this project's own validated default resolution.
+
+\section{Exact scalar Angular Spectrum Method}
+
+For a field $U_0(x,y)$ at $z=0$, the field at propagation distance $z$ is
+\begin{equation}
+U(x,y,z) = \mathcal{F}^{-1}\Big\{ \hat U_0(f_x,f_y)\, H(f_x,f_y;z) \Big\}, \qquad
+H(f_x,f_y;z) = \exp\!\Big(i k z \sqrt{1-(\lambda f_x)^2-(\lambda f_y)^2}\Big)
+\label{eq:asm}
+\end{equation}
+on the propagating spectral orders ($f_x^2+f_y^2 \le 1/\lambda^2$; evanescent orders
+are zeroed), with $k=2\pi/\lambda$. This is the \emph{exact} scalar diffraction
+kernel --- no paraxial (Fresnel) approximation is taken anywhere in this project's core
+propagator.
+
+\textbf{Matsushima band-limiting.} Equation~\eqref{eq:asm}'s propagating orders whose
+fringe spacing aliases against the finite grid's own frequency spacing $1/L$ are
+additionally suppressed, per the elliptical band limit of Matsushima \& Shimobaba
+(2009):
+\begin{equation}
+f_{limit} = \frac{1}{\lambda\sqrt{(2z/L)^2+1}}.
+\end{equation}
+This removes a sampling artifact, not real physics --- the kernel remains the exact ASM
+kernel, just numerically stabilized. Every sweep in this report reports (and, where
+relevant, gates on) the energy-weighted fraction of the propagating spectrum this
+suppresses; at this project's tested configurations, that fraction is consistently
+under $0.1\%$ (see Chapter~\ref{ch:physics_audit}, item C/B).
+
+\section{Fresnel number and diffraction regime}
+
+For aperture radius $a_{hole}/2$, wavelength $\lambda$, and propagation distance $z$,
+the Fresnel number is
+\begin{equation}
+N_F = \frac{(a_{hole}/2)^2}{\lambda z}.
+\end{equation}
+$N_F<0.1$ is classified Fraunhofer (far-field); $0.1\le N_F\le10$ Transition; $N_F>10$
+Strong Fresnel (near-field). At this project's pinhole apertures ($75$--$2000\um$) and
+propagation distances ($12\mm$ gap, $\sim22\mm$ to the retina), most operating points
+sit in the Transition-to-Strong-Fresnel regime, \emph{not} the far field --- this is
+why the exact ASM kernel is used throughout rather than a Fraunhofer/Fourier-optics
+shortcut, and why several later chapters report near-field-specific anomalies (Strehl
+ratio non-monotonicity, FWHM ring-hopping) that a far-field treatment would not predict
+at all.
+
+\section{Effective-radius definitions}
+\label{sec:effective-radius}
+
+A diffraction/defocus pattern is not a single number; this project uses several
+distinct, individually well-defined ``blur radius'' definitions, and is careful never
+to silently compare across them.
+
+\textbf{Encircled-energy radius $r_{EE}(P)$.} The cumulative radial power profile is
+built by binning intensity $I$ into $n_{bins}$ radial annuli out to $R_{\max}$ (the
+grid corner distance), and integrating:
+\begin{equation}
+EE(r) = \frac{\sum_{r' \le r} I(r')\,dx^2}{\sum_{r'} I(r')\,dx^2}, \qquad
+r_{EE}(P) = EE^{-1}(P)
+\end{equation}
+(inverted by linear interpolation between the two bracketing bins). This is this
+project's primary blur metric --- the encircled radius that contains a stated fraction
+$P$ of the \emph{grid-captured} power. \textbf{This normalizes to power captured on the
+simulation grid at measurement time, not power originally emitted at the aperture} ---
+an important, explicitly documented caveat (Chapter~\ref{ch:limitations}).
+
+\textbf{Second-moment (RMS) radius.}
+\begin{equation}
+r_{rms} = \sqrt{\frac{\sum I(x,y)\,(x^2+y^2)\,dx^2}{\sum I(x,y)\,dx^2}}.
+\end{equation}
+Unlike $r_{EE}(P)$, this integrates over the \emph{entire} field with no percentile
+choice, and is this project's preferred fallback metric wherever $r_{EE}(50\%)$ is
+shown to saturate at the grid's own resolution floor (Chapter~\ref{ch:percentile}).
+
+\textbf{Threshold-crossing radii (FWHM, $1/e^2$, custom).} All three are found by
+walking outward along the azimuthally-averaged radial intensity profile from its
+global maximum until either (a) intensity first drops below a stated fraction of peak
+(a genuine crossing), or (b) a genuine local minimum is reached first (the profile
+turns back up into the next Fresnel ring before crossing) --- in case (b) the result is
+reported as a documented \emph{lower bound}, not a crossing, specifically to prevent
+the search from hopping between adjacent Fresnel rings on a sub-percent parameter
+change (confirmed, in this project's own validation testing, to jump over $20\um$ from
+a $<2\%$ smooth change in aperture diameter under a naive first-crossing search).
+FWHM uses the $50\%$-of-peak threshold; $1/e^2$ uses $e^{-2}\approx13.5\%$.
+
+\textbf{Why these can disagree, and why that matters for this report.} $r_{EE}(P)$ and
+the threshold-crossing radii are measured over \emph{different spatial domains}
+(the former bins all the way to the grid corner, the latter only within the inscribed
+circle) and answer different physical questions (cumulative power vs.\ profile shape).
+Chapter~\ref{ch:percentile} shows a concrete, quantified case where this distinction is
+load-bearing: at low myopia and large aperture, $r_{EE}(50\%)$, and even
+$r_{EE}(70\%)$/$r_{EE}(80\%)$, pin to the exact same numerical floor across a wide
+range of apertures --- a grid-resolution artifact, not a genuine optimum, that this
+report identifies and quantifies explicitly rather than reporting as-is.

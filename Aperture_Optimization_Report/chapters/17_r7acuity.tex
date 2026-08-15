@@ -1,0 +1,93 @@
+\chapter{R7acuity: An Independent Ideal-Observer Monte Carlo Model}
+\label{ch:r7acuity}
+
+\section{Why a second, structurally independent model}
+
+Chapter~\ref{ch:acuity_models}'s closed-form predictors failed clinical validation
+(Chapter~\ref{ch:validation}). That failure alone cannot distinguish between two
+explanations: a genuine problem with the specific frequency-cutoff formula, or a
+data-scarcity problem (the clinical dataset has only $n=5$ points and one
+non-monotonic outlier). R7acuity is a Monte Carlo template-matching ideal-observer
+simulation (Watson \& Ahumada, 2008) --- a structurally different architecture, built
+specifically to provide a second, independent test that shares the same validated
+optics but nothing else with the closed-form route.
+
+\section{The psychometric threshold procedure}
+
+For a 4-alternative-forced-choice tumbling-E task, the simulated observer's proportion
+correct at optotype size (MAR, arcmin) $m$ is fit to a logistic psychometric function
+in log-MAR space:
+\begin{equation}
+p(m) = 0.25 + \frac{0.75}{1+\exp\big(-\beta(\log_{10}m - \log_{10}m_t)\big)}
+\end{equation}
+where the fitted threshold parameter $m_t$ directly gives the threshold MAR at the
+criterion $p=0.625$ (halfway between chance $0.25$ and ceiling $1.0$) by construction
+--- no separate root-finding is needed. The threshold optotype size \emph{is} the MAR
+directly (this model's own $5\times5$-unit optotype convention exactly matches the
+clinical MAR definition), so $\text{logMAR}=\log_{10}(m_t)$ needs no cutoff-frequency
+conversion, unlike the MTF-based routes of Chapter~\ref{ch:acuity_models}.
+
+\section{Noise-sigma calibration}
+
+The model's one free parameter --- additive Gaussian noise $\sigma$ on the neural image
+--- is calibrated \emph{once}, against a single non-clinical reference condition
+(diffraction-limited, emmetropic, $3\mm$ aperture, target $1.0$ arcmin MAR / $20/20$),
+by log-space bisection, \textbf{before} the model is ever run against any clinical
+dataset, and is never re-tuned afterward regardless of validation outcome.
+
+\section{Closed-form cross-check}
+
+Independent of the Monte Carlo procedure, two closed-form approximations (specified,
+not derived, per the governing brief) reuse this project's already-validated
+Strehl/VSOTF machinery directly:
+\begin{equation}
+\text{logMAR}_{Strehl} = 25\log_{10}(S), \qquad
+\text{logMAR}_{VSOTF} = \frac{50}{3}\log_{10}(\text{VSOTF})
+\end{equation}
+computed by running the exact ASM pipeline \emph{twice} per point (once for the actual
+condition, once for its diffraction-limited reference) --- this cross-check is
+``closed-form'' only in how it combines Strehl/VSOTF into a logMAR number, not in how
+it obtains those two inputs, which require full wave-optics propagation each time.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig_r7acuity_closedform_heatmap.png}
+\caption{R7acuity closed-form cross-check: predicted logMAR (from VSOTF) across a representative aperture $\times$ myopia grid.}
+\label{fig:r7-closedform}
+\end{figure}
+
+\input{tables/r7acuity_summary_table}
+
+\section{The calibration crashes against the corrected optics}
+
+\textbf{This is a genuine, load-bearing result of this report, not a technical
+footnote.} Once the Chapter~\ref{ch:physics_audit} optics fix and the import-shadowing
+fix (Chapter~\ref{ch:validation}) were both applied, re-running \texttt{calibrate\_
+noise\_sigma()} at the identical reference condition \textbf{crashes}:
+\begin{quote}
+\texttt{AssertionError: target 1.0 not bracketed by [0.0556, 0.0556] at sigma in
+[0.0001, 1.0] -- widen the search bracket}
+\end{quote}
+Direct probing (not just reading the crash trace) shows the model scores
+\emph{perfectly} at every tested letter size, down to $0.25$ arcmin (four times finer
+than $20/20$), across nearly five orders of magnitude of noise ($\sigma=0.0001$ to
+$5.0$) --- performance only begins to degrade at $\sigma=20$, roughly $730\times$ the
+originally-locked value ($0.027415$). Physically: the correction's absolute geometric-
+blur impact scales with aperture radius, so at this reference condition's relatively
+large $3\mm$ aperture, the pre-fix focal error produced substantially \emph{more}
+blur than at the small pinhole apertures this project's own R1 sweep tested. Post-fix,
+a correctly-focused $3\mm$ aperture is close enough to its true diffraction limit
+($F/\#\approx7.4$) that a noise-limited-only ideal observer reads even the finest
+tested letter essentially perfectly, unless the noise is pushed to an implausible
+extreme.
+
+\textbf{This was not worked around.} The pre-registered search bracket was not
+widened, and no locked parameter was retuned to force a number through --- doing so
+specifically because the corrected optics revealed the original bracket no longer
+works would itself be exactly the kind of post-hoc tuning this project's own
+discipline exists to avoid. The crash, and the ceiling-performance characterization
+above, is reported as the result. This is independently strong evidence for a
+diagnosis Chapter~\ref{ch:validation} discusses at length: a single-reference-calibrated,
+noise-only ideal observer does not carry a valid absolute performance scale across
+widely different optical conditions without an efficiency correction this model does
+not include.

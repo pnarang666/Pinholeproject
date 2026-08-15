@@ -1,0 +1,133 @@
+\chapter{The Physics Audit: A Real Bug, Found and Fixed}
+\label{ch:physics_audit}
+
+This chapter documents the single most consequential correction in this project's
+history: a real, confirmed error in how the eye's lens phase and the retina
+propagation handled the vitreous's refractive index, found by independent re-derivation
+(not merely observed), fixed with a minimal signature-preserving change, and
+regression-tested before and after. It moved the project's headline optimum-aperture
+number substantially. This chapter states what was wrong, why, and exactly how the
+answer changed --- \emph{before} presenting corrected-optics results in the rest of this
+report, so a reader is never shown one number without also seeing where it came from.
+
+\section{Item A: the lens-phase / retina-propagation wavelength mismatch}
+
+\textbf{The bug.} With \texttt{refractive\_index\_correction=True}, the retina
+propagation (step 5, Chapter~\ref{ch:stage2}) correctly used the reduced effective
+wavelength $\lambda_{eff}=\lambda/n'$. The lens-phase step (step 4), \emph{prior to
+this fix}, used the raw vacuum wavelength $\lambda$ instead.
+
+\textbf{Why this matters, derived two independent ways.}
+
+\emph{Stationary-phase focus-location argument.} For a lens phase screen
+$\exp(-ik_L r^2/(2f))$ followed by propagation at wavenumber $k_{prop}$, the true
+geometric focus sits at $z^\ast = f\cdot(k_{prop}/k_L)$. With $k_L$ the vacuum
+wavenumber and $k_{prop}=n' k_L$ (from the retina propagation's own correction), the
+true focus was at $z^\ast=f_{eye}\cdot n'$, not $f_{eye}$ --- a $\approx 33.6\%$ axial
+focus error ($n'=1.336$), \emph{independent of aperture or myopia level}.
+
+\emph{Medium-agnostic optical-path-length argument.} For a refracting system with
+object-side index 1 and image-side index $n'$, the correct phase screen is
+$\exp(-ik_{vac}\,P\,r^2/2)$ regardless of surrounding media. Substituting
+$f_{eye}=n'/P_0$ shows this requires $k=k_{vac}\cdot n'$ in the lens phase ---
+exactly $\lambda/n'$, matching the retina propagation's own already-correct
+convention.
+
+Both derivations agree with each other, and the project's own separate closed-form
+validation gate (\texttt{validation\_gate.py}) had already independently computed
+$\lambda_{eff}=\lambda/n'$ for its own comparison --- confirming the correct convention
+was known project-wide, simply not consistently threaded through the lens call.
+
+\textbf{The fix.} $\lambda_{eff}$ is now resolved once, at the top of the pipeline
+point function, and passed to \emph{both} the lens-phase and retina-propagation steps.
+
+\textbf{Why the zero-defocus validation gate did not catch this (Item D).} At $M=0$,
+$d_{gap}=0$, the model sits at exact focus by construction. A pure lens-power scaling
+error there partly manifests as the wave's true focus shifting to a different
+\emph{plane} rather than as a distortion of the in-focus pattern's \emph{shape} ---
+which is specifically what the gate compares against the closed-form Airy formula.
+This is documented, not silently left as a blind spot: the gate validates pattern
+shape at exact focus and is not sensitive, in general, to a pure focal-plane shift.
+
+\section{Item B: the junction validator's own wavelength}
+
+The pre-check in step 2 (Chapter~\ref{ch:stage2}) received the raw vacuum wavelength
+rather than $\lambda_{eff}$, which --- since the Matsushima band limit scales as
+$1/\lambda$ --- made the check \emph{more conservative than necessary} (never
+incorrectly permissive). Quantified directly: the reported band limit differed by
+exactly the $n'$ factor between the two wavelengths, but the actual suppression
+fraction was $0.0000\%$ either way across every tested configuration --- so this fix
+restores real headroom for future, more demanding configurations without changing any
+number in this report's own sweeps.
+
+\section{Item C: previously-unchecked lens-phase sampling}
+
+The lens phase's local spatial frequency grows linearly with radius; requiring less
+than $\pi$ radians of phase change per grid pixel (a standard Nyquist criterion) gives
+the radius beyond which the sampled phase aliases:
+\begin{equation}
+r_{max,lens} = \frac{\lambda_{eff}\, f_{eye}}{2\,dx}.
+\end{equation}
+At this project's default configuration this evaluates to $\approx1564\um$, smaller
+than the $2000\um$ pupil radius at every tested aperture (since $r_{max,lens}$ does not
+depend on $a_{hole}$ at all). Quantified directly, not assumed: only $0.005\%$
+(at $a_{hole}=300\um$) to $0.052\%$ (at $a_{hole}=2000\um$) of cornea-plane energy
+lies beyond this radius. Added as a new, non-gating diagnostic rather than a hard
+pipeline gate, since gating on it uniformly would reject every point rather than
+flagging the ones where it actually matters.
+
+\section{Items E1--E4}
+
+Four further design choices were independently verified true of the actual code and
+documented in place --- these are the same four points already listed in
+Section~\ref{sec:unmodeled}.
+
+\section{The headline result: the optimum aperture moves substantially}
+
+Table~\ref{tab:audit-before-after} is this project's single most important number: the
+blur-only optimum aperture (minimizing $r_{EE}(50\%)$), before and after the Item~A/B
+fix, across every myopia level tested.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$M$ (D) & opt.\ aperture: pre$\to$post & change & $r_{EE}(50\%)$ at opt.: pre$\to$post & change \\
+\midrule
+1 & $300\to700\um$  & $+133.3\%$ & $23.04\to7.33\um$  & $-68.2\%$ \\
+2 & $300\to750\um$  & $+150.0\%$ & $22.65\to8.01\um$  & $-64.6\%$ \\
+3 & $300\to600\um$  & $+100.0\%$ & $22.29\to10.57\um$ & $-52.6\%$ \\
+4 & $300\to500\um$  & $+66.7\%$  & $21.99\to12.02\um$ & $-45.4\%$ \\
+5 & $400\to500\um$  & $+25.0\%$  & $20.83\to13.29\um$ & $-36.2\%$ \\
+6 & $400\to400\um$  & $0.0\%$    & $19.79\to14.47\um$ & $-26.9\%$ \\
+8 & $400\to400\um$  & $0.0\%$    & $18.16\to17.87\um$ & $-1.6\%$ \\
+\bottomrule
+\end{tabular}
+\caption{Blur-only optimum aperture, before vs.\ after the Item A/B wavelength fix.
+Reproduced identically across two independent branches of this project's own history.}
+\label{tab:audit-before-after}
+\end{table}
+
+\textbf{Reading this table.} The bug's absolute focal-shift error
+($f_{eye}(n'-1)\approx7.5\mm$) is independent of $M$, so it is a \emph{large} fraction
+of the eye's total defocus budget at low myopia (where the true defocus is small) and
+proportionally \emph{negligible} once real axial elongation dominates at high $M$ ---
+exactly the pattern the table shows: a $+150\%$ change at $M=2\,$D collapsing to $0\%$
+by $M=8\,$D. This is physically coherent, not noise: the same qualitative pattern was
+independently reproduced on a separate branch of this project's history before being
+re-confirmed here.
+
+One further observation, stated plainly and not overinterpreted: the corrected optimum
+($400$--$750\um$) sits closer to the independently-derived brightness-constrained
+optimum ($900$--$1250\um$, Chapter~\ref{ch:stage3a}) and the clinical bracket
+($940$--$1750\um$) than the pre-fix figure did. This narrows part of the gap the
+brightness-floor analysis was built to explain, but does not close it.
+
+\textbf{A second, independent bug, found while investigating this one.} A Python
+import-order bug meant that two of this project's own acuity-validation efforts
+(Chapters~\ref{ch:r7acuity}--\ref{ch:validation}) had, for an extended period, silently
+never actually run against this corrected pipeline at all --- see
+Chapter~\ref{ch:validation} for the full account and the re-run results.
+
+Every number in every remaining chapter of this report reflects the corrected optics
+described here.

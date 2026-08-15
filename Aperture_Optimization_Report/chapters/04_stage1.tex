@@ -1,0 +1,49 @@
+\chapter{Stage 1 --- Cornea-Plane Diffraction}
+\label{ch:stage1}
+
+\section{Scope and purpose}
+
+Stage 1 (\texttt{stage1\_v2/}) is the project's earliest and most narrowly-scoped
+module: it propagates a circular pinhole's field via the exact ASM
+(Section~\ref{ch:wave_optics}) from the pinhole plane to the corneal plane only. It
+deliberately never touches the eye lens, vitreous, retina, or image formation, and
+never estimates a single ``best'' pinhole --- it only characterizes the field at one
+intermediate plane, as an independently checkable building block for Stage 2.
+
+\section{Validation}
+
+Stage 1 is validated against real closed-form theory: the Fresnel on-axis intensity
+oscillation formula
+\begin{equation}
+I(0,z) = 4 I_0 \sin^2\!\left(\frac{\pi N_F}{2}\right)
+\end{equation}
+which predicts on-axis intensity oscillates with propagation distance as the Fresnel
+number $N_F$ passes through successive half-integers --- a genuine near-field effect,
+not an artifact. Stage 1's numerical on-axis intensity vs.\ distance matches this
+closed form at $r=0.997$ correlation.
+
+\section{Full sweep}
+
+Table~\ref{tab:stage1-full} reports one representative slice of this report's Stage 1
+sweep (fixed $12\mm$ gap, $550\,$nm) across the full 15-aperture grid --- this stage has
+no myopia ($M$) dependence, since it stops before the eye lens. Figure~\ref{fig:stage1-ee}
+shows all four effective-radius definitions (Section~\ref{sec:effective-radius}) as a
+function of aperture at the corneal plane.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/fig_stage1_cornea_radii.png}
+\caption{Stage 1: cornea-plane effective radii ($r_{EE}(50\%)$, $r_{EE}(80\%)$,
+$r_{EE}(90\%)$, second-moment radius) vs.\ pinhole aperture, $12\mm$ gap, $550\,$nm.}
+\label{fig:stage1-ee}
+\end{figure}
+
+\input{tables/stage1_summary_table}
+
+\textbf{Reading this chapter's results}: cornea-plane blur is monotonically decreasing
+with aperture over most of this range (a larger pinhole diffracts less), the opposite
+trend from the retina-plane result in Chapter~\ref{ch:stage2} once the eye's own
+converging lens and myopic defocus are added --- the retina-plane optimum exists
+precisely \emph{because} those two effects (diffraction favoring large apertures,
+defocus favoring small ones) trade off against each other, a genuine competition Stage
+1 alone cannot show since it stops before the lens.

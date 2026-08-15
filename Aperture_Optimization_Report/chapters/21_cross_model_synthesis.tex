@@ -1,0 +1,68 @@
+\chapter{Cross-Model Synthesis}
+\label{ch:synthesis}
+
+This chapter lays every model's optimal- or representative-aperture answer side by
+side. It does not collapse them into one number --- per Chapter~\ref{ch:introduction},
+the four objective functions genuinely disagree, and no model in this report clears
+the clinical-validation bar (Chapter~\ref{ch:validation}) that would license treating
+any one of them as ``the'' answer.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Source & Aperture range & Basis \\
+\midrule
+Blur-only optimum, $r_{EE}(50\%)$ (Ch.~\ref{ch:r1sweep}) & $400$--$750\um$ & pure wave-optics blur minimization \\
+Blur-only optimum, $r_{EE}(70\%$--$90\%)$ (Ch.~\ref{ch:r1sweep}, \ref{ch:percentile}) & $300$--$1000\um^{\ast}$ & same, alternate percentile ($^\ast$genuine rows only, $M\ge2$D) \\
+Brightness-constrained optimum, $M\ge2$D, \emph{any} percentile (Ch.~\ref{ch:stage3a}) & $1000\um$ (exact) & blur-min.\ subject to $6.25\%$ illuminance floor -- percentile-independent once the floor binds \\
+Brightness-constrained optimum, $M{=}0$--$1$D (Ch.~\ref{ch:stage3a}) & $1000$--$2000\um$ & percentile-dependent here only, since the floor does not yet bind for $r_{EE}(80\%$--$90\%)$ \\
+Deprecated (pre-fix) optimum (Ch.~\ref{ch:deprecated_vs_corrected}) & $300$--$400\um$ & superseded; kept for historical/audit comparison only \\
+Clinical bracket (literature/patents) & $940$--$1750\um$ & externally observed range \\
+KR 10-2081511 patent & $\sim900\um$ & single stated effective diameter \\
+CN 201716487U patent & $400$--$800\um$ & bare geometric assertion, no brightness/ghosting analysis \\
+\bottomrule
+\end{tabular}
+\caption{Every aperture range this report's models or its literature review produced. No single value is endorsed as ``the'' recommendation.}
+\label{tab:synthesis}
+\end{table}
+
+\section{Reading the pattern across rows}
+
+Two additive corrections move the pure blur-only number toward the observed clinical
+range, and their effects are of comparable order: fixing the wavelength bug
+(Chapter~\ref{ch:physics_audit}) moved the optimum from $300$--$400\um$ to
+$400$--$750\um$ (roughly $\times1.3$ to $\times2.5$, more at low myopia); adding the
+brightness floor (Chapter~\ref{ch:stage3a}) moves it further, to exactly $1000\um$ at
+every myopia level clinically relevant here ($M\ge2\,$D). Applied together, both
+corrections land close to the externally observed clinical bracket's lower-to-middle
+region. \textbf{This is a coherent finding, not proof of clinical correctness}: it
+shows that two independently-derived, physically-motivated corrections to a naive
+blur-only model move the answer in the right direction and roughly the right order of
+magnitude --- it is not the same as clinical validation, which Chapter~\ref{ch:validation}
+shows this project's own acuity models do not currently achieve.
+
+\textbf{The percentile-choice caveat that runs through Chapters~\ref{ch:r1sweep},
+\ref{ch:stage3a}, \ref{ch:percentile}, and~\ref{ch:deprecated_vs_corrected} collapses
+to a single, clean statement once the brightness floor is added}: for $M\ge2\,$D, the
+brightness-constrained optimum is \emph{exactly} $1000\um$ regardless of which of the
+four $r_{EE}(P)$ definitions is used to select it (Section~\ref{sec:stage3a-all-percentiles}).
+The percentile-dependence documented at length in Chapter~\ref{ch:percentile} is real
+and load-bearing for the \emph{unconstrained} blur-only objective, but is fully
+absorbed by the brightness constraint at every myopia level this report treats as
+clinically relevant.
+
+\section{What this report does not, and cannot yet, resolve}
+
+\begin{itemize}
+\item The $6.25$--$9\%$ brightness floor and the absolute (troland) thresholds
+  (Chapter~\ref{ch:brightness_reconciliation}) are not yet reconciled at this
+  project's own default scene luminance.
+\item No acuity model (closed-form or ideal-observer) predicts either available
+  clinical dataset with statistical significance (Chapter~\ref{ch:validation}).
+\item Strehl ratio and FWHM are both confirmed unstable in this near-field regime
+  (Chapter~\ref{ch:mtf_strehl}) and should not be used as primary design metrics.
+\item This entire report is theory-only: \textbf{no physical experiment has been built
+  or run} to test any prediction in this document directly.
+\end{itemize}

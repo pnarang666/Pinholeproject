@@ -311,7 +311,7 @@ REGISTRY = {
 
     "array_ghosting": {
         "label": "Array Ghosting — A/B/C regime & harmonic margins",
-        "modules": ["stage2_fixed", "array_ghosting_theory", "stage_array"],
+        "modules": ["stage2_fixed", "Array_Design/ghosting", "Array_Design/photometry"],
         "uses_optics": True,
         "sweep_fn": w.sweep_array_ghosting,
         "params": {
@@ -340,7 +340,7 @@ REGISTRY = {
         "cost_per_point_s": 7.0,
         "notes": ("Requires the colour-science package (installed for this "
                   "dashboard -- it is a pre-existing dependency of "
-                  "array_ghosting_theory/contrast_barten.py's real Barten (1999) "
+                  "Array_Design/ghosting/contrast_barten.py's real Barten (1999) "
                   "CSF model, not a new one introduced here). Harmonic margin "
                   "profile is only computed for points already classified Regime C, "
                   "matching the stage's own real cost-saving convention."),

@@ -1,0 +1,60 @@
+\contentsline {chapter}{Preface}{3}{chapter*.2}%
+\contentsline {chapter}{Executive Summary}{4}{chapter*.3}%
+\contentsline {chapter}{\numberline {1}Problem Statement and Requirements}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}The official problem}{5}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Requirements R1--R7}{5}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Single-Aperture Theory and Optimization}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}The architectural fix: two-stage propagation, not a plain FFT}{6}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Governing equations}{6}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Full formula catalog}{6}{section.2.3}%
+\contentsline {section}{\numberline {2.4}The critical architectural correction}{7}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Worked numerical examples}{8}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Processing-plan completion status}{8}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Key single-aperture results}{8}{section.2.7}%
+\contentsline {section}{\numberline {2.8}R7: acuity translation status}{8}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Patent cross-reference}{9}{section.2.9}%
+\contentsline {section}{\numberline {2.10}The brightness-constrained optimum, in full}{9}{section.2.10}%
+\contentsline {section}{\numberline {2.11}Percentile-choice robustness}{10}{section.2.11}%
+\contentsline {section}{\numberline {2.12}Citation discipline}{11}{section.2.12}%
+\contentsline {section}{\numberline {2.13}Photometric chain, MTF/CSF, and three independent acuity models}{12}{section.2.13}%
+\contentsline {section}{\numberline {2.14}Sensitivity, validation, and Pareto fronts}{12}{section.2.14}%
+\contentsline {section}{\numberline {2.15}Model comparison: why the numbers disagree, diagnosed three ways}{12}{section.2.15}%
+\contentsline {section}{\numberline {2.16}Two confirmed anomalies, investigated rather than assumed away}{17}{section.2.16}%
+\contentsline {chapter}{\numberline {3}Array Design: Ghosting Theory}{19}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Motivation: a contradiction between the original formula and real patents}{19}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Literature grounding}{19}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Reconciliation against real products}{20}{section.3.3}%
+\contentsline {section}{\numberline {3.4}The ghost-separation formula: found wrong, corrected, and independently validated twice}{20}{section.3.4}%
+\contentsline {section}{\numberline {3.5}The continuous risk model, replacing binary Regime A/B/C}{20}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Harmonic series: what actually turned out to matter}{21}{section.3.6}%
+\contentsline {section}{\numberline {3.7}The N$_{\text {eff}}$ alignment resolution problem (F3)}{22}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Array Optimization Pipeline}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Defect 1: $r_{\max ,\text {lens}}$ excluding 100\% of the sweep}{24}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Defect 2: ghost-formula validation, and confirming the wiring}{24}{section.4.2}%
+\contentsline {section}{\numberline {4.3}The feasible region, before optimization}{25}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Packing geometry: why hex}{25}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Weight sensitivity, in full}{26}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Remaining gaps in the geometric model}{26}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Smaller consistency findings (F5, F6)}{27}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Pipeline architecture}{27}{section.4.8}%
+\contentsline {section}{\numberline {4.9}Why a Pareto front, not a weighted score}{27}{section.4.9}%
+\contentsline {section}{\numberline {4.10}The 274$\to $90$\to $20 funnel}{28}{section.4.10}%
+\contentsline {chapter}{\numberline {5}Vignetting: Chapter 13 Implemented and Verified}{30}{chapter.5}%
+\contentsline {section}{\numberline {5.1}The geometry}{30}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Implementation and validation}{30}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Field-averaging result: the 20 candidates, static vs.\ gaze-integrated}{31}{section.5.3}%
+\contentsline {chapter}{\numberline {6}Honest Open Items}{32}{chapter.6}%
+\contentsline {section}{\numberline {6.1}R7 acuity model: parked, single-aperture only}{32}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Unmodeled physiological effects (single-aperture error budget)}{32}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Transmission-target scope gap}{32}{section.6.3}%
+\contentsline {section}{\numberline {6.4}Single-aperture grid resolution staleness}{32}{section.6.4}%
+\contentsline {section}{\numberline {6.5}Manufacturing tolerance}{33}{section.6.5}%
+\contentsline {section}{\numberline {6.6}$w(\varphi )$, the gaze-usage distribution}{33}{section.6.6}%
+\contentsline {section}{\numberline {6.7}No experimental confirmation}{33}{section.6.7}%
+\contentsline {section}{\numberline {6.8}No single resolved answer via a weighted objective}{33}{section.6.8}%
+\contentsline {chapter}{\numberline {7}Roadmap and Next Steps}{34}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Improvements identified but not all yet built, in priority order}{34}{section.7.1}%
+\contentsline {chapter}{\numberline {A}Full Recommended-Candidate Table}{35}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Symbol Table}{36}{appendix.B}%
+\contentsline {chapter}{\numberline {C}Module and Code Inventory}{37}{appendix.C}%
+\contentsline {chapter}{\numberline {D}Reproducibility: Key Commands}{38}{appendix.D}%

@@ -1,0 +1,55 @@
+\chapter{Known Limitations}
+\label{ch:limitations}
+
+Stated in one place, as an honest list, not a formality --- each item below is
+individually documented at the point in this report where it arises; this chapter
+exists so a reader never has to reconstruct the full list by re-reading every chapter.
+
+\begin{enumerate}
+\item \textbf{Reduced-eye geometry throughout} (Section~\ref{ch:optical_system}): no
+  anterior-chamber distance, no cornea/lens power split, single lumped refracting
+  plane. Standard, but every pupil/lens-plane distance in this project's pipeline is a
+  modeling convenience, not an anatomical one.
+\item \textbf{No chromatic aberration, higher-order aberrations, Stiles--Crawford
+  apodization in the core PSF, or finite aperture-membrane thickness}
+  (Section~\ref{sec:unmodeled}).
+\item \textbf{$r_{EE}(P)$ normalizes to grid-captured power, not emitted power}, and is
+  measured over a different spatial domain than the threshold-crossing radii
+  (Section~\ref{sec:effective-radius}). Both are quantified, not merely flagged, at
+  this project's tested configurations.
+\item \textbf{$r_{EE}(50\%)$, and at low myopia even $r_{EE}(70\%)$/$r_{EE}(80\%)$, can
+  saturate at the simulation grid's own resolution floor}
+  (Chapter~\ref{ch:percentile}) --- identified and quantified in this report, not
+  previously documented at this level of detail.
+\item \textbf{Strehl ratio and FWHM are both confirmed unstable/non-monotonic} in this
+  project's near-field operating regime (Chapter~\ref{ch:mtf_strehl}); neither should
+  be used as a primary design metric without further work.
+\item \textbf{The $6.25$--$9\%$ brightness floor (Chapter~\ref{ch:stage3a}) was
+  reverse-engineered to match the known clinical range, not independently derived.}
+  A separate absolute-threshold analysis (Chapter~\ref{ch:brightness_reconciliation})
+  exists but is not yet fully reconciled against it.
+\item \textbf{No acuity predictor --- closed-form or ideal-observer, calibrated or
+  uncalibrated --- has passed validation against real clinical data}
+  (Chapter~\ref{ch:validation}). This is confirmed, not assumed, and is diagnosed as
+  predominantly (though evidence suggests not entirely) a data-scarcity problem: more
+  and better public clinical data, not further model tuning, is what this needs.
+\item \textbf{The Watson--Yellott pupil--illuminance feedback coupling used throughout
+  Stage 4} (Chapter~\ref{ch:stage4}) is a first-principles construction, not itself
+  drawn from a single cited source; whether real pupils fully re-equilibrate to it
+  within a typical clinical test's timescale is untested.
+\item \textbf{This entire report is theory and numerical simulation only.} No physical
+  prototype or human-subject experiment has been built or run against any prediction
+  in this document.
+\end{enumerate}
+
+\section{Suggested priorities for closing these gaps}
+
+Roughly in order of cost vs.\ payoff, per this project's own standing assessment:
+(a) reconciling item 6 against item 3's absolute thresholds is the cheapest remaining
+task --- both pieces of code already exist and simply need to be run against each
+other at a shared, explicitly stated scene-luminance assumption; (b) designing and
+running an actual physical/clinical experiment, with per-subject refractive error
+recorded (the one fixable flaw every public dataset used in this report shares), would
+directly address item 7, the single highest-value open item; (c) further acuity-model
+refinement without new data is, per Chapter~\ref{ch:validation}'s own evidence, less
+likely to move the outcome than either of the above.
