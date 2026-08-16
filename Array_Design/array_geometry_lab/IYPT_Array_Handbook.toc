@@ -1,0 +1,24 @@
+\contentsline {section}{\numberline {1}Why This Folder Exists}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}The Two Physical Effects That Matter}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}What the Code Does, in One Sentence}{2}{subsection.1.2}%
+\contentsline {section}{\numberline {2}The Ghost-Separation Formula}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Building the Intuition First}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}The Formula}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}How the Correct Formula Was Actually Confirmed}{3}{subsection.2.3}%
+\contentsline {section}{\numberline {3}The Vignetting Model}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Why Ghosting Alone Is Not Enough}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The Geometry}{4}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}How the Implementation Was Checked}{5}{subsection.3.3}%
+\contentsline {section}{\numberline {4}The Nine Geometry Families}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Deterministic Families}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Stochastic (Randomized) Families}{6}{subsection.4.2}%
+\contentsline {section}{\numberline {5}The Central Finding: Ghost-Safe Does Not Mean Vignetting-Safe}{7}{section.5}%
+\contentsline {section}{\numberline {6}A Real Bug Worth Understanding: When ``Density'' Stops Making Sense}{8}{section.6}%
+\contentsline {subsection}{\numberline {6.1}The Problem}{8}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}The Fix, and the Lesson}{9}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Choosing a Winner: The Two Comparison Metrics}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Metric 1: Maximum Packing Density}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Metric 2: The Pareto Front}{11}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Closing the Loop: Confirming the Theory Against Real Physics}{11}{section.8}%
+\contentsline {subsection}{\numberline {8.1}The Confirmation Step}{11}{subsection.8.1}%
+\contentsline {section}{\numberline {9}Summary: What a Design Needs to Pass}{12}{section.9}%

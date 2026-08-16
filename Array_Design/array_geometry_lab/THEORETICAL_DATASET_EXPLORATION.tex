@@ -1,0 +1,219 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape Theoretical Dataset Exploration -- array\_geometry\_lab/}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{\Huge Theoretical Dataset Exploration}\\[0.3cm]
+\large\itshape \texttt{array\_geometry\_lab/}: 10 Geometry Families, Ghost/Vignetting Margins,
+Seed Variance}
+\author{}
+\date{Source: \texttt{sweep\_results.csv} (6615 rows), \texttt{family\_ranking.csv} (529
+structurally-safe rows) -- read live, not hardcoded}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter*{Preface: what this document is, and what it deliberately is not}
+\addcontentsline{toc}{chapter}{Preface}
+This is a \textbf{working data-exploration document}, not a polished report and not a
+recommendation. Its only job is to make the actual shape of the theoretical dataset
+visible -- margins, seed-to-seed variance, packing density -- \emph{before} any gated
+ranking or comparison mechanism is designed. Thresholds for a future safety/ranking gate
+should be chosen by looking at real distributions, not guessed in advance; this document
+is the looking step.
+
+\textbf{This document does not draft or imply a final ranking, a gate threshold, or a
+``winner'' anywhere.} Captions describe what is shown, not what should be concluded from
+it -- that is explicitly deferred to a later, separate step. Where a pattern is visually
+obvious in a figure, it is named factually (e.g.\ ``a hard margin cliff appears between
+$X$ and $Y$'') without a recommendation attached.
+
+\textbf{Family count note}: the underlying data contains 10 distinct \texttt{family}
+labels. \texttt{fibonacci\_spiral} and \texttt{golden\_angle} are, by construction,
+literally the same geometric pattern (documented identity in
+\texttt{generators/golden\_angle.py}) -- they are shown separately throughout this
+document because the data itself distinguishes them by name, but every figure for one is
+expected to be structurally identical to the other's.
+
+\textbf{Every figure and table number in this document traces to a real row in
+\texttt{sweep\_results.csv} or \texttt{family\_ranking.csv}}, generated fresh by
+\texttt{generate\_exploration\_figures.py} -- nothing here is hand-drawn, illustrative, or
+invented outside the actually-tested parameter ranges.
+
+%======================================================================
+\chapter{Design Catalog}
+%======================================================================
+One representative layout per family: mid-range $N$ and mid-range primary spacing value,
+both drawn from parameter values \emph{actually swept} (never invented), at $M=4$D
+($a_{\text{hole}}=600\,\mu$m, read live from \texttt{per\_M\_optimum\_map.csv}). Hole
+circles are drawn to scale. For the two stochastic families, 3 independent seeds are
+shown side by side so seed-to-seed layout variation is visible directly, before
+Chapter~\ref{ch:seedvariance} turns it into a number.
+
+\begin{figure}[h!]
+\centering\includegraphics[width=0.95\textwidth]{figs_exploration/section1_deterministic_catalog.png}
+\caption{Representative layout, all 8 deterministic families, at their own mid-range
+tested $(N, \text{spacing})$.}
+\end{figure}
+\clearpage
+\begin{figure}[h!]
+\centering\includegraphics[width=0.95\textwidth]{figs_exploration/section1_stochastic_catalog.png}
+\caption{Representative layout, both stochastic families, 3 seeds each (same
+$N$/spacing point, seed 0/1/2) -- the visible difference between panels in a row is
+seed-driven layout variation at fixed parameters.}
+\end{figure}
+\clearpage
+
+%======================================================================
+\chapter{Margin Heatmaps}
+\label{ch:heatmaps}
+%======================================================================
+For each family, four items, in this order: (1) a heatmap of
+\texttt{worst\_case\_ghost\_margin} and \texttt{worst\_case\_vignetting\_margin} over
+$(N, \text{primary spacing parameter})$, one small panel per tested $M$ (including
+\texttt{global}) -- \textbf{every cell is now annotated with its own exact numeric
+value} (or \texttt{inf}), not color alone; (2) a sign-agreement map over the same axes,
+coloring each cell by whether the two margins' \emph{signs} agree (both positive, both
+negative) or disagree, per $M$; (3) a line-plot view of the same data (margin vs.\ $N$,
+one line per primary spacing value, faceted by $M$) as a complementary graphical
+representation for reading trends across $N$ directly, which a color grid can obscure;
+(4) a raw number list -- one row per tested $(N, \text{primary spacing}, M)$ point,
+listing the exact \texttt{worst\_case\_ghost\_margin}/\texttt{worst\_case\_vignetting\_margin}
+values with no clipping or color encoding, for readers who want the literal numbers
+behind items (1)--(3). Where a family has a secondary spacing parameter (e.g.\
+\texttt{holes\_per\_ring0}, \texttt{jitter\_fraction}), it is held fixed at its own
+median tested value -- stated in each heatmap's own caption/subtitle -- so every
+heatmap's two axes are exactly $(N, \text{primary spacing})$, nothing folded in
+silently. For the two stochastic families, every cell (heatmap, line plot, and raw
+table alike) is the seed-aggregated worst-case value computed directly from
+\texttt{sweep\_results.csv} over \emph{all} tested seeds at that point -- not only the
+seeds that happened to end up in \texttt{family\_ranking.csv}'s safe-only subset, which
+would silently leave gaps at every unsafe point (a real gap in an earlier draft of this
+chapter, fixed by computing all four items from one shared grid-builder function
+that reads the full sweep, both here and in Chapter~\ref{ch:seedvariance}). Per-seed
+\emph{distributional} detail (the spread across individual seeds, not just their
+worst-case) remains Chapter~\ref{ch:seedvariance}'s job.
+
+\textbf{Color/display convention, stated once}: heatmap color is clipped to $[-5, 5]$;
+a cell with $+\infty$ margin (zero active hole pairs under the pupil -- a structural,
+not narrowly-numerical, safe result) is shown at the clipped color maximum but its
+printed cell text always reads \texttt{inf}, and the raw number list always reports the
+literal value -- clipping is a display-only convention for the color scale, never
+applied to any number actually printed or listed.
+
+\input{section2_family_pages.tex}
+
+%======================================================================
+\chapter{Seed Variance (poisson\_disk, jittered\_lattice)}
+\label{ch:seedvariance}
+%======================================================================
+For each $(N, \text{spacing})$ combination actually swept, the distribution of
+\texttt{worst\_case\_ghost\_margin} across all 8 tested seeds, held at a single
+representative $M=4$D (chosen so the spread shown is seed-driven only -- pooling every
+$M$ into one violin was tried first and rejected, since cross-$M$ variation is far
+larger than seed variation and would dominate the plot; see the figure-generation
+script's own documented reasoning). A companion scatter shows seed-to-seed standard
+deviation vs.\ the mean margin at each $(N, \text{spacing}, M)$ point (all $M$ shown here,
+each point's own std computed strictly across seeds at that one $M$) -- no threshold is
+drawn on it; that is a later step.
+
+\begin{figure}[h!]
+\centering\includegraphics[width=\textwidth]{figs_exploration/section3_violin_poisson_disk.png}
+\caption{poisson\_disk: margin distribution across 8 seeds, $M=4$D, per tested
+$(N,\text{spacing})$ combination.}
+\end{figure}
+\begin{figure}[h!]
+\centering\includegraphics[width=0.6\textwidth]{figs_exploration/section3_std_vs_mean_poisson_disk.png}
+\caption{poisson\_disk: seed-to-seed std vs.\ mean margin, one point per
+$(N,\text{spacing},M)$.}
+\end{figure}
+\clearpage
+\begin{figure}[h!]
+\centering\includegraphics[width=\textwidth]{figs_exploration/section3_violin_jittered_lattice.png}
+\caption{jittered\_lattice: margin distribution across 8 seeds, $M=4$D, per tested
+$(N,\text{spacing})$ combination.}
+\end{figure}
+\begin{figure}[h!]
+\centering\includegraphics[width=0.6\textwidth]{figs_exploration/section3_std_vs_mean_jittered_lattice.png}
+\caption{jittered\_lattice: seed-to-seed std vs.\ mean margin, one point per
+$(N,\text{spacing},M)$.}
+\end{figure}
+\clearpage
+
+%======================================================================
+\chapter{Density vs. Safety}
+%======================================================================
+All structurally-safe candidates (\texttt{worst\_case\_ghost\_margin}$>0$ \textbf{and}
+\texttt{worst\_case\_vignetting\_margin}$>0$, read directly from the CSV, not from any
+gating script), across all 10 families, packing density on the $x$-axis vs.\
+ghost margin on the $y$-axis, colored by family. Shown for $M=4$D and $M=\text{global}$
+only (two representative cases, not the full $M$ grid, to keep this chapter to two
+figures) -- $M=4$D as a representative mid-myopia single-$M$ case, $M=\text{global}$ as
+the cross-$M$ worst-case scope.
+
+\textbf{Density computation, stated explicitly}: packing density $=$
+\texttt{N\_actual} / (area of the convex hull of the generated hole-center coordinates),
+in holes per $\mu$m$^2$. The SAME convex-hull-area definition is applied uniformly to all
+10 families (rather than a different closed-form cell-area formula per lattice type), so
+density values are directly comparable on one axis; irregular families (spirals, rings,
+stochastic patterns) have no closed-form cell area the way a lattice pitch does, so this
+is the one measure that applies to all of them without a family-specific exception.
+Coordinates are regenerated at each plotted point's own exact $(N, \text{spacing}[,
+\text{seed}])$ to compute this -- not estimated.
+
+\begin{figure}[h!]
+\centering\includegraphics[width=0.85\textwidth]{figs_exploration/section4_density_vs_safety_M4.0.png}
+\caption{Density vs.\ ghost margin, all structurally-safe candidates, $M=4$D.}
+\end{figure}
+\begin{figure}[h!]
+\centering\includegraphics[width=0.85\textwidth]{figs_exploration/section4_density_vs_safety_Mglobal.png}
+\caption{Density vs.\ ghost margin, all structurally-safe candidates, $M=\text{global}$.}
+\end{figure}
+\clearpage
+
+%======================================================================
+\chapter{Cross-Family Summary Table}
+%======================================================================
+One row per family, numbers read directly from \texttt{sweep\_results.csv} and
+\texttt{family\_ranking.csv} by \texttt{generate\_exploration\_figures.py}
+(\texttt{section5\_summary\_table()}), not computed by hand or typed into this document.
+\texttt{best\_finite\_ghost\_margin} excludes $+\infty$ cells, reported separately as
+\texttt{n\_inf\_margin\_rows}; seed-std columns apply only to the two stochastic families
+and are computed across \emph{every} tested point (not only the ones that ended up
+structurally safe overall -- restricting to safe-only was tried first and silently
+excluded exactly the highest-variance points, since a point with a very negative
+worst-case seed is, by definition, not in the safe set at all).
+
+\begin{table}[h!]
+\centering\small
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{family} & \textbf{N\_cand.} & \textbf{N\_safe} & \textbf{best\_finite} &
+\textbf{N\_inf} & \textbf{mean\_std} & \textbf{max\_std} \\
+\midrule
+\input{exploration_summary_table_rows.tex}
+\end{tabular}
+\caption{N\_cand. = number of distinct $(N,\text{spacing}[,\text{seed}])$ points tested;
+N\_safe = rows with \texttt{structurally\_safe=True}; best\_finite =
+largest \texttt{worst\_case\_ghost\_margin} excluding $+\infty$; N\_inf = count of
+$+\infty$-margin rows; mean/max\_std = seed-to-seed std of \texttt{worst\_case\_ghost\_margin}
+(poisson\_disk/jittered\_lattice only, ``--'' otherwise).}
+\end{table}
+
+\end{document}

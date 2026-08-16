@@ -1,0 +1,26 @@
+\section{Addendum: Phase 2 Full-Physics Confirmation}
+Following this report's own Section~6 recommendation, the Metric-1 finalists (Table~5) were propagated through \texttt{array\_optimization}'s validated multi-hole ASM engine (imported directly, not copied) and their blur and ghost separation were measured directly by peak detection on the resulting retinal intensity field, rather than predicted from the closed-form formula. Full methodology, tolerances, and per-finalist detail: \texttt{array\_geometry\_lab\_phase2\_confirmation/CONFIRMATION\_REPORT.md}.
+
+\textbf{Result: 9/9 finalists CONFIRMED} -- every finalist's structural ghost/vignetting prediction (zero or one active hole under the pupil, hence no resolvable ghost) was reproduced by the full propagation at every one of 11 tested gaze angles ($\phi=-25\ldots25^\circ$, step $5^\circ$). The one finalist with a non-trivial case -- \texttt{rectangular} at $M=0$D, where two holes become simultaneously active at $\phi=\pm5^\circ$ -- confirmed the corrected formula's own $M=0$ boundary prediction ($\Delta r = s \cdot M/(P_0-M) \equiv 0$ at $M=0$, independent of pair distance $s$) exactly: the real propagation's demagnification factor was independently measured at exactly $0.0$ at $M=0$D, so the two illuminated holes' retinal copies coincide and resolve as one peak, not two.
+
+\textbf{One divergent finding, on the blur reference, not the finalists' own physics}: for 3 of the 9 finalists (the ones using $a_{\rm hole}\geq1250\,\mu$m), \texttt{new\_sweeps/blur\_sweep.csv}'s stored single-hole $r_{EE,50}$ (computed at grid resolution $N=2048$) differs from a fresh recomputation at $N=4096$ (the corrected default already adopted elsewhere in this project) by 16--100\% -- confirmed by direct recomputation at both resolutions, not assumed. Diagnostically, three of these finalists with genuinely different apertures report the IDENTICAL $N=2048$ value to six decimal places -- real single-hole diffraction has no reason to give the same blur radius for different aperture sizes, so this is read as the signature of \texttt{array\_psf\_envelope.py}'s own documented Defect-1 mechanism (an aperture-independent grid artifact) dominating the $N=2048$ measurement for apertures this large, not genuine physics. This does not change any affected finalist's safety classification (each is at $M=0$D or $M=1$D, where either the predicted separation is exactly zero or Phase 2 measured no resolvable second peak regardless), but \texttt{blur\_sweep.csv} should be regenerated at $N=4096$ before being trusted for other apertures $\geq1250\,\mu$m.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lrrccc}
+\toprule
+\textbf{finalist} & \textbf{$a_{\rm hole}$ ($\mu$m)} & \textbf{$M$ (D)} & \textbf{ghost/vign.} & \textbf{blur (arraying)} & \textbf{class.} \\
+\midrule
+M0.0\_rectangular & 2000 & 0 & agree & agree & CONFIRMED \\
+M1.0\_jittered\_lattice & 1250 & 1 & agree & agree & CONFIRMED \\
+M2.0\_jittered\_lattice & 750 & 2 & agree & agree & CONFIRMED \\
+M3.0\_jittered\_lattice & 750 & 3 & agree & agree & CONFIRMED \\
+M4.0\_archimedean\_spiral & 600 & 4 & agree & agree & CONFIRMED \\
+M5.0\_archimedean\_spiral & 600 & 5 & agree & agree & CONFIRMED \\
+M6.0\_jittered\_lattice & 500 & 6 & agree & agree & CONFIRMED \\
+M8.0\_jittered\_lattice & 400 & 8 & agree & agree & CONFIRMED \\
+Mglobal\_square & 2000 & 0 & agree & agree & CONFIRMED \\
+\bottomrule
+\end{tabular}
+\caption{Phase 2 full-physics confirmation summary, one row per Metric-1 finalist. Full numeric comparison: \texttt{phase1\_vs\_phase2\_comparison.csv}.}
+\end{table}

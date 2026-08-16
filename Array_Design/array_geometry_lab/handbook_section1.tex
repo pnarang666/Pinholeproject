@@ -1,0 +1,59 @@
+\section{Why This Folder Exists}
+
+Imagine you have already solved the ``easy'' version of this problem: for a
+single pinhole, what diameter gives the sharpest possible image for someone
+with a given amount of short-sightedness? That question was answered earlier
+in this project, and the answer changes with myopia power $M$ (in diopters)
+--- a more short-sighted eye needs a smaller hole. That single-hole answer is
+stored in \texttt{new\_sweeps/per\_M\_optimum\_map.csv} and is treated as a
+\emph{fixed input} to everything in this handbook: we are not re-deriving hole
+size here.
+
+The harder question is: sunglasses need to block most of the light, and a
+single tiny hole lets almost none through. The natural fix is to use
+\emph{many} small holes instead of one. But the moment you have more than one
+hole, a brand-new problem appears that a single hole never has: the eye can
+form more than one image of the same scene at once, one through each hole.
+If the eye is not perfectly focused (which, for someone wearing tinted
+glasses rather than corrective lenses, is basically always true to some
+degree), those images land in \emph{slightly different places} on the
+retina. A small offset just looks like extra blur. A large offset looks like
+literal double vision --- a real, disqualifying defect.
+
+This handbook is about the code that answers one specific question:
+\textbf{given a fixed hole size (already chosen to be optimal), how should
+those many holes be arranged so that the double-vision problem never
+happens, for every level of myopia and every direction the eye might be
+looking?}
+
+\subsection{The Two Physical Effects That Matter}
+
+\intuitbox{Two physically independent things can go wrong with a multi-hole array, and
+the code treats them as two separate checks, not one:
+\begin{enumerate}
+  \item \textbf{Ghosting.} If two holes are far enough apart, and the eye is
+  out of focus, the two copies of the image they produce land in different
+  places on the retina --- literally two overlapping pictures.
+  \item \textbf{Vignetting.} As the eye rotates to look around a scene, the
+  pupil --- a fixed-size circular opening --- physically slides across the
+  pattern of holes. Holes that were far from the pupil edge at straight-ahead
+  gaze can suddenly come into play once the eye turns, changing \emph{which}
+  holes are simultaneously active and therefore changing the ghosting
+  picture entirely.
+\end{enumerate}
+A pattern that is perfectly safe when the eye looks straight ahead can become
+unsafe the moment the eye looks 15 degrees to one side. This is the single
+most important finding in the whole study, and it is why the code always
+checks both effects separately rather than assuming one implies the other.
+}
+\subsection{What the Code Does, in One Sentence}
+
+For a chosen arrangement of holes (a \emph{geometry}), at a chosen hole
+count and spacing, the code computes: (a) will any two holes ever produce a
+visible double image, at any myopia level, and (b) will that stay true as
+the eye looks around --- and if both answers are ``no'', the design is
+\emph{structurally safe}. It then compares many such safe designs against
+each other to find the one that packs the most holes (and therefore lets the
+most light through) without crossing either safety line.
+
+\newpage
