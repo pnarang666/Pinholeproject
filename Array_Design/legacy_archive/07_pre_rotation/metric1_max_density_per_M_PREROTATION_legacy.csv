@@ -1,0 +1,10 @@
+family,N_requested,N_actual,spacing_params,a_hole_um,seed,M,worst_case_ghost_margin,worst_case_vignetting_margin,structurally_safe,n_active_pairs_phi0,n_active_holes_phi0,packing_density_per_area_um-2
+rectangular,20,11,pitch_x_um=1500.0;pitch_y_um=2250.0,2000.0,,0.0,inf,1.0,True,0.0,1.0,2.962962962962963e-07
+jittered_lattice,20,20,pitch_um=4000.0;jitter_fraction=0.2,1250.0,3.0,1.0,inf,inf,True,0.0,1.0,9.486393728397722e-08
+jittered_lattice,20,20,pitch_um=4000.0;jitter_fraction=0.2,750.0,3.0,2.0,inf,inf,True,0.0,1.0,1.0125842921709849e-07
+jittered_lattice,20,20,pitch_um=4000.0;jitter_fraction=0.2,750.0,3.0,3.0,inf,inf,True,0.0,1.0,1.0125842921709849e-07
+archimedean_spiral,50,50,c_um=2000.0,600.0,,4.0,inf,inf,True,0.0,0.0,2.3084772892747413e-07
+archimedean_spiral,50,50,c_um=2000.0,600.0,,5.0,inf,inf,True,0.0,0.0,2.3084772892747413e-07
+jittered_lattice,20,20,pitch_um=4000.0;jitter_fraction=0.2,500.0,3.0,6.0,inf,inf,True,0.0,1.0,1.0470943388401297e-07
+jittered_lattice,20,20,pitch_um=4000.0;jitter_fraction=0.2,400.0,3.0,8.0,inf,inf,True,0.0,1.0,1.0614112333146885e-07
+square,20,9,pitch_um=2000.0,2000.0,,global,inf,inf,True,,,2.5e-07

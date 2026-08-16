@@ -29,7 +29,14 @@ M_VALUES = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0]
 WAVELENGTH_NM = 550.0
 D_GAP_MM = 12.0
 D_PUPIL_UM = 4000.0
-GRID_N = 2048
+GRID_N = 4096  # Corrected 2026-08-16: was 2048, matched the r_max_lens grid
+                # artifact already found and fixed in array_optimization/
+                # (Defect 1). Confirmed stale via Phase 2 full-physics
+                # confirmation: blur_sweep.csv values at grid_N=2048 were
+                # exactly 2x the grid_N=4096 fresh value for large apertures,
+                # and identical across DIFFERENT aperture sizes (a clear
+                # shared-artifact fingerprint). Old file preserved as
+                # blur_sweep_gridN2048_legacy.csv.
 WINDOW_L_MM = 6.0
 PERCENTILES = [0.50, 0.70, 0.80, 0.90]
 

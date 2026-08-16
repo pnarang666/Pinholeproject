@@ -1,0 +1,33 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Lightweight callout boxes using only xcolor (no tcolorbox dependency,
+% since this machine's BasicTeX install cannot be extended without sudo)
+\newcommand{\intuitbox}[1]{\par\noindent\colorbox{blue!10}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Physical Intuition}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+\newcommand{\codemapbox}[1]{\par\noindent\colorbox{green!10}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Where This Lives in the Code}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+
+\title{The Array Geometry Handbook\\
+\large How the Pinhole Array Design Code Works, and Why\\
+\normalsize IYPT Pinhole Sunglasses Project --- A Student's Guide to the Physics and the Pipeline}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{handbook_section1.tex}
+\input{handbook_section2.tex}
+\input{handbook_section3.tex}
+\input{handbook_section4.tex}
+\input{handbook_section5.tex}
+\input{handbook_section6.tex}

@@ -1,0 +1,10 @@
+finalist_id,family,M_csv,M_resolved_for_optics,M_resolution_note,N_requested,N_actual_expected,N_actual_regenerated,N_actual_match,spacing_params,a_hole_um,seed
+M0.0_rectangular,rectangular,0.0,0.0,,20,11,11,True,pitch_x_um=1500.0;pitch_y_um=2250.0,2000.0,
+M1.0_jittered_lattice,jittered_lattice,1.0,1.0,,20,20,20,True,pitch_um=4000.0;jitter_fraction=0.2,1250.0,3.0
+M2.0_jittered_lattice,jittered_lattice,2.0,2.0,,20,20,20,True,pitch_um=4000.0;jitter_fraction=0.2,750.0,3.0
+M3.0_jittered_lattice,jittered_lattice,3.0,3.0,,20,20,20,True,pitch_um=4000.0;jitter_fraction=0.2,750.0,3.0
+M4.0_archimedean_spiral,archimedean_spiral,4.0,4.0,,50,50,50,True,c_um=2000.0,600.0,
+M5.0_archimedean_spiral,archimedean_spiral,5.0,5.0,,50,50,50,True,c_um=2000.0,600.0,
+M6.0_jittered_lattice,jittered_lattice,6.0,6.0,,20,20,20,True,pitch_um=4000.0;jitter_fraction=0.2,500.0,3.0
+M8.0_jittered_lattice,jittered_lattice,8.0,8.0,,20,20,20,True,pitch_um=4000.0;jitter_fraction=0.2,400.0,3.0
+Mglobal_square,square,global,0.0,'global' scope: M resolved to worst_case_M=0.0D from evaluate_global() re-run on this finalist's own coordinates (worst_case_margin=inf),20,9,9,True,pitch_um=2000.0,2000.0,
