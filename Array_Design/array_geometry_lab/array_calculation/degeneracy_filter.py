@@ -79,7 +79,7 @@ sys.path.insert(0, os.path.join(HERE, "generators"))
 
 import square, hexagonal, concentric, fibonacci_spiral, golden_angle  # noqa: E402
 import rectangular, archimedean_spiral, ring_offset_concentric  # noqa: E402
-import poisson_disk, jittered_lattice  # noqa: E402
+import poisson_disk, jittered_lattice, concentric_centered  # noqa: E402
 
 GEN_FUNCS = {
     "square": square.generate, "hexagonal": hexagonal.generate,
@@ -88,6 +88,8 @@ GEN_FUNCS = {
     "archimedean_spiral": archimedean_spiral.generate,
     "ring_offset_concentric": ring_offset_concentric.generate,
     "poisson_disk": poisson_disk.generate, "jittered_lattice": jittered_lattice.generate,
+    "concentric_centered": concentric_centered.generate,  # NEW, additive family --
+                                                           # see generators/concentric_centered.py
 }
 
 ALL_FAMILIES = set(GEN_FUNCS.keys())

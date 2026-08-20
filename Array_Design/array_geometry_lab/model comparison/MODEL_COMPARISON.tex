@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\newcommand{\findbox}[1]{\par\noindent\colorbox{orange!12}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Key Finding}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+\newcommand{\honestbox}[1]{\par\noindent\colorbox{gray!12}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Honest Limitation}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+
+\title{Model Comparison: This Project vs.\ Shen (2026)\\
+\large Differences, Divergence Causes, and Honest Lapses on Both Sides\\
+\normalsize IYPT Pinhole Sunglasses --- Array Geometry Sub-Study}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{compare_section1.tex}
+\input{compare_section2.tex}
+\input{compare_section3.tex}
+\input{compare_section4.tex}
+\input{compare_section5.tex}

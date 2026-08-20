@@ -1,0 +1,52 @@
+\section{Worked Example: M=2.0 Diopters}
+
+With $\mu_g$ neutralized, Shen's score collapses to fill-factor closeness
+($\mu_\eta$) and the fixed geometric blind-rate constant per family --- \emph{not}
+to anything reflecting whether a design actually ghosts.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+& \textbf{This project's hard-gated winner} & \textbf{Shen's soft-score winner} \\
+& (square, $N{=}100$) & (hexagonal, $N{=}20$) \\
+\midrule
+Real ghost margin & $+\infty$ (genuinely safe) & $-13.8$ (genuinely fails) \\
+Real vignetting margin & $+\infty$ (genuinely safe) & $-13.8$ (genuinely fails) \\
+$\eta$ (target 0.15) & 0.049 $\to \mu_\eta=0.45$ & 0.128 $\to \mu_\eta=0.96$ \\
+$\mu_g$ (both) & 0.0 & 0.0 \\
+Composite score & 1.11 & \textbf{1.52 (wins)} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The hexagonal candidate wins Shen's score by sitting closer to the target
+fill factor and carrying a lower structural blind-rate floor --- while its
+actual, independently computed ghost and vignetting margins are strongly
+negative. The published formula never registers this, because its one
+safety-related term is saturated to zero for every candidate in this
+regime, including this one.
+
+\section{Root Causes of the Divergence}
+
+\begin{enumerate}
+  \item \textbf{Scale mismatch in the ghost term.} $g=(sf'/L)/c_{\text{tot}}$
+  compares hole spacing ($s\sim1$--4\,mm in this project) against blur
+  ($c_{\text{tot}}\sim3$--17\,$\mu$m). At that four-orders-of-magnitude
+  ratio, the sigmoid is saturated by construction --- Shen's own text
+  acknowledges this term ``exceeds unity by one to two orders of magnitude
+  for feasible designs'' and ``cannot discriminate between designs''; this
+  project's data shows the saturation is total, not partial.
+  \item \textbf{Hard gates vs.\ soft membership.} A design with strongly
+  negative real margin (e.g.\ $-13.8$) is eliminated outright by this
+  project's gates. Under a soft membership function that never reaches
+  exactly zero, no amount of real ghosting risk can be fully penalized ---
+  it can only be outweighed by other terms.
+  \item \textbf{No vignetting term in Shen's score.} $a_{\text{norm}}$,
+  $\mu_\eta$, $\mu_g$ and coverage never reference gaze-angle-dependent
+  safety. This project established earlier that straight-ahead ghost
+  safety fails to predict gaze-integrated safety for 37.8\%--88.9\% of
+  designs, depending on family --- an entire failure mode invisible to the
+  published score.
+\end{enumerate}
+
+\newpage

@@ -1,0 +1,29 @@
+\section{Summary Table}
+
+All designs below are deterministic (no seed dependence) and confirmed
+seed-robustness-clean, per the final corrected evaluation run. Blue circles
+are pinholes, drawn to true relative scale; the dashed red circle is the
+4\,mm pupil at straight-ahead gaze ($\varphi=0$).
+
+\begin{center}
+\begin{tabular}{lllrrr}
+\toprule
+$M$ (D) & Family & Spacing & Ghost/Vign.\ margin & Blind rate & Eff.\ density \\
+\midrule
+0 & ring\_offset\_concentric & rs=1000\,$\mu$m, N=11 & 1.000 / 1.000 & 15.6\% & 3.60e-8 \\
+\textbf{1} & \textbf{square} & \textbf{pitch=2000, N=20} & \textbf{0.128 / 0.128} & \textbf{8.2\%} & \textbf{4.16e-8} \\
+2--3 & ring\_offset\_concentric & rs=4000\,$\mu$m, N=20 & $+\infty$ / $+\infty$ & $\sim$10.7\% & 5.89e-9 \\
+4--5 & ring\_offset\_concentric & rs=4000\,$\mu$m, N=20 & $+\infty$ / $+\infty$ & $\sim$10.5\% & 6.02e-9 \\
+6, 8 & ring\_offset\_concentric & rs=4000\,$\mu$m, N=20 & $+\infty$ / $+\infty$ & 10.1--10.3\% & 6.1--6.2e-9 \\
+global & hexagonal & pitch=2000, 30$^\circ$, N=7 & $+\infty$ / $+\infty$ & 17.3\% & 1.81e-8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\notebox{$+\infty$ margin means zero simultaneously-illuminated hole pairs at
+every tested gaze angle --- a structural, geometric guarantee rather than a
+narrowly-cleared numeric threshold. M=1's finite margin (0.128) is the one
+design in this set operating with a real, measured safety buffer rather than
+a structural impossibility of ghosting.}
+
+\newpage

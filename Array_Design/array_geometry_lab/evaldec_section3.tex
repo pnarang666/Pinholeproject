@@ -1,0 +1,61 @@
+\section{Result Comparison}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+$M$ & Model A winner & Model B winner & Model B ghost/blind \\
+\midrule
+0 & hexagonal, N=20, p=2000,30$^\circ$ & square, N=20, p=4000 & 0.00\% / 0.00\% \\
+1 & ring\_offset\_conc., N=20, rs=4000 & hexagonal, N=20, p=4000 & 0.00\% / 0.00\% \\
+2--3 & ring\_offset\_conc., N=20, rs=4000 & hexagonal, N=20, p=4000 & 0.00\% / 0.00\% \\
+4--5 & ring\_offset\_conc., N=20, rs=4000 & hexagonal, N=20, p=4000 & 0.00\% / 0.00\% \\
+6 & ring\_offset\_conc., N=20, rs=4000 & hexagonal, N=100, p=4000 & 0.00\% / 0.12\% \\
+8 & ring\_offset\_conc., N=20, rs=4000 & hexagonal, N=50, p=4000 & 0.00\% / 0.33\% \\
+global & hexagonal, N=20, p=2000,30$^\circ$ & square, N=20, p=4000 & 0.00\% / 0.00\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Every Model B winner also carries $+\infty$ worst-case ghost and
+vignetting margin under Model A} --- verified directly. The disagreement
+is not about safety; both sets are safe under Model A's own gates. The
+models simply optimise different objectives among safe candidates
+(density vs.\ time-weighted safety).
+
+\textbf{Structural difference in the winners.} Model A's winners cluster
+at dense spacings across three different families. Model B's winners are
+uniformly the \emph{sparsest} tested pitch (4000\,$\mu$m), overwhelmingly
+one family (hexagonal). Sparse layouts keep holes far enough apart that
+no azimuth at any eccentricity brings two holes simultaneously active,
+while the 4\,mm pupil remains large enough that blackouts stay rare.
+
+\section{Decision}
+
+\decbox{
+\textbf{Use Model B (gaze-weighted) as the primary evaluation model, with
+Model A's ghost and vignetting margin gates retained as a mandatory
+pre-filter.}
+
+Rationale: Model A's single-azimuth sampling is a genuine correctness
+defect affecting 19.8\% of candidates --- it is not merely more
+conservative, it is incomplete in a dimension Model B covers. Model B is
+azimuthally complete, weighted by measured viewing behaviour, and outputs
+an interpretable quantity. But Model B alone has no hard safety floor, so
+Model A's margin gates must still be applied first to exclude designs
+that fail catastrophically at any angle.
+
+\medskip
+\textbf{Practical procedure:} filter candidates by Model A's ghost and
+vignetting margin gates (both $>$ threshold), then rank the survivors by
+Model B's time-weighted ghost \% with blind \% as tie-break. All nine
+current Model B winners already satisfy both conditions.
+}
+
+\subsection{Caveat to State in Any Report}
+Model A's \texttt{min\_illuminated\_area\_across\_phi} column should not
+be cited as evidence a design is never blind --- Section 2 shows it is
+unreliable for that purpose. Use Model B's
+\texttt{time\_weighted\_blind\_pct} instead. Model A's \emph{margin}
+columns are unaffected by this defect and remain valid.
+
+\end{document}

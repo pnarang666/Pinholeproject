@@ -1,0 +1,50 @@
+\section{The Two Evaluation Models}
+
+\textbf{Model A --- Worst-case gates} (this project's original primary
+standard). A design must remain ghost-free and non-blind at every tested
+gaze eccentricity $\varphi$ from 0$^\circ$ to 25$^\circ$. Pass/fail, no
+weighting. Ranks survivors by effective density.
+
+\textbf{Model B --- Gaze-weighted} (added later). Integrates the measured
+eccentricity distribution over $\varphi$, sampling 36 azimuths per
+eccentricity bin, and reports the \emph{fraction of actual viewing time}
+a design spends blind or ghosting.
+
+The two were built to differ in one intended dimension: whether rare
+peripheral angles count as heavily as the frequently-used centre. They
+turned out to differ in a second, unintended dimension as well --- and
+that second difference is the important finding of this document.
+
+\section{Critical Finding: Model A Is Not Actually Worst-Case}
+
+Model A samples the pupil shift along a \textbf{single azimuthal
+direction} ($+x$) as $\varphi$ increases. Model B samples 36 azimuths at
+each eccentricity. Because holes are discrete objects with gaps between
+them, a pupil can be fully lit when shifted in one direction and
+completely dark when shifted the same distance in another.
+
+Verified directly on the M=6 gaze-weighted winner
+(\texttt{hexagonal}, N=100, pitch=4000\,$\mu$m, $a_{\rm hole}$=500\,$\mu$m):
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Sampling method & Minimum illuminated area \\
+\midrule
+Single-axis ($+x$ only), as Model A uses & 181{,}457\,$\mu$m$^2$ (never blind) \\
+All 36 azimuths, as Model B uses & \textbf{0\,$\mu$m$^2$ (blind at 3 of 936 samples)} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\findbox{Across the full 8818-row candidate set, \textbf{1750 rows
+(19.8\%)} are reported as ``never blind'' by Model A's
+\texttt{min\_illuminated\_area\_across\_phi} while Model B's azimuthal
+sampling finds genuine blindness --- in the worst case, up to
+\textbf{20.3\% of viewing time}. This affects \emph{every} geometry family
+tested (jittered\_lattice 641, rectangular 493, poisson\_disk 154, square
+124, hexagonal 54, and all others). Model A is therefore \textbf{not
+strictly more conservative than Model B}: it is stricter in eccentricity
+(treating 25$^\circ$ as heavily as 0$^\circ$) but blind in azimuth.}
+
+\newpage

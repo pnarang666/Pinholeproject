@@ -9,7 +9,12 @@ SCHEMA: family, N_requested, N_actual, spacing_params (compact "key=val;key=val"
 since different families have different parameter sets), a_hole_um, M (float, or the
 string 'global'), worst_case_ghost_margin, worst_case_vignetting_margin,
 structurally_safe (bool: both margins > 0), n_active_pairs_phi0, n_active_holes_phi0,
-total_illuminated_area_um2_phi0, min_illuminated_area_um2_across_phi.
+total_illuminated_area_um2_phi0, min_illuminated_area_um2_across_phi,
+resolvable_blur_um (the r_EE(50%) blur reference used for the margin lookup -- for a
+per_M row, that M's own single value; for a 'global' row, the WORST CASE -- the
+smallest -- across every M in the tested range this design must support, since global
+scope has no single M of its own; see evaluate_candidate()'s own comment for why
+smaller is worse).
 
 AUDIT FIX (Defect B/1 -- gates rewarded blindness; Defect C/2 -- active-hole test was
 a binary center-in-pupil test): n_active_pairs_phi0/n_active_holes_phi0 now come from
@@ -227,6 +232,7 @@ def evaluate_candidate(family, N, spacing_params, gen_fn, D_pupil_um, P0, M_valu
             "n_active_pairs_phi0": phi0["n_active_pairs"], "n_active_holes_phi0": phi0["n_active_holes"],
             "total_illuminated_area_um2_phi0": phi0["total_illuminated_area_um2"],
             "min_illuminated_area_um2_across_phi": vig["min_illuminated_area_um2_across_phi"],
+            "resolvable_blur_um": phi0["resolvable_blur_um"],
         })
 
     # global row: ONE geometry, generated at the LARGEST a_hole(M) across M_values (the
@@ -266,6 +272,37 @@ def evaluate_candidate(family, N, spacing_params, gen_fn, D_pupil_um, P0, M_valu
         for r in per_m_vig_results]
     worst_illum_area_phi0_global = min(illum_area_phi0_per_m)
 
+    # AUDIT FIX (n_active_pairs_phi0/n_active_holes_phi0 left as None for every
+    # global row, unlike every other column here): same "no single M" problem the
+    # illuminated-area columns above already solve, resolved the same way -- reuse
+    # per_m_vig_results (already evaluated at every M in M_values against this same
+    # fixed global geometry) rather than picking one M or leaving it unevaluated.
+    # Direction of "worst" is the opposite of the illuminated-area case: MORE active
+    # pairs/holes is the riskier (worse) structural condition for ghosting, not
+    # fewer, so this takes the MAXIMUM across M, not the minimum.
+    active_pairs_phi0_per_m = [
+        next(p for p in r["per_phi_breakdown"] if p["phi_deg"] == 0.0)["n_active_pairs"]
+        for r in per_m_vig_results]
+    active_holes_phi0_per_m = [
+        next(p for p in r["per_phi_breakdown"] if p["phi_deg"] == 0.0)["n_active_holes"]
+        for r in per_m_vig_results]
+    worst_n_active_pairs_phi0_global = max(active_pairs_phi0_per_m)
+    worst_n_active_holes_phi0_global = max(active_holes_phi0_per_m)
+
+    # AUDIT FIX (resolvable_blur_um -- the blur reference a downstream evaluation-layer
+    # score needs c_tot for -- had no single value for a global row, "since global scope
+    # aggregates across all M, so there is no single a_hole_um to key a blur lookup").
+    # glob["per_M_breakdown"] (already computed by gm.evaluate_global() above, not a new
+    # call) carries each tested M's own resolvable_blur_um (the r_EE(50%) lookup that M
+    # actually used). A smaller resolvable_blur_um is the physically worse case for
+    # margin at a fixed actual ghost separation (margin = 1 - actual/resolvable shrinks
+    # as resolvable shrinks) -- so the worst case across the whole M range this design
+    # must support is the MINIMUM resolvable_blur_um among them, matching this file's
+    # own "smaller margin/illuminated-area = worse" convention used everywhere else in
+    # this global-row block. Real worst case, not a guess at a single M.
+    resolvable_blur_um_per_m = [r["resolvable_blur_um"] for r in glob["per_M_breakdown"]]
+    worst_resolvable_blur_um_global = min(resolvable_blur_um_per_m)
+
     rows.append({
         "family": family, "N_requested": N, "N_actual": meta_g["N_actual"],
         "spacing_params": spacing_str(spacing_params), "a_hole_um": a_hole_for_global,
@@ -273,9 +310,11 @@ def evaluate_candidate(family, N, spacing_params, gen_fn, D_pupil_um, P0, M_valu
         "M": "global", "worst_case_ghost_margin": glob["worst_case_margin"],
         "worst_case_vignetting_margin": worst_vig_global,
         "structurally_safe": bool(glob["worst_case_margin"] > 0 and worst_vig_global > 0),
-        "n_active_pairs_phi0": None, "n_active_holes_phi0": None,
+        "n_active_pairs_phi0": worst_n_active_pairs_phi0_global,
+        "n_active_holes_phi0": worst_n_active_holes_phi0_global,
         "total_illuminated_area_um2_phi0": worst_illum_area_phi0_global,
         "min_illuminated_area_um2_across_phi": min_illum_area_global_all_phi_and_M,
+        "resolvable_blur_um": worst_resolvable_blur_um_global,
     })
     return rows
 

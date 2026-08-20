@@ -1,0 +1,16 @@
+\contentsline {section}{\numberline {1}Purpose}{2}{section.1}%
+\contentsline {section}{\numberline {2}The Three Quantities That Decide a Winner}{2}{section.2}%
+\contentsline {section}{\numberline {3}Quantity 1: Viability}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The Check}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The Full Overlap Area (when it does overlap)}{3}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Quantity 2: Ghost Margin}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}The Formula}{4}{subsection.4.1}%
+\contentsline {section}{\numberline {5}Quantity 3: Packing Density}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}The Formula}{5}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Full Worked Example --- Verified Against the Live Pipeline}{6}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Generated Coordinates}{6}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Check 1: Viability}{7}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Check 2: Ghost Margin}{7}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Check 3: Packing Density}{7}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Cross-Check Against the Pipeline}{7}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Standing Checklist}{8}{section.7}%

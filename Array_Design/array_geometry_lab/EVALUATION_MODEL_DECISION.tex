@@ -1,0 +1,28 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\newcommand{\findbox}[1]{\par\noindent\colorbox{orange!14}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Critical Finding}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+\newcommand{\decbox}[1]{\par\noindent\colorbox{green!12}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Decision}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+
+\title{Evaluation Model Comparison and Final Decision\\
+\large Worst-Case vs.\ Gaze-Weighted --- Findings, Defects, and Recommendation\\
+\normalsize IYPT Pinhole Sunglasses --- Array Geometry Sub-Study}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{evaldec_section1.tex}
+\input{evaldec_section2.tex}
+\input{evaldec_section3.tex}

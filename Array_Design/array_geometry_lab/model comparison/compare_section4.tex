@@ -1,0 +1,57 @@
+\section{Where This Project's Model Is Stronger}
+
+\begin{itemize}
+  \item \textbf{Full wave-optics blur, not an approximation.} Shen's own
+  Discussion names the RSS blur combination as an engineering
+  approximation and states that a faithful treatment ``requires the full
+  defocused optical transfer function'' --- exactly the upgrade path this
+  project already completed via Angular Spectrum propagation.
+  \item \textbf{Ghost formula validated against wave optics, not just ray
+  tracing.} $R^2=0.995$ against direct two-hole coherent propagation with
+  peak detection, versus a formula checked against matrix optics and
+  numerical ray tracing (a real but lower-fidelity validation standard for
+  a diffractive effect).
+  \item \textbf{Gaze-integrated vignetting.} No equivalent exists in
+  Shen's model. This project quantified that ignoring gaze angle
+  overstates safety for the majority of designs in several families.
+  \item \textbf{Margin-aware gates, not boundary-adjacent pass/fail.}
+  Following several found-and-fixed defects (blackout designs passing at
+  zero margin, a density formula favoring some families by up to 2.25x),
+  the final gates require real headroom above a threshold, not merely a
+  positive sign.
+\end{itemize}
+
+\section{Where Shen's Model Is Stronger, or This Project Has Gaps}
+
+\begin{itemize}
+  \item \textbf{Aperture shape.} Shen tests circle, square, diamond,
+  ellipse and annulus under a common fill-factor budget and derives a
+  rigorous isoperimetric argument for why circular apertures minimize
+  blur and ghost rate simultaneously. This project has not tested
+  non-circular apertures at all --- circular was adopted by scope
+  decision, not by comparison.
+  \item \textbf{Closed-form blind-rate.} Shen's $1-\pi/4$ (square) and
+  $1-\pi/(2\sqrt3)$ (hex) geometric floors are exact and were not part of
+  this project's own metric until very recently, and are still not
+  computed for the 8 non-lattice families tested here.
+  \item \textbf{Broader, faster search.} The neural surrogate
+  ($R^2=0.979$--$0.995$) and inverse-design network let Shen explore many
+  more design conditions per unit compute time. This project's search is
+  a direct sweep; broader parameter ranges (e.g.\ finer pitch resolution
+  near each family's own packing limit) were identified as gaps but not
+  fully closed due to time constraints.
+  \item \textbf{Perceptual fusion calibration.} Shen's $c_{\min}$
+  parameter, though acknowledged as only qualitatively matching clinical
+  diplopia onset, gives ghosting a real perceptual floor grounded in
+  cited clinical data. This project's hard gate has no equivalent
+  perceptual-floor concept --- a margin of exactly zero and a margin of
+  one micrometer are treated identically as ``unsafe.''
+\end{itemize}
+
+\honestbox{The comparison in Sections 3--4 shows Shen's \emph{ghost} term
+specifically fails to discriminate on this project's data. It does not
+show Shen's fill-factor, coverage, or aperture-shape analysis is wrong ---
+those parts of the published model are untouched by this finding and
+remain useful, independently-derived reference points.}
+
+\newpage

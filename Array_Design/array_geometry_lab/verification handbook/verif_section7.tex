@@ -1,0 +1,26 @@
+\section{Standing Checklist}
+
+Use this before trusting any reported ``winner,'' not just once:
+
+\begin{enumerate}
+  \item Regenerate the design's coordinates using its recorded
+  \textbf{requested} count, confirm the actual count matches the row you
+  are checking.
+  \item Viability: find the nearest hole to the pupil center, check
+  $d - R_h < R_p$.
+  \item Ghost margin: find the closest hole pair, compute $\Delta r$,
+  compare against the threshold for that $M$.
+  \item Density: compute the buffered convex-hull area, compare against
+  the pipeline's reported value to within rounding.
+  \item If any margin is small (within roughly 1\% of a hard boundary),
+  treat the design as unproven regardless of pass/fail --- every real
+  defect found in this project so far sat within micrometers of exactly
+  such a boundary.
+\end{enumerate}
+
+This checklist is the actual safeguard. No pipeline fix removes the need
+for it --- it removes the need for the \emph{specific} bug already found,
+not for the general pattern of trusting a boundary-adjacent result without
+independent recomputation.
+
+\end{document}

@@ -1,0 +1,45 @@
+\section{Should Fabrication Start Now?}
+
+\recbox{
+\textbf{Yes.} The theoretical model has been through defect-finding,
+margin-aware re-verification, hand-cross-checking, cross-validation against
+a competing published approach, seed-robustness testing, and now two
+independently-computed safety standards (worst-case and gaze-weighted)
+that agree on which designs are safe. Further theoretical iteration has
+reached diminishing returns; a physical prototype is the highest-value
+next step.
+}
+
+\subsection{Which Design to Build First}
+
+The gaze-weighted result changes the practical fabrication plan for the
+better: \textbf{one family (hexagonal), one pitch (4000\,$\mu$m), covering
+M=1 through M=8 with only the hole diameter changing between inserts}
+(1250, 750, 600, 500, 400\,$\mu$m). This is simpler to fabricate than the
+mixed-family worst-case-optimal set (\texttt{ring\_offset\_concentric} +
+\texttt{hexagonal} + \texttt{square} across different M ranges), and every
+design in it achieves genuine 0.00\% ghosting under realistic use, not
+just a structural guarantee at one gaze angle.
+
+\textbf{Recommended build order:}
+\begin{enumerate}
+  \item \textbf{Hexagonal, pitch=4000\,$\mu$m, N=20, a\_hole=400\,$\mu$m}
+  (M=8 insert) --- smallest hole, test cutting-edge quality first, per the
+  established fabrication discipline.
+  \item \textbf{Hexagonal, pitch=4000\,$\mu$m, N=20, a\_hole=750\,$\mu$m}
+  (M=2--3 insert) --- mid-range, a second data point on the same base
+  frame.
+  \item \textbf{Square, pitch=4000\,$\mu$m, N=20, a\_hole=2000\,$\mu$m}
+  (M=0/global) --- confirms the model at the opposite end of the aperture
+  range, different family for a cross-check.
+\end{enumerate}
+
+\subsection{What to Measure}
+Per the project's established phone-camera afocal protocol: blur at each
+design's own M setting, and ghosting specifically at gaze angles beyond
+17$^\circ$ (the 95\%-of-time boundary) --- this is the one region where
+the worst-case and gaze-weighted models could plausibly diverge from
+reality in different ways, and it is the most informative test of which
+safety standard the real optics actually respect.
+
+\end{document}
