@@ -1,0 +1,46 @@
+\section{Findings Per Model}
+
+\subsection{Model A --- Worst-Case Gates}
+\textbf{Strengths.} Simple, conservative in eccentricity, produces hard
+pass/fail guarantees. Correctly rejected every genuinely broken design
+found during this project's audits (blackout candidates, boundary
+near-misses, seed-lottery winners).
+
+\textbf{Defects found.}
+\begin{itemize}
+  \item \textbf{Single-azimuth sampling} (Section 2) --- misses blind
+  spots in 19.8\% of candidates. This is the most serious defect in
+  either model.
+  \item \textbf{Density objective reduces to $1/\text{hull area}$} when
+  only one hole is active (true for M=2--8), so it effectively minimises
+  array size rather than maximising light. It also scales with
+  $N_{\rm requested}$, systematically favouring the smallest tested $N$
+  --- every Model A winner sits at the minimum $N$ swept.
+  \item \textbf{Unweighted eccentricity} --- treats 25$^\circ$ (0.58\% of
+  viewing time) as heavily as 0$^\circ$ (9.29\%), disqualifying designs
+  on failures the wearer would essentially never encounter.
+\end{itemize}
+
+\subsection{Model B --- Gaze-Weighted}
+\textbf{Strengths.} Azimuthally complete. Weights by measured viewing-time
+distribution (verified: weights sum to 100.0000, cumulative 51.61\% by
+6$^\circ$ and 95.27\% by 17$^\circ$, all three assertions passing).
+Outputs a directly interpretable quantity (``\% of viewing time
+ghosting'') rather than an abstract margin.
+
+\textbf{Defects and limitations.}
+\begin{itemize}
+  \item \textbf{Large tied plateaus} --- many designs reach exactly
+  0.00\%/0.00\%, so the reported ``winner'' is one representative of a
+  tie chosen by insertion order, not a uniquely optimal design. The
+  comparison report states this explicitly rather than implying a
+  sharper distinction than the data supports.
+  \item \textbf{No density or light-throughput term} --- it optimises
+  purely for safety, so among equally-safe designs it has no basis to
+  prefer the one delivering more light.
+  \item \textbf{Depends on one empirical distribution} --- a different
+  gaze dataset would shift the weights, though the sharp central peak is
+  robust across the literature.
+\end{itemize}
+
+\newpage

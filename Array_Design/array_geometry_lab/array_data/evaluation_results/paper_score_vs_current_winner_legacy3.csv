@@ -1,0 +1,10 @@
+M,current_winner_family,current_winner_N,current_winner_spacing,current_winner_S_paper,paper_winner_family,paper_winner_N,paper_winner_spacing,paper_winner_S_paper
+0.0,ring_offset_concentric,10,ring_spacing_um=700.0;holes_per_ring0=6,0.9388180630944022,archimedean_spiral,50.0,c_um=1500.0,1.737398760449933
+1.0,square,100,pitch_um=3000.0;rotation_deg=45.0,1.5349728506325615,poisson_disk,20.0,spacing_factor=2.0,1.5965159696212687
+2.0,square,100,pitch_um=3000.0;rotation_deg=45.0,1.1148815698869017,poisson_disk,20.0,spacing_factor=2.0,1.5538129103818474
+3.0,square,100,pitch_um=3000.0;rotation_deg=45.0,1.0704904694484139,poisson_disk,20.0,spacing_factor=2.0,1.5094218099433596
+4.0,square,50,pitch_um=3000.0;rotation_deg=45.0,0.968889504077536,jittered_lattice,50.0,pitch_um=1500.0;jitter_fraction=0.2,1.5022186333881167
+5.0,square,50,pitch_um=3000.0;rotation_deg=45.0,0.9426376671918422,jittered_lattice,50.0,pitch_um=1500.0;jitter_fraction=0.2,1.4759667965024228
+6.0,square,50,pitch_um=3000.0;rotation_deg=45.0,0.9010379209242356,poisson_disk,20.0,spacing_factor=2.0,1.4794117502147919
+8.0,square,50,pitch_um=3000.0;rotation_deg=45.0,0.8596000778074441,poisson_disk,20.0,spacing_factor=2.0,1.4711417073016397
+global,square,9,pitch_um=2000.0;rotation_deg=0.0,,,,,

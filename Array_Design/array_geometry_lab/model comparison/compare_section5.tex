@@ -1,0 +1,30 @@
+\section{Conclusion}
+
+The divergence between this project's ranking and Shen's, on this
+project's own candidate set, traces to one specific, verifiable mechanism:
+Shen's ghost-safety term is a smooth membership function calibrated for a
+different scale relationship between hole spacing and blur than this
+project's devices exhibit, and it saturates to numerically zero across
+100\% of tested candidates as a result. This is not evidence that Shen's
+published lattice ranking is wrong in its own tested regime --- their
+evaluator normalizes every design to a fixed fill factor and covers a
+broader shape and arrangement space than this project has swept. It is
+evidence that applying Shen's formula literally to this project's specific
+candidates produces a ranking decided almost entirely by fill-factor
+closeness and a fixed per-family geometric constant, not by ghosting risk,
+because the formula's own safety term never activates in this regime.
+
+This project's hard-gated pipeline, using the same real, pairwise-computed
+margin at every ranking step, does not share this failure mode --- and
+where its own analogous defects have been found (boundary-adjacent
+``winners'', a density formula biased across families), they have been
+identified, fixed, and re-verified against independent hand calculation.
+
+\textbf{Recommendation:} retain this project's hard-gated pipeline as the
+primary ranking system. Adopt Shen's closed-form blind-rate floors as a
+supplementary reported metric. Cite Shen (2026) as prior art addressing the
+same problem, with this document's Sections 3--4 as the basis for a
+specific, narrow technical differentiation --- not a claim of general
+superiority.
+
+\end{document}

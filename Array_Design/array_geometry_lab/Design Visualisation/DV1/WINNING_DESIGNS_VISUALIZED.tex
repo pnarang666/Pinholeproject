@@ -1,0 +1,29 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\newcommand{\recbox}[1]{\par\noindent\colorbox{green!12}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Recommended for Fabrication}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+\newcommand{\notebox}[1]{\par\noindent\colorbox{gray!10}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Note}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+
+\title{Winning Array Designs, Per Myopia Level\\
+\large Visualized to Scale, with Fabrication Recommendation\\
+\normalsize IYPT Pinhole Sunglasses --- Array Geometry Sub-Study}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{winviz_section1.tex}
+\input{winviz_section2.tex}
+\input{winviz_section3.tex}
+\input{winviz_section4.tex}

@@ -1,0 +1,44 @@
+\section{Which to Use for Fabrication}
+
+Nine full designs is more than a first physical test needs. Two candidates
+cover the practically useful range and are the ones this project recommends
+building first.
+
+\recbox{
+\textbf{1. \texttt{square}, pitch=2000\,$\mu$m, N=20, a\_hole=1250\,$\mu$m (M=1).}
+This is the single most informative design to test physically: it is the
+only winner with a real, finite, measured safety margin rather than a
+structural zero-active-pair guarantee. A physical measurement here directly
+tests whether the model's finite-margin prediction (0.128) holds up in
+reality --- the structural-safety designs cannot tell you this, since they
+are safe by geometry regardless of small modeling errors.
+
+\medskip
+\textbf{2. \texttt{ring\_offset\_concentric}, ring\_spacing=4000\,$\mu$m, N=20
+(M=2 through 8).} One physical frame, six aperture-size inserts (750, 600,
+500, 400\,$\mu$m) covers the entire higher-myopia range with a single hole
+pattern. Lowest fabrication cost per M-level covered of any option in the
+table.
+}
+
+\subsection{Why Not the Others First}
+\begin{itemize}
+  \item \textbf{M=0's ring\_offset\_concentric} and \textbf{global's
+  hexagonal} are both structurally safe with wide margin --- lower priority
+  for a first physical test than the finite-margin M=1 design, since they
+  are less likely to reveal a gap between prediction and reality.
+  \item All designs in this table are already the survivors of an extensive
+  audit (density-metric bias, boundary blackout cases, and a seed-lottery
+  defect were each found and fixed against earlier candidates) --- none of
+  the remaining seven "not recommended first" designs carry a known defect,
+  they are simply lower priority for the first fabrication round.
+\end{itemize}
+
+\subsection{Practical Note}
+The M=1 design (1250\,$\mu$m holes) and the M=2--8 design family (750--400\,$\mu$m
+holes) together span the full aperture range needed for laser-cut shim
+fabrication testing described elsewhere in this project --- test the smallest
+hole size (400\,$\mu$m, M=8 insert) first to confirm cutting-edge quality
+before committing material to the full set.
+
+\end{document}

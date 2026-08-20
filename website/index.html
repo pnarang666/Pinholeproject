@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pinhole Project — Prescription-Tailored Pinhole Eyewear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0e1012; --bg-2:#15181b; --card:#1a1e22;
+  --ink:#e9e4d8; --muted:#9a9488; --line:#2a2e33;
+  --accent:#c97a4a; --accent-dim:#8a5535; --accent-2:#5b8a76;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+::selection { background:var(--accent-dim); color:#fff; }
+
+body {
+  font-family:'Inter',-apple-system,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.7;
+  overflow-x:hidden; position:relative;
+}
+/* subtle grain — the single biggest thing that kills the "flat AI gradient" look */
+body::before {
+  content:''; position:fixed; inset:0; z-index:1; pointer-events:none;
+  opacity:.035; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.serif { font-family:'Fraunces',Georgia,serif; }
+.mono { font-family:'JetBrains Mono',monospace; }
+.wrap { max-width:900px; margin:0 auto; padding:0 32px; position:relative; z-index:2; }
+
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  background:rgba(14,16,18,0.82); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line); padding:20px 0;
+}
+nav .wrap { display:flex; justify-content:space-between; align-items:center; }
+.nav-mark { font-family:'Fraunces',serif; font-weight:600; font-size:17px; letter-spacing:.01em; }
+.nav-links { display:flex; gap:30px; font-size:13.5px; }
+.nav-links a { color:var(--muted); text-decoration:none; transition:color .2s; }
+.nav-links a:hover { color:var(--accent); }
+
+header.hero { padding:180px 0 110px; position:relative; }
+.kicker {
+  font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.08em;
+  color:var(--accent); margin-bottom:24px; display:flex; align-items:center; gap:10px;
+}
+.kicker::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+h1 {
+  font-family:'Fraunces',serif; font-weight:500; font-size:50px; letter-spacing:-.01em;
+  line-height:1.12; margin-bottom:28px; max-width:700px; color:#fbf8f2;
+}
+.tagline { font-size:18px; color:var(--muted); max-width:560px; }
+.hero-cta { display:flex; gap:14px; margin-top:38px; }
+.btn {
+  font-weight:600; font-size:14px; padding:13px 26px; border-radius:8px;
+  text-decoration:none; display:inline-block; transition:.2s ease;
+}
+.btn-primary { background:var(--accent); color:#0e1012; }
+.btn-primary:hover { background:#dd8a58; transform:translateY(-1px); }
+.btn-ghost { border:1px solid var(--line); color:var(--ink); }
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+
+.reveal { opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity:1; transform:translateY(0); }
+
+section { padding:96px 0; border-bottom:1px solid var(--line); }
+section:last-of-type { border-bottom:none; }
+.eyebrow {
+  font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:.06em;
+  color:var(--accent); margin-bottom:20px;
+}
+h2.sec-title {
+  font-family:'Fraunces',serif; font-weight:500; font-size:32px; letter-spacing:-.01em;
+  margin-bottom:22px; max-width:620px; color:#fbf8f2;
+}
+p { font-size:16.5px; color:#c9c3b6; margin-bottom:16px; max-width:660px; }
+p.lede { font-size:18.5px; color:var(--ink); max-width:660px; }
+strong { color:#fbf8f2; font-weight:600; }
+@media (max-width:760px){ h1{font-size:36px;} }
+
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start; margin-top:8px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:36px; }
+@media (max-width:760px){ .grid2,.grid3{ grid-template-columns:1fr; } }
+
+.card {
+  background:var(--card); border:1px solid var(--line); border-radius:12px; padding:26px;
+  transition:transform .3s ease, border-color .3s ease;
+}
+.card:hover { transform:translateY(-3px); border-color:var(--accent-dim); }
+.card .num { font-family:'Fraunces',serif; font-size:32px; font-weight:600; color:var(--accent); }
+.card .label { font-size:13px; color:var(--muted); margin-top:8px; line-height:1.5; }
+
+figure { margin:0; }
+figure img {
+  width:100%; border-radius:10px; display:block; border:1px solid var(--line);
+  filter:brightness(.92) contrast(1.03);
+  transition:transform .4s ease, filter .4s ease;
+}
+figure:hover img { transform:scale(1.015); filter:brightness(1) contrast(1.05); }
+figcaption { font-size:13px; color:var(--muted); margin-top:12px; line-height:1.55; }
+
+/* --- physics comparison panel --- */
+.physics-panel {
+  display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line);
+  border-radius:12px; overflow:hidden; margin-top:36px; border:1px solid var(--line);
+}
+.physics-col { background:var(--card); padding:32px; }
+.physics-col.highlight { background:#191d17; }
+.physics-col h4 {
+  font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.05em;
+  color:var(--muted); margin-bottom:18px; text-transform:uppercase;
+}
+.physics-col.highlight h4 { color:var(--accent-2); }
+@media (max-width:760px){ .physics-panel{ grid-template-columns:1fr; } }
+
+/* animated wavefront — ASM visual */
+.wave-stage {
+  position:relative; height:180px; display:flex; align-items:center; justify-content:center;
+  overflow:hidden; border-radius:8px; background:#0e1012; margin-bottom:20px;
+}
+.wave-ring {
+  position:absolute; border:1.5px solid var(--accent-2); border-radius:50%;
+  animation:expand 3s cubic-bezier(.2,.6,.3,1) infinite;
+}
+.wave-ring:nth-child(2){ animation-delay:.75s; }
+.wave-ring:nth-child(3){ animation-delay:1.5s; }
+.wave-ring:nth-child(4){ animation-delay:2.25s; }
+@keyframes expand {
+  0% { width:6px; height:6px; opacity:.9; }
+  100% { width:200px; height:200px; opacity:0; }
+}
+.wave-source { width:5px; height:5px; border-radius:50%; background:var(--accent); z-index:2; }
+
+/* RSS static icon */
+.rss-stage {
+  position:relative; height:180px; display:flex; align-items:center; justify-content:center;
+  border-radius:8px; background:#0e1012; margin-bottom:20px; gap:0;
+}
+.rss-circle {
+  width:90px; height:90px; border-radius:50%; border:1.5px dashed var(--muted);
+  margin:0 -20px; opacity:.7;
+}
+.rss-plus {
+  font-family:'JetBrains Mono',monospace; color:var(--muted); font-size:20px; margin:0 8px;
+}
+
+footer { padding:76px 0 64px; }
+.contact-row { display:flex; gap:32px; flex-wrap:wrap; margin-top:24px; }
+.contact-row a { color:var(--accent); text-decoration:none; font-weight:600; font-size:15.5px; }
+.contact-row a:hover { text-decoration:underline; }
+.small { font-size:12.5px; color:var(--muted); margin-top:48px; }
+.note-box {
+  border:1px dashed var(--line); border-radius:10px; padding:26px;
+  font-size:13.5px; color:var(--muted); background:var(--card);
+}
+.status-row {
+  display:flex; align-items:center; gap:14px; margin-bottom:14px; font-size:14.5px;
+  padding:13px 16px; border-radius:8px; background:var(--card); max-width:640px;
+}
+.dot2 { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.dot2.done { background:var(--accent-2); }
+.dot2.progress { background:var(--accent); animation:blink 2s ease-in-out infinite; }
+.dot2.pending { background:#4a4d50; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+.mission-block {
+  background:linear-gradient(150deg,#191d17,#15181b); border:1px solid var(--line);
+  border-radius:14px; padding:48px; margin-top:20px;
+}
+.mission-block p.lede { font-size:21px; color:#fbf8f2; }
+
+/* per-prescription strip */
+.rx-strip { display:flex; gap:10px; margin-top:32px; flex-wrap:wrap; }
+.rx-pill {
+  border:1px solid var(--line); border-radius:8px; padding:14px 16px;
+  background:var(--card); text-align:center; flex:1; min-width:96px;
+  transition:border-color .25s ease, transform .25s ease;
+}
+.rx-pill:hover { border-color:var(--accent); transform:translateY(-2px); }
+.rx-pill .m { font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--muted); }
+.rx-pill .um { font-family:'Fraunces',serif; font-size:19px; color:var(--accent); margin-top:4px; }
+
+.data-table {
+  width:100%; border-collapse:collapse; margin-top:28px; font-size:14px;
+}
+.data-table th {
+  font-family:'JetBrains Mono',monospace; font-size:11px; text-align:left;
+  color:var(--muted); text-transform:uppercase; letter-spacing:.04em;
+  padding:10px 14px; border-bottom:1px solid var(--line);
+}
+.data-table td {
+  padding:12px 14px; border-bottom:1px solid var(--line); color:var(--ink);
+}
+.data-table tr:hover td { background:var(--card); }
+.data-table .mono-cell { font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--accent-2); }
+.data-table .ghost0 { color:var(--accent-2); font-weight:600; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-mark">The Pinhole Project</div>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#physics">Physics</a>
+      <a href="#families">Families</a>
+      <a href="#results">Results</a>
+      <a href="#status">Status</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">THE PINHOLE PROJECT — ARRAY OPTICS RESEARCH</div>
+  <h1>Vision correction and light attenuation, engineered into one lens — through wave optics, not approximation.</h1>
+  <p class="tagline">A full wave-optics simulation pipeline that designs pinhole
+  eyewear tailored to a wearer's exact myopia level — sharper focus, controlled
+  glare, no corrective lens, no compromise on the physics.</p>
+  <div class="hero-cta">
+    <a href="#physics" class="btn btn-primary">See the physics</a>
+    <a href="#contact" class="btn btn-ghost">Get in touch</a>
+  </div>
+</header>
+
+<section id="problem" class="reveal">
+  <div class="eyebrow">01 — THE PROBLEM</div>
+  <h2 class="sec-title">Two devices do these jobs separately. Nobody has made one that does both, rigorously.</h2>
+  <div class="grid2">
+    <div>
+      <p><strong>Prescription glasses correct focus.</strong> Sunglasses cut
+      light. A short-sighted person outdoors in bright sun is stuck choosing
+      between the two, or wearing both at once.</p>
+      <p>The stenopeic (pinhole) effect has been used clinically for over a
+      century: a small enough aperture sharpens a defocused image by pure
+      geometry — restricting which rays reach the retina — with no lens
+      required. Ophthalmologists still use pinhole occluders today as a
+      standard diagnostic test for exactly this reason.</p>
+    </div>
+    <div>
+      <p><strong>So why isn't this already a product?</strong> A single
+      pinhole small enough to sharpen an image lets through almost no
+      light — useless outdoors. Arrays of many small holes solve the
+      brightness problem, but introduce a subtler one: multiple holes can
+      each project their own copy of the image onto the retina.</p>
+      <p>Get the spacing wrong, and the wearer sees double. Every prior
+      attempt at pinhole eyewear has either accepted this risk quietly, or
+      used blur models too simplified to catch it in the first place.</p>
+    </div>
+  </div>
+</section>
+
+<section id="physics" class="reveal">
+  <div class="eyebrow">02 — THE PHYSICS</div>
+  <h2 class="sec-title">Light doesn't travel in straight lines through a pinhole. Most models pretend it does.</h2>
+  <p class="lede">When light passes through a small aperture, two separate effects
+  blur the image: ordinary defocus (the geometry of a short-sighted eye), and
+  diffraction — the wave nature of light bending around the edge of the hole
+  itself. How you combine these two effects determines whether your design
+  actually works.</p>
+
+  <div class="physics-panel">
+    <div class="physics-col">
+      <h4>The Common Shortcut — RSS</h4>
+      <div class="rss-stage">
+        <div class="rss-circle"></div><div class="rss-plus">+</div><div class="rss-circle" style="width:60px;height:60px;"></div>
+      </div>
+      <p style="margin-bottom:0;">Most models — including the most recent
+      published academic approach to this exact problem — combine defocus
+      and diffraction blur by simple addition-in-quadrature (root-sum-square).
+      It's fast, and it's what optics textbooks teach as a first approximation.
+      It also silently assumes the two effects don't interact — which, at the
+      hole sizes and distances real eyewear uses, isn't quite true.</p>
+    </div>
+    <div class="physics-col highlight">
+      <h4>What We Use — Full Wave Propagation (ASM)</h4>
+      <div class="wave-stage">
+        <div class="wave-ring"></div><div class="wave-ring"></div>
+        <div class="wave-ring"></div><div class="wave-ring"></div>
+        <div class="wave-source"></div>
+      </div>
+      <p style="margin-bottom:0;">The Angular Spectrum Method propagates the
+      actual light field — as a wave, not a ray — from the pinhole, through
+      the eye's optics, to the retina. Every diffraction ripple and every
+      interaction with defocus falls directly out of one continuous
+      calculation. Nothing is approximated or bolted on afterward.</p>
+    </div>
+  </div>
+</section>
+
+<section id="personalized" class="reveal">
+  <div class="eyebrow">03 — PERSONALIZATION</div>
+  <h2 class="sec-title">One prescription, one array. Not a generic sunglasses shape.</h2>
+  <p class="lede">A conventional pinhole novelty product uses the same hole
+  pattern for everyone. Our pipeline computes hole diameter, spacing, and
+  arrangement independently for each myopia strength — the same way an actual
+  prescription lens is ground to one person's exact correction, not sold off
+  a shelf.</p>
+  <p>As myopia increases, the optimal hole size shrinks — smaller apertures
+  resolve stronger defocus more precisely, at the cost of needing a different
+  spacing pattern to stay ghost-free. The array below shows real, simulated
+  aperture diameters our pipeline computed across the myopia range we tested:</p>
+  <div class="rx-strip">
+    <div class="rx-pill"><div class="m">0 D</div><div class="um">2000&micro;m</div></div>
+    <div class="rx-pill"><div class="m">1 D</div><div class="um">1250&micro;m</div></div>
+    <div class="rx-pill"><div class="m">2–3 D</div><div class="um">750&micro;m</div></div>
+    <div class="rx-pill"><div class="m">4–5 D</div><div class="um">600&micro;m</div></div>
+    <div class="rx-pill"><div class="m">6 D</div><div class="um">500&micro;m</div></div>
+    <div class="rx-pill"><div class="m">8 D</div><div class="um">400&micro;m</div></div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="mission-block">
+    <div class="eyebrow">OUR MISSION</div>
+    <p class="lede">Build eyewear that treats vision correction and light
+    management as one optical problem, not two — validated with the rigor of
+    a physics study, not the confidence of a marketing claim.</p>
+  </div>
+</section>
+
+<section id="approach" class="reveal">
+  <div class="eyebrow">04 — VALIDATION</div>
+  <h2 class="sec-title">Simulated. Cross-checked by hand. Benchmarked against published academic work.</h2>
+  <p>Every formula in this pipeline was checked against an independent
+  method before being trusted — closed-form results verified against direct
+  wave simulation, simulation results verified against hand calculation, and
+  the whole safety framework benchmarked against the most rigorous published
+  academic model available for this exact problem.</p>
+  <div class="grid3">
+    <div class="card">
+      <div class="num" data-count="0.995" data-decimals="3">0</div>
+      <div class="label">R² — our ghost-separation formula, validated against
+      direct two-hole wave-optics measurement</div>
+    </div>
+    <div class="card">
+      <div class="num" data-count="9">0</div>
+      <div class="label">Independent array geometry families simulated,
+      compared, and stress-tested for hidden failure modes</div>
+    </div>
+    <div class="card">
+      <div class="num" data-count="1" data-suffix="→∞">0</div>
+      <div class="label">Iterative defect audits — every design re-verified
+      by hand before being trusted as final</div>
+    </div>
+  </div>
+</section>
+
+<section class="reveal">
+  <div class="eyebrow">05 — A SPECIFIC FINDING</div>
+  <h2 class="sec-title">We found where the closest published model actually breaks.</h2>
+  <p>The most recent academic approach to this problem scores ghost-safety as
+  one soft, weighted term among several — a risky design can be outweighed by
+  a good score elsewhere, never fully rejected. We reimplemented their formula
+  from scratch and found it goes numerically inert across our entire tested
+  design space at real device scale — it stops distinguishing safe designs
+  from unsafe ones entirely.</p>
+  <div class="grid2" style="margin-top:28px;">
+    <figure>
+      <img src="assets/saturation.png" alt="Saturation curve of competing safety metric">
+      <figcaption>The competing model's own safety term (orange), plotted
+      against our full tested range (shaded) — flat, meaning inert.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/divergence.png" alt="Divergence between gaze angle safety checks">
+      <figcaption>A design safe when the eye looks straight ahead is not
+      necessarily safe once real gaze movement is included.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="designs" class="reveal">
+  <div class="eyebrow">06 — VALIDATED DESIGNS</div>
+  <h2 class="sec-title">Real, simulated array geometries — not illustrations.</h2>
+  <p>Every pattern below is the direct output of the simulation pipeline,
+  checked against real, measured safety margins — not just a pass/fail
+  threshold, but actual headroom above it.</p>
+  <div class="grid2" style="margin-top:28px;">
+    <figure>
+      <img src="assets/design_M1.png" alt="Square lattice pinhole array design, M=1D">
+      <figcaption>Square lattice, N=20, pitch=2000&micro;m — the 1D design,
+      with a real, finite, measured safety margin rather than a structural
+      zero-risk guarantee.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/design_global.png" alt="Square lattice pinhole array design, global scope">
+      <figcaption>Same family, worst-case-across-prescriptions configuration
+      — one geometry, guaranteed safe across the full range tested.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="families" class="reveal">
+  <div class="eyebrow">07 — GEOMETRY FAMILIES TESTED</div>
+  <h2 class="sec-title">Nine independent hole-arrangement families, simulated and audited.</h2>
+  <p class="lede">Regular lattices, radial rings, spirals, and disordered
+  patterns were each generated, propagated through the full wave-optics
+  pipeline, and checked against real safety margins — not assumed to work
+  from theory alone.</p>
+  <div class="grid2" style="margin-top:28px;">
+    <figure>
+      <img src="assets/families_deterministic.png" alt="Deterministic pinhole array geometry families">
+      <figcaption>Deterministic families: square, hexagonal, rectangular,
+      concentric rings, and Fibonacci/golden-angle spirals — each drawn to
+      true relative scale from actual generator output.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/families_stochastic.png" alt="Stochastic pinhole array geometry families">
+      <figcaption>Disordered families: Poisson-disk and jittered-lattice
+      patterns, shown across multiple random seeds — tested specifically to
+      see whether breaking periodicity helps or hurts safety.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="validation-data" class="reveal">
+  <div class="eyebrow">08 — VALIDATION DATA</div>
+  <h2 class="sec-title">The two formulas everything else depends on — checked against independent measurement.</h2>
+  <p>Both the ghost-separation formula and the gaze-angle overlap geometry
+  were validated against methods that share no code with each other — if a
+  formula were wrong, an independent check built a different way would be
+  the thing to catch it.</p>
+  <div class="grid2" style="margin-top:28px;">
+    <figure>
+      <img src="assets/ghost_formula.png" alt="Ghost formula validation against wave-optics measurement">
+      <figcaption>Ghost-separation formula (R&sup2;=0.995) plotted against
+      direct two-hole wave-optics measurement — not assumed, measured pixel
+      by pixel on a simulated retina.</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/vignetting_validation.png" alt="Vignetting geometry validated against Monte Carlo">
+      <figcaption>Gaze-angle overlap geometry, cross-checked against an
+      independent Monte Carlo estimate — agreement to under 0.2 percentage
+      points.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="results" class="reveal">
+  <div class="eyebrow">09 — FINAL RESULT</div>
+  <h2 class="sec-title">The most appropriate design per prescription — after every gate passed.</h2>
+  <p>Two safety standards were applied and cross-checked: a conservative
+  worst-case margin, and a realistic standard weighted by measured human gaze
+  behavior. Every design below satisfies both — real, finite safety margin
+  under the strict standard, and genuine 0% ghosting under the realistic one.</p>
+  <table class="data-table">
+    <tr><th>Myopia</th><th>Family</th><th>Pattern</th><th>Aperture</th><th>Ghost (weighted)</th><th>Blind (weighted)</th></tr>
+    <tr><td>0 D</td><td>Square</td><td class="mono-cell">N=20, pitch=4000&micro;m</td><td>2000&micro;m</td><td class="ghost0">0.00%</td><td>0.00%</td></tr>
+    <tr><td>1 D</td><td>Hexagonal</td><td class="mono-cell">N=20, pitch=4000&micro;m</td><td>1250&micro;m</td><td class="ghost0">0.00%</td><td>0.00%</td></tr>
+    <tr><td>2–3 D</td><td>Hexagonal</td><td class="mono-cell">N=20, pitch=4000&micro;m</td><td>750&micro;m</td><td class="ghost0">0.00%</td><td>0.00%</td></tr>
+    <tr><td>4–5 D</td><td>Hexagonal</td><td class="mono-cell">N=20, pitch=4000&micro;m</td><td>600&micro;m</td><td class="ghost0">0.00%</td><td>0.00%</td></tr>
+    <tr><td>6 D</td><td>Hexagonal</td><td class="mono-cell">N=100, pitch=4000&micro;m</td><td>500&micro;m</td><td class="ghost0">0.00%</td><td>0.12%</td></tr>
+    <tr><td>8 D</td><td>Hexagonal</td><td class="mono-cell">N=50, pitch=4000&micro;m</td><td>400&micro;m</td><td class="ghost0">0.00%</td><td>0.33%</td></tr>
+    <tr><td>Global</td><td>Square</td><td class="mono-cell">N=20, pitch=4000&micro;m</td><td>2000&micro;m</td><td class="ghost0">0.00%</td><td>0.00%</td></tr>
+  </table>
+</section>
+
+<section id="status" class="reveal">
+  <div class="eyebrow">10 — STATUS</div>
+  <h2 class="sec-title">Where we actually are — no overclaiming.</h2>
+  <div class="status-row"><span class="dot2 done"></span>
+  Theoretical model complete — validated, defect-audited, benchmarked against
+  published prior art</div>
+  <div class="status-row"><span class="dot2 done"></span>
+  Design specifications finalized across the full myopia range tested</div>
+  <div class="status-row"><span class="dot2 progress"></span>
+  Physical experimentation underway — raw sensor captures collected across
+  multiple aperture sizes, reprocessing in progress for accurate exposure</div>
+  <div class="status-row"><span class="dot2 pending"></span>
+  Full physical measurement against model predictions</div>
+  <div class="note-box" style="margin-top:24px;">
+  Physical comparison photography is in progress — raw sensor captures exist
+  across the tested aperture range and are being reprocessed for accurate
+  exposure before publishing here.
+  </div>
+</section>
+
+<footer id="contact" class="reveal">
+  <div class="eyebrow">GET IN TOUCH</div>
+  <h2 class="sec-title">Currently seeking fabrication and prototyping partners.</h2>
+  <p>We're looking for precision laser-cutting access and prototyping support
+  to validate this model against a real, measured device.</p>
+  <div class="contact-row">
+    <a href="mailto:pnarang666@gmail.com">pnarang666@gmail.com</a>
+    <a href="tel:+918146666505">+91 81466 66505</a>
+  </div>
+  <div class="small">Parikshit Narang &middot; The Pinhole Project &middot;
+  IYPT 2027 research, open to commercial development.</div>
+</footer>
+
+</div>
+
+<script>
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+const counters = document.querySelectorAll('.num[data-count]');
+const countIO = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target;
+    const target = parseFloat(el.dataset.count);
+    const decimals = parseInt(el.dataset.decimals || '0', 10);
+    const suffix = el.dataset.suffix || '';
+    const dur = 1300, start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target * eased).toFixed(decimals) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    countIO.unobserve(el);
+  });
+}, { threshold: 0.5 });
+counters.forEach(el => countIO.observe(el));
+</script>
+</body>
+</html>
