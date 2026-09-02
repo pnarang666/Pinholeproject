@@ -1,0 +1,100 @@
+ExP3 FROSTED SCREEN -- PLAIN-LANGUAGE SUMMARY
+==========================================================================
+
+METHOD (confirmed, not assumed -- see analyze_exp3.py docstring): the
+intensity image is standard BT.601 grayscale (cv2.cvtColor ... GRAY), NOT
+a naive max(R,G,B) or plain channel-mean -- both of those were tried and
+gave the WRONG numbers; BT.601 grayscale is the one that reproduces this
+task's own hand-verified 1000um reference (45.6px at 0mm, 63.6px at
+20mm) essentially exactly (this pipeline recovers 45.58px and 63.60px on
+the same files). Threshold = 50% of that image's peak; spot = the LARGEST
+connected component of the threshold mask only (hardened per this task's
+own instruction); radius_px = sqrt(area_px/pi).
+
+LIMITATION, stated explicitly: displacement_mm is NOT converted to
+diopters anywhere in this report. That conversion needs the beam width at
+the lens calibrated, which has not been done. All results below are in mm
+of screen displacement and pixels only.
+
+5 files excluded outright (not measured): 20260902_*.jpg timestamped
+setup/calibration shots -- see measurements/excluded_files.csv.
+
+PER-APERTURE RESULTS
+--------------------------------------------------------------------------
+
+400um aperture:
+  radii (0,5,10,15,20mm): 42.99, 44.92, 48.77, 53.49, 56.64 px
+  monotonic: YES
+  slope (linear fit): 0.718 px/mm
+  %growth 0->20mm: 31.8%
+
+500um aperture:
+  radii (0,5,10,15,20mm): 42.42, 45.08, 48.79, 51.86, 55.48 px
+  monotonic: YES
+  slope (linear fit): 0.658 px/mm
+  %growth 0->20mm: 30.8%
+
+600um aperture:
+  radii (0,5,10,15,20mm): 44.98, 45.31, 48.38, 52.38, 56.46 px
+  monotonic: YES
+  slope (linear fit): 0.601 px/mm
+  %growth 0->20mm: 25.5%
+
+800um aperture:
+  radii (0,5,10,15,20mm): 53.27, 52.61, 54.64, 63.05, 64.40 px
+  monotonic: NO -- not smoothed over, see below
+  slope (linear fit): 0.654 px/mm
+  %growth 0->20mm: 20.9%
+  NON-MONOTONIC STEP: radius at 0mm (53.27px) is >= radius at 5mm (52.61px) -- a real dip in the data,
+  not a fit artifact. Reported plainly, not discarded.
+
+1000um aperture:
+  radii (0,5,10,15,20mm): 45.58, 49.38, 51.44, 57.43, 63.60 px
+  monotonic: YES
+  slope (linear fit): 0.882 px/mm
+  %growth 0->20mm: 39.5%
+
+1400um aperture:
+  radii (0,5,10,15,20mm): 58.09, 60.80, 63.51, 66.94, 71.93 px
+  monotonic: YES
+  slope (linear fit): 0.676 px/mm
+  %growth 0->20mm: 23.8%
+
+--------------------------------------------------------------------------
+
+CROSS-APERTURE SLOPE CHECK -- does larger aperture show a steeper
+radius-vs-displacement slope, as geometric defocus blur (scales with
+aperture diameter) predicts?
+  600um: slope=0.601 px/mm
+  800um: slope=0.654 px/mm
+  500um: slope=0.658 px/mm
+  1400um: slope=0.676 px/mm
+  400um: slope=0.718 px/mm
+  1000um: slope=0.882 px/mm
+
+VERDICT: the slope ordering (600, 800, 500, 1400, 400, 1000) does NOT
+match the predicted aperture-size ordering (400, 500, 600, 800, 1000, 1400).
+Reported plainly -- not smoothed over or explained away.
+
+Context, not an excuse: 5 of 6 apertures (400-1400um, excluding 1000um's
+high 0.882 px/mm) cluster in a narrow
+0.601-0.718 px/mm band -- a weak
+aperture-dependence signal here would be easy to scramble by real rig noise
+between aperture swaps. This project's own centroid_drift_px column already
+shows substantial (100-270px) drift building up with displacement on EVERY
+aperture, confirming the rig is not perfectly axis-stable between shots. That
+is a plausible contributing factor, not a confirmed explanation -- the ordering
+mismatch is reported as a real result, not attributed to noise by assumption.
+
+--------------------------------------------------------------------------
+
+NO-PINHOLE CONTROL (reported separately, not merged with the aperture set)
+  radii (0,5,10,15,20mm): 178.43, 204.71, 249.75, 322.20, 387.37 px
+  slope: 10.707 px/mm  (largest aperture, 1400um, was 0.676 px/mm)
+  %growth 0->20mm: 117.1%
+
+SANITY CHECK PASSED: the no-pinhole control grows 12.1x faster
+(steeper slope) than even the largest tested aperture, and its absolute
+spot radius (178-387px) dwarfs every aperture case (42-72px) -- clear
+confirmation that the pinhole aperture is doing real, substantial work
+restricting the beam, not a null/no-op control.

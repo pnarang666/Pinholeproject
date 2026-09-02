@@ -1,0 +1,61 @@
+
+=== 400b ===
+  [ok] 400b/0400.dng M=0 r_EE_50_px=1142.14 (thr_frac=0.85, 3.7s)
+  [ok] 400b/1400.dng M=1 r_EE_50_px=1130.58 (thr_frac=0.85, 3.9s) [CORE SATURATED]
+  [unparseable] 400b/20260826_225126.dng: anomalous filename (timestamp-style), not M-mapped, excluded per task spec
+  [ok] 400b/2400.dng M=2 r_EE_50_px=1024.74 (thr_frac=0.80, 3.8s) [CORE SATURATED]
+  [ok] 400b/3400.dng M=3 r_EE_50_px=980.85 (thr_frac=0.80, 4.0s)
+  [ok] 400b/4400.dng M=4 r_EE_50_px=1118.17 (thr_frac=0.90, 3.7s)
+  [ok] 400b/6400.dng M=6 r_EE_50_px=1186.96 (thr_frac=0.90, 4.0s)
+  [ok] 400b/8400.dng M=8 r_EE_50_px=1189.24 (thr_frac=0.90, 3.8s)
+
+=== 600b ===
+  [ok] 600b/M0600b.dng M=0 r_EE_50_px=1193.83 (thr_frac=0.80, 3.6s) [CORE SATURATED]
+  [ok] 600b/M1600b.dng M=1 r_EE_50_px=1227.47 (thr_frac=0.90, 3.7s) [CORE SATURATED]
+  [ok] 600b/M2600b.dng M=2 r_EE_50_px=1249.90 (thr_frac=0.95, 3.8s) [CORE SATURATED]
+  [ok] 600b/M3600b.dng M=3 r_EE_50_px=1267.88 (thr_frac=0.80, 3.9s) [CORE SATURATED]
+  [ok] 600b/M4600b.dng M=4 r_EE_50_px=1341.39 (thr_frac=0.95, 4.3s) [CORE SATURATED]
+  [ok] 600b/M6600b.dng M=6 r_EE_50_px=1346.23 (thr_frac=0.95, 4.4s) [CORE SATURATED]
+  [ok] 600b/M8600B.dng M=8 r_EE_50_px=1346.23 (thr_frac=0.95, 4.4s) [CORE SATURATED]
+
+=== 700b ===
+  [ok] 700b/0700b.dng M=0 r_EE_50_px=1327.18 (thr_frac=0.95, 4.6s)
+  [ok] 700b/1700b.dng M=1 r_EE_50_px=1368.53 (thr_frac=0.95, 4.8s) [CORE SATURATED]
+  [ok] 700b/2700b.dng M=2 r_EE_50_px=1302.41 (thr_frac=0.95, 4.7s) [CORE SATURATED]
+  [ok] 700b/3700b.dng M=3 r_EE_50_px=1069.25 (thr_frac=0.95, 3.6s) [CORE SATURATED]
+  [ok] 700b/4700b4.dng M=4 r_EE_50_px=1362.73 (thr_frac=0.95, 4.7s) [CORE SATURATED]
+  [ok] 700b/6700b.dng M=6 r_EE_50_px=1242.39 (thr_frac=0.95, 4.1s) [CORE SATURATED]
+  [ok] 700b/8700b.dng M=8 r_EE_50_px=1296.99 (thr_frac=0.95, 4.5s)
+
+=== 1000b ===
+  [unparseable] 1000b/010006.dng: does not match this folder's established filename pattern -- not guessed
+  [ok] 1000b/11000.dng M=1 r_EE_50_px=1058.72 (thr_frac=0.95, 3.6s) [CORE SATURATED]
+  [ok] 1000b/21000.dng M=2 r_EE_50_px=1100.95 (thr_frac=0.95, 3.8s)
+  [ok] 1000b/31000.dng M=3 r_EE_50_px=1083.64 (thr_frac=0.95, 3.7s)
+  [ok] 1000b/41000.dng M=4 r_EE_50_px=924.30 (thr_frac=0.80, 3.8s)
+  [ok] 1000b/61000.dng M=6 r_EE_50_px=964.66 (thr_frac=0.95, 3.7s) [CORE SATURATED]
+  [ok] 1000b/81000.dng M=8 r_EE_50_px=1016.58 (thr_frac=0.95, 3.7s) [CORE SATURATED]
+
+=== 1200b ===
+  [ok] 1200b/01200.dng M=0 r_EE_50_px=1439.28 (thr_frac=0.95, 5.5s) [CORE SATURATED]
+  [ok] 1200b/11200.dng M=1 r_EE_50_px=1342.14 (thr_frac=0.95, 4.6s) [CORE SATURATED]
+  [ok] 1200b/21200.dng M=2 r_EE_50_px=1261.45 (thr_frac=0.95, 3.9s) [CORE SATURATED]
+  [ok] 1200b/31200.dng M=3 r_EE_50_px=1406.36 (thr_frac=0.95, 4.9s)
+  [ok] 1200b/41200.dng M=4 r_EE_50_px=1157.71 (thr_frac=0.95, 3.9s) [CORE SATURATED]
+  [ok] 1200b/61200.dng M=6 r_EE_50_px=1103.06 (thr_frac=0.95, 4.0s) [CORE SATURATED]
+  [ok] 1200b/81200.dng M=8 r_EE_50_px=1162.17 (thr_frac=0.95, 3.7s) [CORE SATURATED]
+
+=== Nopinholeb ===
+  [ok] Nopinholeb/0.dng M=0 r_EE_50_px=1333.04 (thr_frac=0.95, 4.2s) [CORE SATURATED]
+  [ok] Nopinholeb/1.dng M=1 r_EE_50_px=1291.57 (thr_frac=0.95, 4.0s) [CORE SATURATED]
+  [ok] Nopinholeb/2.dng M=2 r_EE_50_px=1338.93 (thr_frac=0.95, 4.3s) [CORE SATURATED]
+  [ok] Nopinholeb/3.dng M=3 r_EE_50_px=1420.08 (thr_frac=0.95, 4.6s) [CORE SATURATED]
+  [ok] Nopinholeb/4.dng M=4 r_EE_50_px=1444.73 (thr_frac=0.95, 4.8s) [CORE SATURATED]
+  [ok] Nopinholeb/6.dng M=6 r_EE_50_px=1360.36 (thr_frac=0.95, 4.4s) [CORE SATURATED]
+  [ok] Nopinholeb/8.dng M=8 r_EE_50_px=1336.50 (thr_frac=0.95, 4.2s) [CORE SATURATED]
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/measurements/all_measurements.csv (34 rows)
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/measurements/flagged_exposure_issues.csv (0 rows)
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/measurements/unparseable_files.csv (2 rows)
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/measurements/nopinhole_control.csv (7 rows)
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/report/comparison_summary.txt
+wrote /Users/parikshitnarang/Pinholeproject/ExperimentalComparison/report/Experimental_Comparison_Report.pdf
