@@ -1,0 +1,8 @@
+folder,filename,parsed_M,measured_r_EE_50_px,normalized_ratio_measured,notes
+Nopinholeb,0.dng,0,1333.04,1.0,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,1.dng,1,1291.568,0.96889,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,2.dng,2,1338.934,1.00442,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,3.dng,3,1420.081,1.0653,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,4.dng,4,1444.727,1.08378,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,6.dng,6,1360.359,1.02049,core pixel-saturated (>=65535 in a channel)
+Nopinholeb,8.dng,8,1336.501,1.0026,core pixel-saturated (>=65535 in a channel)

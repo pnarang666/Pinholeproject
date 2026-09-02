@@ -1,0 +1,3 @@
+folder,filename,reason
+400b,20260826_225126.dng,"anomalous filename (timestamp-style), not M-mapped, excluded per task spec"
+1000b,010006.dng,does not match this folder's established filename pattern -- not guessed
