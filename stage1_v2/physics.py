@@ -164,6 +164,18 @@ def radial_profile(I, R, dx, n_r=None, n_theta=360):
     Restricted to the circle inscribed in the simulation window (not out to the corner)
     so every angular ray at every sampled radius stays in-bounds; this is the region
     these diagnostics (and their plots) ever actually look at.
+
+    PHYSICS_AUDIT.md item E3: this inscribed-circle domain (radius = dx*min(center,
+    N-1-center), i.e. up to the nearest edge) is SMALLER than encircled_energy()'s own
+    domain, which bins all the way out to R.max() -- the corner distance, ~1.41x
+    further for a square grid. Threshold radii derived from this function (FWHM, 1/e^2,
+    custom threshold) and r_EE(P) from encircled_energy() are therefore measured over
+    different domains: r_EE(P) can (and for high P, does) draw on energy in the
+    corner-only region this function never samples, while a threshold-crossing search
+    here can never report a radius beyond the inscribed circle even if the true
+    threshold crossing lies further out. This affects high percentiles most (they need
+    more of the field's extent to reach the target fraction) and is also the least
+    validated region of the grid (furthest from the well-sampled, well-checked center).
     """
     N = I.shape[0]
     center = N // 2
@@ -181,6 +193,33 @@ def radial_profile(I, R, dx, n_r=None, n_theta=360):
 
 
 def encircled_energy(I, R, dx, n_bins=None):
+    """
+    Cumulative radial power profile: r_edges[i] is the outer radius of bin i, EE[i] is
+    the fraction of GRID-CAPTURED power enclosed within r_edges[i], total_power is the
+    grid-captured power itself.
+
+    PHYSICS_AUDIT.md item E2: `total_power = cum_power[-1]` normalizes to whatever power
+    is captured within the simulation grid at the time I is measured -- NOT to the power
+    originally emitted at the aperture. If some fraction of energy has left the window
+    (legitimately diffracted beyond a finite window, or suppressed by the ASM's own
+    band-limiting -- see asm_propagate's band_info), EE(r) reports "P% of the power that
+    remains," not "P% of the power that was emitted." The existing wraparound check
+    (see run_validation's "Window size / wraparound" check, and
+    pipeline_junction.validate_junction's divergence estimate) is PEAK-relative (it
+    checks whether edge intensity is small compared to the peak), not an integrated
+    energy accounting -- it can catch gross wraparound contamination but does not by
+    itself bound how much real energy may have left the window. Callers wanting an
+    integrated escape estimate should compare this function's own `total_power` against
+    the field's known input power at an earlier, unclipped stage (e.g. the analytic
+    aperture area at the pinhole plane) -- see phase2_retina.run_pipeline_point's
+    `energy_escape_estimate` for a concrete instance of this comparison.
+
+    PHYSICS_AUDIT.md item E3: bins all the way out to R.max() (the corner of a square
+    grid, ~1.41x the inscribed-circle radius) -- a LARGER domain than radial_profile()'s
+    inscribed-circle restriction. See radial_profile()'s docstring for the consequence:
+    r_EE(P) and threshold-crossing radii (FWHM, 1/e^2, ...) are measured over different
+    domains, which matters most at high P.
+    """
     if n_bins is None:
         n_bins = choose_radial_bins(R.max(), dx)
     r_max = R.max()

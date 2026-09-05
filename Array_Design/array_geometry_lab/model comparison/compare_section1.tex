@@ -1,0 +1,38 @@
+\section{Purpose and Scope}
+
+Shen (Hangzhou Normal University, Aug.\ 2026) addresses the same IYPT 2027
+pinhole-sunglass design problem this project addresses, independently. This
+document compares the two models directly, quantifies where and why they
+diverge on this project's actual candidate data, and states honestly where
+each model is stronger. This is a technical comparison, not a claim that
+either work supersedes the other in general --- the two studies cover
+different, only partially overlapping, regions of the design space.
+
+\section{The Two Models at a Glance}
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+& \textbf{This project} & \textbf{Shen (2026)} \\
+\midrule
+Blur model & Full Angular Spectrum wave-optics & RSS (root-sum-square) approximation \\
+& propagation (exact field simulation) & of geometric + diffraction blur \\
+Ghost formula & $\Delta r = sM/(P_0-M)$ & $\Delta r = sM/P$ \\
+& validated $R^2{=}0.995$ vs.\ direct & verified vs.\ matrix optics and \\
+& two-hole wave propagation & ray tracing (not wave-optics) \\
+Safety treatment & Hard gates (pass/fail on real & Soft, continuous membership \\
+& computed margin) & function ($\mu_g$, never zero) \\
+Vignetting & Explicit, gaze-integrated & Static coverage ratio only, \\
+& ($\varphi=0^\circ$ to $\pm25^\circ$) & no gaze-angle dependence \\
+Blind-rate & Not a first-class metric (added & Closed-form geometric floor \\
+& only in the final margin-aware run) & per lattice family \\
+Density metric & Family-agnostic buffered convex & Closed-form per-lattice fill \\
+& hull (after a found and fixed bias) & factor $\eta$ \\
+Aperture shape & Circular only (project scope) & Circle, square, diamond, ellipse, \\
+& & annulus --- broad comparison \\
+Search acceleration & None (direct sweep) & Neural surrogate + inverse network \\
+Families tested & 9 (incl.\ 2 stochastic, rotation swept) & 8 (incl.\ apodized, two-scale) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\newpage

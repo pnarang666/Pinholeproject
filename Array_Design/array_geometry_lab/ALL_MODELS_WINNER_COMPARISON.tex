@@ -1,0 +1,165 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.6cm]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{pdflscape}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{parskip}
+\title{\vspace{-1.5em}All Models — Winner-per-M Comparison\\\large Every ranking approach built in this project, side by side}
+\author{}
+\date{}
+
+\newcommand{\model}[1]{\textbf{#1}}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+
+\section*{The models}
+
+Seven distinct ranking approaches were built over the course of this project. They differ on
+three axes: which \emph{families} they consider, whether they apply a \emph{hard safety gate}
+(reject unsafe designs outright) or a \emph{soft score} (penalize but never exclude), and what
+\emph{objective} they rank survivors by.
+
+\begin{longtable}{@{}p{3.1cm}p{2.6cm}p{3.5cm}p{6.5cm}@{}}
+\toprule
+\textbf{Model} & \textbf{Families} & \textbf{Gate} & \textbf{Ranks by} \\
+\midrule
+\endhead
+metric1 (hard-gated) & all 10 & margin-aware (real threshold, not $>0$) & packing\_density = $N_\text{actual}/\text{hull\_area}$ \\
+FINAL\_WINNER & square, hex, rectangular only & margin-aware (same as metric1) & packing\_density (identical objective, narrower family scope) \\
+S\_paper & all 10 & none (soft only) & Shen's closed-form $S = a_\text{norm}+\mu_\eta+\mu_g+\text{cov}$ \\
+S\_paper\_soft & square, hex only (blind\_rate undefined elsewhere) & none (soft only) & same, cov replaced by Shen's closed-form $1-\text{blind\_rate}$ \\
+eff.\ density $c_\text{min}{=}0$ & all 10 (stochastic seed-aware) & margin-aware, optical-only threshold & effective\_density = $n_\text{active\_holes}/\text{hull\_area}$ \\
+eff.\ density $c_\text{min}{=}55$ & all 10 (stochastic seed-aware) & margin-aware, Shen's perceptual floor & effective\_density (same, floored threshold) \\
+Shen MC evaluator & all 10 & none (soft only) & Shen's own Sec.\ 2.4 Monte Carlo score $S$ (1000 trials/candidate) \\
+\bottomrule
+\end{longtable}
+
+\section*{Master table: winner per M, every model}
+
+\begin{landscape}
+\begin{table}[p]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}l l l l l l l l@{}}
+\toprule
+\textbf{M} & \textbf{metric1 / FINAL\_WINNER} & \textbf{S\_paper} & \textbf{S\_paper\_soft} & \textbf{eff.\ density $c_{\min}{=}0$} & \textbf{eff.\ density $c_{\min}{=}55$} & \textbf{Shen MC} \\
+\midrule
+0.0 & square, N=9, pitch=2000 & archimedean\_spiral, N=50, c=1500 & square, N=20, pitch=4000 & hexagonal, N=7, pitch=2000,30\textdegree & ring\_offset\_conc., N=11, rs=1000 & poisson\_disk, N=20, sf=2.0 \\
+1.0 & square, N=100, pitch=3000,45\textdegree & poisson\_disk, N=20, sf=2.0 & hexagonal, N=20, pitch=3000 & ring\_offset\_conc., N=20, rs=4000 & \cellcolor{yellow!30}square, N=20, pitch=2000 & jittered\_lattice, N=100, pitch=3000 \\
+2.0 & square, N=100, pitch=3000,45\textdegree & poisson\_disk, N=20, sf=2.0 & hexagonal, N=20, pitch=2000 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & archimedean\_spiral, N=20, c=1000 \\
+3.0 & square, N=100, pitch=3000,45\textdegree & poisson\_disk, N=20, sf=2.0 & hexagonal, N=20, pitch=2000 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & archimedean\_spiral, N=20, c=1000 \\
+4.0 & square, N=50, pitch=3000,45\textdegree & jittered\_lattice, N=50, pitch=1500 & hexagonal, N=20, pitch=1500 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & archimedean\_spiral, N=20, c=1000 \\
+5.0 & square, N=50, pitch=3000,45\textdegree & jittered\_lattice, N=50, pitch=1500 & hexagonal, N=20, pitch=1500 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & archimedean\_spiral, N=20, c=1000 \\
+6.0 & square, N=50, pitch=3000,45\textdegree & poisson\_disk, N=20, sf=2.0 & hexagonal, N=20, pitch=1500 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & archimedean\_spiral, N=20, c=1000 \\
+8.0 & square, N=50, pitch=3000,45\textdegree & poisson\_disk, N=20, sf=2.0 & hexagonal, N=20, pitch=1000 & ring\_offset\_conc., N=20, rs=4000 & ring\_offset\_conc., N=20, rs=4000 & poisson\_disk, N=20, sf=2.0 \\
+global & square, N=9, pitch=2000 & archimedean\_spiral, N=50, c=1500 & square, N=20, pitch=4000 & hexagonal, N=7, pitch=2000,30\textdegree & hexagonal, N=7, pitch=2000,30\textdegree & \emph{n/a (per-M only)} \\
+\bottomrule
+\end{tabular}%
+}
+\caption{Winner per M, all seven models. \colorbox{yellow!30}{Highlighted}: the only cell where
+the $c_\text{min}$ floor actually changes eff.\ density's own winner (M=0.0 also changes family
+but stays deterministic). ``sf''=spacing\_factor, ``rs''=ring\_spacing\_um, ``c''=c\_um. N is
+N\_requested; every row here had N\_actual=N\_requested except metric1/FINAL\_WINNER/eff.\
+density's M=0/global rows (N\_actual=7--11, overlap-rejected).}
+\end{table}
+\end{landscape}
+
+\section*{Family that wins, at a glance}
+
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+Model & 0.0 & 1--3 & 4--5 & 6 & 8 & global \\
+\midrule
+metric1 / FINAL\_WINNER & square & square & square & square & square & square \\
+S\_paper & arch.\ spiral & poisson/poisson/poisson & jittered & poisson & poisson & arch.\ spiral \\
+S\_paper\_soft & square & hexagonal & hexagonal & hexagonal & hexagonal & square \\
+eff.\ density $c_{\min}{=}0$ & hexagonal & r.o.\ concentric & r.o.\ concentric & r.o.\ concentric & r.o.\ concentric & hexagonal \\
+eff.\ density $c_{\min}{=}55$ & r.o.\ concentric & \textbf{square}/r.o.c./r.o.c. & r.o.\ concentric & r.o.\ concentric & r.o.\ concentric & hexagonal \\
+Shen MC & poisson & jittered/arch./arch. & arch.\ spiral & arch.\ spiral & poisson & --- \\
+\bottomrule
+\end{tabular}%
+}
+\end{center}
+
+\section*{Differences and reasons}
+
+\subsection*{1. metric1 and FINAL\_WINNER are identical}
+FINAL\_WINNER restricts the candidate pool to square/hexagonal/rectangular only; metric1 searches
+all 10 families. They produce the \emph{same} winner at every M because square already wins
+metric1's unrestricted search everywhere — the family restriction never actually bound. This
+confirms square's dominance under packing\_density + margin-aware gating is not an artifact of
+excluding other families.
+
+\subsection*{2. S\_paper and S\_paper\_soft disagree with metric1 almost everywhere, and with each other}
+Both are \emph{soft} scores — no candidate is ever excluded, only down-weighted. Investigated and
+confirmed empirically (not assumed): $g$, the input to S\_paper's ghost term $\mu_g$, has
+mean $\approx 419$ across this dataset's actual (spacing, blur) scale — always $\gg 1$ — so
+$\mu_g=\text{sigmoid}(2(1-g))$ is numerically $<10^{-10}$ for \textbf{100\% of 8501 rows}. The
+ghost term contributes nothing, safe or unsafe alike. What is left driving S\_paper's ranking is
+mostly $\mu_\eta$ (closeness of fill-factor to the paper's target $\eta=0.15$) plus the coverage
+term — properties orthogonal to whether a design actually ghosts. S\_paper\_soft additionally
+swaps the coverage term for a fixed \emph{closed-form} blind-rate constant per family
+($1-\pi/4\approx78.5\%$ open for square, $1-\pi/(2\sqrt3)\approx90.7\%$ for hex) — hexagonal's
+better constant, combined with its own $\mu_\eta$ advantage, is enough to flip most M slots to
+hexagonal even though this project's own independently-computed vignetting margin for that exact
+hexagonal candidate is a real, decisive failure (\,$-7$ to $-20\,\mu$m of margin, verified directly
+against \texttt{sweep\_results\_with\_density.csv}\,) at every M it wins. \textbf{Neither S\_paper
+score has any vignetting term at all} — this is not a rounding issue, it is a structural gap in
+the formula as specified.
+
+\subsection*{3. The Shen Monte Carlo evaluator disagrees with S\_paper's own closed form}
+Correlation(ghost\_rate, $g_\text{Sch}$) across all 7708 per-M candidates $= -0.0485$ — computed
+directly, not assumed. ghost\_rate is bimodal (52.6\% of candidates at exactly 1.0, 10.9\% at
+exactly 0.0); $g_\text{Sch}$ is a smooth unbounded number with no such structure. Shen's own MC
+winner (archimedean\_spiral, M=2--6) independently reads ghost\_rate 0.47--0.91 under Shen's
+\emph{own} more rigorous method — Shen's own published optimizer and Shen's own MC evaluator
+disagree about Shen's own winning design. Separately, metric1's square winner shows an elevated
+Shen ghost\_rate (0.38--0.82 at M=1--8) despite a real $+\infty$ margin under our own protocol —
+explained entirely by Shen's much more permissive "any nonzero overlap admits a beam" admission
+rule versus this project's own 50\%-overlap \texttt{active\_frac\_threshold}; not an actual safety
+failure in our winner.
+
+\subsection*{4. Effective density abandons square and hexagonal-by-\texorpdfstring{$S_\text{paper}$}{S\_paper} entirely}
+metric1's packing\_density counts every generated hole, including ones that structurally never
+admit light — confirmed: mean(effective\_density / packing\_density) $=0.175$ across the whole
+dataset, i.e.\ packing\_density over-counted by $\approx5.7\times$ on average. Once ranking is
+restricted to \emph{only} holes that actually admit light, square's dense-but-mostly-dark lattices
+lose to \texttt{ring\_offset\_concentric} (M$\geq$2) and \texttt{hexagonal} (M=0/global) —
+sparser designs whose few holes are each doing real work. This is the correct outcome of fixing a
+metric that rewarded dark holes, not a defect.
+
+\subsection*{5. \texorpdfstring{$c_\text{min}=55$}{c\_min=55} changes exactly one winner, and only after a real bug was fixed}
+\texttt{poisson\_disk} (seed 7) initially won M=1.0 once Shen's perceptual floor made its margins
+positive — but investigation found this used the single \emph{luckiest} seed of eight, only 2 of
+which actually cleared both floored margins (worst-case ghost margin across seeds $=-0.138$,
+seed-to-seed std $=0.220$, flagged \texttt{high\_seed\_variance} by this project's own established
+$>1.0\times|\text{worst}|$ rule). Fixed by grouping stochastic candidates
+(\texttt{poisson\_disk}, \texttt{jittered\_lattice}) by (family, N, spacing, M) and requiring the
+\emph{worst} seed — not the best — to clear both margins before the group is even eligible, then
+ranking eligible groups by mean effective density across seeds that also pass viability. Result:
+\textbf{poisson\_disk loses}; every remaining stochastic group that is technically margin-eligible
+still fails viability across every one of its seeds. The M=1.0 winner reverts to a deterministic
+family (\texttt{square}, N=20, pitch=2000) — the only cell in the whole comparison where the
+$c_\text{min}$ floor changes eff.\ density's own answer at all.
+
+\subsection*{Summary}
+No two of these seven models agree on a winner at every M. The disagreements are not noise —
+each is traceable to one specific, confirmed mechanism: a saturated formula term (S\_paper/S\_paper\_soft's
+$\mu_g$), a missing safety dimension (no vignetting term in either Shen score), a different beam-admission
+threshold (Shen MC vs.\ this project's 50\% rule), a metric that counted dark holes as density
+(packing\_density vs.\ effective\_density), or a single-lucky-seed selection bug (fixed, poisson\_disk
+$\rightarrow$ square at M=1.0). This project's own hard-gated pipeline (metric1/FINAL\_WINNER) and its
+coverage-corrected successor (effective density, seed-aware) are the two models built on real,
+independently verified margins with an actual safety floor — the other five are useful comparison
+points, not competing safety-verified answers.
+
+\end{document}

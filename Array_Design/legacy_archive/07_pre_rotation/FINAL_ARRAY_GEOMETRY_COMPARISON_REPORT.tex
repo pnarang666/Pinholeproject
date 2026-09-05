@@ -1,0 +1,155 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\title{Array Geometry Comparison: Theoretical Screening Results\\
+\large IYPT Pinhole Sunglasses Project --- Array Design Sub-Study}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Purpose and Scope}
+This report consolidates the theoretical (closed-form) screening comparison of
+nine pinhole-array geometry families: square, hexagonal, rectangular (anisotropic),
+concentric rings, ring-offset concentric, Fibonacci spiral, golden-angle
+phyllotaxis, Archimedean spiral, and two disordered families (Poisson-disk,
+jittered lattice).
+
+At this stage, hole diameter $a_{\rm hole}$ is \emph{fixed} per myopia level $M$
+from the project's existing acuity-optimal aperture chart
+(\texttt{new\_sweeps/per\_M\_optimum\_map.csv}) and is not re-optimized here. This
+study evaluates only geometry (pattern, hole count $N$, spacing) against two
+independently validated closed-form physical constraints: ghost-image separation
+and gaze-angle vignetting. No brightness/transmission objective is used in this
+pass (explicit scope decision --- see Section~5).
+
+\section{Data Integrity}
+A degeneracy defect was found and corrected during this study: severe
+overlap-rejection collapse (requested pitch smaller than hole diameter) produced
+candidate rows where the per-family area formula no longer represented a valid
+periodic tiling or convex hull, yielding physically impossible packing-density
+values (open-area fraction $>1$). This was diagnosed to two independent
+mechanisms --- a spacing-independent unit-cell infeasibility for lattice families,
+and a boundary hole-radius omission for hull/circle-based families --- and fixed
+at the root of the dataset, not patched downstream. The exclusion logic
+(\texttt{degeneracy\_filter.py}) is now the single shared source of truth used
+by every downstream script.
+
+\input{report_tables/table1_integrity.tex}
+
+\vspace{0.3cm}
+\noindent Exclusion reasons (220 rows total, grouped):
+\input{report_tables/table2_exclusion_reasons.tex}
+
+\section{Safety Gates}
+Two independent, composable gates are applied to every candidate row:
+\begin{itemize}
+  \item \textbf{Gate 1 (ghost safety):} worst-case ghost-separation margin $>0$,
+  using the empirically validated formula $\Delta r = sM/(P_0-M)$
+  ($R^2=0.995$ against direct two-hole coherent wave-optics propagation).
+  \item \textbf{Gate 2 (vignetting safety):} worst-case margin $>0$ across
+  gaze angle $\varphi \in [-25^\circ, 25^\circ]$, using the validated
+  Handbook~2 Ch.~13 circle-overlap geometry.
+\end{itemize}
+A third gate (seed-reproducibility, for the two stochastic families) was
+considered and explicitly \emph{not} applied in this pass, by decision: a
+stochastic family's greater susceptibility to failing Gates~1--2 is intended to
+show up naturally in survivor counts rather than be pre-filtered.
+
+\subsection{Survivor Funnel per Family}
+\input{report_tables/table3_funnel.tex}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\textwidth]{report_figs/fig_funnel_survivors.png}
+\caption{Rows surviving Gate 1 alone versus both gates, per family, across the
+full cleaned dataset (6395 rows, 9 families).}
+\end{figure}
+
+\subsection{Ghost/Vignetting Divergence}
+A central finding of this study: passing Gate~1 with an infinite margin (i.e.\
+no hole pairs simultaneously active under the pupil at $\varphi=0$) does
+\emph{not} imply Gate~2 is also satisfied. The two criteria must be evaluated
+independently for every family --- one cannot be used as a proxy for the other.
+
+\input{report_tables/table4_divergence.tex}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{report_figs/fig_divergence.png}
+\caption{Fraction of $\varphi{=}0$ ghost-safe candidates that fail vignetting
+safety once gaze angle is integrated, per family. Divergence ranges from
+37.8\% (concentric) to 88.9\% (Fibonacci spiral / golden angle).}
+\end{figure}
+
+\section{Comparison Metrics}
+Two metrics are computed over the Gate~1$\cap$Gate~2 survivor set:
+
+\begin{description}
+  \item[Metric 1 --- maximum packing density.] Per $M$ (and a global,
+  worst-case-across-$M$ scope), the single surviving candidate with highest
+  $N_{\rm actual}$ per unit packed area.
+  \item[Metric 2 --- Pareto front (density vs.\ binding margin).] The full
+  2D dominance front over (packing density, $\min$(ghost margin, vignetting
+  margin)), showing the trade-off rather than collapsing to one point.
+\end{description}
+
+\subsection{Metric 1 Winners (post-cleanup, all $N_{\rm actual}$ verified
+non-degenerate)}
+\input{report_tables/table5_metric1_winners.tex}
+
+\subsection{Metric 2}
+At the current tested spacing resolution, Metric~2's Pareto front collapses to
+a single point at every $M$ (verified genuine via a synthetic-data control
+that confirmed the dominance logic itself produces multi-point fronts when the
+underlying data has a live density/margin trade-off). This reflects that
+safety in the present dataset is largely binary --- trivially-safe (zero
+active pairs) versus clearly unsafe --- rather than a graded trade-off region.
+Widening the tested spacing range toward the safety boundary is the natural
+next probe if a live Pareto trade-off is worth resolving explicitly.
+
+\section{Honest Scope Notes}
+\begin{itemize}
+  \item Hole diameter is fixed from the acuity-optimal chart, not searched ---
+  this study answers ``which geometry, at the size already known to be
+  acuity-optimal,'' not ``which size and geometry jointly.''
+  \item No brightness/transmission constraint is applied in this pass, by
+  explicit decision, so that reproducibility/manufacturability
+  considerations for the two stochastic families could be observed
+  without being pre-filtered by an unrelated gate.
+  \item This study uses the validated \emph{closed-form} ghost and
+  vignetting formulas only --- not the full multi-hole wave-optics (ASM)
+  engine. A subsequent confirmation pass on the Metric~1/Metric~2 finalists
+  using the full validated propagation engine is the recommended next step
+  before any physical fabrication decision.
+  \item \texttt{family\_ranking.csv} (an earlier, independent output) was
+  checked and confirmed to draw only on ghost/vignetting-margin columns, not
+  density --- it was not affected by the degeneracy defect described in
+  Section~2.
+\end{itemize}
+
+\input{confirmation_addendum_section.tex}
+
+\section{Recommended Next Step}
+With all 9 Metric-1 finalists confirmed under full-physics propagation
+(Section~7), the remaining gap is between simulation and reality: no design
+in this study has yet been checked against a physically fabricated sample.
+Immediate next steps: (1) regenerate \texttt{new\_sweeps/blur\_sweep.csv} at
+$N{=}4096$ project-wide, not just for the 9 finalists spot-checked here; (2)
+select 2--3 finalists spanning the tested $M$ range for laser-cut shim
+fabrication, prioritizing manufacturability margin over raw blur/density
+optimality; (3) measure blur, transmission, and gaze-angle ghosting on the
+fabricated prototypes using the project's established phone-camera afocal
+photography protocol, and compare directly against this report's and
+Section~7's predictions.
+
+\end{document}

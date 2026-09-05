@@ -1,0 +1,103 @@
+\documentclass[9pt]{article}
+\usepackage[a4paper,landscape,margin=0.6in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+
+\newcommand{\Neff}{N_{\text{eff}}}
+\definecolor{hbblue}{HTML}{2A4D8F}
+\titleformat{\section}{\bfseries\Large\color{hbblue}}{\thesection}{8pt}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape Array Candidates -- Full Pass/Fail Report}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{\Huge Array Design: Full Candidate Report}\\[0.3cm]
+\large\itshape All 274 (Aperture, Pitch, Packing) Designs -- Pass/Fail, Metrics, and Reason}
+\author{}
+\date{Source: \texttt{Array\_Design/array\_optimization/stage3\_decision/array\_candidates.csv}}
+
+\begin{document}
+\maketitle
+
+\section*{Methodology: how PASS/FAIL is determined}
+\addcontentsline{toc}{section}{Methodology}
+Every row is one (hole diameter $N$, pitch $s$, packing) design, evaluated across every
+tested myopia level $M$ and reported at its \textbf{worst case across $M$}. Two independent
+conditions must both hold for a design to be \texttt{Safe}:
+\begin{enumerate}
+\item \textbf{Ghosting risk} $<1.0$ -- the continuous risk model
+($P(\Neff\geq2)\times$worst-harmonic perceptual margin, Barten-1999-CSF-based), not the
+deprecated binary Regime A/B/C gate. Risk $=1.0$ is the point where the probability-weighted
+ghost comb crosses the eye's own contrast-detection threshold.
+\item \textbf{Pitch margin} $\geq1.0$ -- pitch is at or beyond its own no-ghost geometric
+ceiling ($s_{\text{solo}}$, the pitch above which a second hole can \emph{never} be
+simultaneously active, for that packing). This is a structural (geometry-only) guarantee,
+not a statistical one.
+\end{enumerate}
+A design that is \texttt{Safe} is then either \textbf{PASS -- Pareto-optimal}
+(\texttt{recommended\_for\_prototyping=True}: on the Pareto front of blur vs.\ whole-lens
+transmission, among safe designs) or \textbf{PASS -- dominated} (safe, but another safe
+design is at least as good on both blur and transmission, and strictly better on one --
+still physically safe, just not on the recommended frontier). A design that fails either
+condition is \texttt{FAIL}, broken down by which condition(s) failed. \textbf{No numeric
+transmission target (OD/\%T) is enforced anywhere} -- $T$ is reported for every row but is
+not itself a pass/fail criterion (see this project's own \texttt{GAPS\_CLOSED.md} Gap 4).
+
+\textbf{Column key}: $N$ = hole diameter ($\mu$m); $s$ = pitch ($\mu$m); $T$ = whole-lens
+transmission (\%); blur = $r_{EE}(50\%)$ ($\mu$m, worst-case across $M$; historically named
+\texttt{r\_EE\_80\_um} in the source CSV for schema reasons, see \texttt{decide.py}'s own
+docstring); risk = worst-case-across-$M$ continuous ghosting risk; margin = pitch as a
+fraction of its own no-ghost ceiling ($\geq1.0$ required to pass).
+
+\section*{Summary}
+\addcontentsline{toc}{section}{Summary}
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+\textbf{Category} & \textbf{Count} \\
+\midrule
+Total candidate designs & 274 \\
+\quad Safe (risk $<1.0$ \textbf{and} margin $\geq1.0$) & 90 \\
+\quad\quad PASS -- Pareto-optimal (\texttt{recommended\_for\_prototyping}) & \textbf{20} \\
+\quad\quad PASS -- safe but dominated (not on the Pareto front) & 70 \\
+\quad Fail & 184 \\
+\quad\quad FAIL -- ghosting risk only & 0 \\
+\quad\quad FAIL -- pitch margin only & 2 \\
+\quad\quad FAIL -- both risk and margin & 182 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Most failing designs fail \emph{both} conditions simultaneously, not one or the other: a
+pitch too dense to clear its own no-ghost ceiling is, for the same geometric reason, also
+the pitch regime where the continuous risk model reports real ghosting risk. The table below
+is sorted PASS--Pareto first, then PASS--dominated, then FAIL, and by blur ascending within
+each group.
+
+\section*{Full candidate table}
+\addcontentsline{toc}{section}{Full candidate table}
+\begin{longtable}{rrlrrrrccp{4.2cm}}
+\caption{All 274 array candidates, pass/fail, metrics, and reason.}\\
+\toprule
+$N$ & $s$ & pattern & $T$(\%) & blur($\mu$m) & risk & margin & Safe & Rec & Reason \\
+\midrule
+\endfirsthead
+\multicolumn{10}{l}{\textit{(continued from previous page)}}\\
+\toprule
+$N$ & $s$ & pattern & $T$(\%) & blur($\mu$m) & risk & margin & Safe & Rec & Reason \\
+\midrule
+\endhead
+\midrule
+\multicolumn{10}{r}{\textit{(continued on next page)}}\\
+\endfoot
+\bottomrule
+\endlastfoot
+\input{candidates_table_rows.tex}
+\end{longtable}
+
+\end{document}

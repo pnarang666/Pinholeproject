@@ -1,0 +1,10 @@
+M,hard_gated_winner_family,hard_gated_winner_N,hard_gated_winner_spacing,s_paper_winner_family,s_paper_winner_N,s_paper_winner_spacing,s_paper_winner_value,s_paper_soft_winner_family,s_paper_soft_winner_N,s_paper_soft_winner_spacing,s_paper_soft_winner_value,s_paper_soft_winner_passes_hard_gates
+0.0,ring_offset_concentric,10,ring_spacing_um=700.0;holes_per_ring0=6,archimedean_spiral,50,c_um=1500.0,1.737398760449933,square,20,pitch_um=4000.0;rotation_deg=0.0,1.4864520508683357,True
+1.0,square,100,pitch_um=3000.0;rotation_deg=45.0,poisson_disk,20,spacing_factor=2.0,1.5965159696212687,hexagonal,20,pitch_um=3000.0;rotation_deg=0.0,1.5372075866108184,False
+2.0,square,100,pitch_um=3000.0;rotation_deg=45.0,poisson_disk,20,spacing_factor=2.0,1.5538129103818474,hexagonal,20,pitch_um=2000.0;rotation_deg=0.0,1.4670293798369811,False
+3.0,square,100,pitch_um=3000.0;rotation_deg=45.0,poisson_disk,20,spacing_factor=2.0,1.5094218099433596,hexagonal,20,pitch_um=2000.0;rotation_deg=0.0,1.4226382793984933,False
+4.0,square,50,pitch_um=3000.0;rotation_deg=45.0,jittered_lattice,50,pitch_um=1500.0;jitter_fraction=0.2,1.502218633388117,hexagonal,20,pitch_um=1500.0;rotation_deg=0.0,1.444864699574537,False
+5.0,square,50,pitch_um=3000.0;rotation_deg=45.0,jittered_lattice,50,pitch_um=1500.0;jitter_fraction=0.2,1.4759667965024228,hexagonal,20,pitch_um=1500.0;rotation_deg=0.0,1.4186128626888432,False
+6.0,square,50,pitch_um=3000.0;rotation_deg=45.0,poisson_disk,20,spacing_factor=2.0,1.479411750214792,hexagonal,20,pitch_um=1500.0;rotation_deg=0.0,1.2855475969180725,False
+8.0,square,50,pitch_um=3000.0;rotation_deg=45.0,poisson_disk,20,spacing_factor=2.0,1.4711417073016395,hexagonal,20,pitch_um=1000.0;rotation_deg=0.0,1.4137959328693386,False
+global,square,9,pitch_um=2000.0;rotation_deg=0.0,archimedean_spiral,50,c_um=1500.0,1.737398760449933,square,20,pitch_um=4000.0;rotation_deg=0.0,1.4864520508683357,True

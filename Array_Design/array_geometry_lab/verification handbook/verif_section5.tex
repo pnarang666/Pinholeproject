@@ -1,0 +1,34 @@
+\section{Full Worked Example --- Verified Against the Live Pipeline}
+
+Design under test: \texttt{square}, $N_{\text{requested}}=20 \to
+N_{\text{actual}}=9$, pitch $=2000\mu$m, rotation $=0^\circ$,
+$a_{\text{hole}}=2000\mu$m ($R_h=1000\mu$m). This is the current pipeline's
+own winner at $M{=}0$ and global scope. All numbers below were computed
+directly from the actual generator output, not assumed.
+
+\subsection{Generated Coordinates}
+\begin{center}
+\begin{tabular}{rr}
+\toprule
+$x$ ($\mu$m) & $y$ ($\mu$m) \\
+\midrule
+0 & 0 \\
+2000 & 2000 \\
+$-$2000 & 2000 \\
+2000 & $-$2000 \\
+$-$2000 & $-$2000 \\
+0 & 4000 \\
+4000 & 0 \\
+0 & $-$4000 \\
+$-$4000 & 0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Note $N_{\text{requested}}=20$ produced only 9 surviving holes --- this
+mismatch is itself worth checking whenever you regenerate a design: always
+confirm you are calling the generator with the recorded
+\emph{requested} count, not the recorded \emph{actual} count, or the
+coordinates will not match the row you are trying to verify.
+
+\newpage

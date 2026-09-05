@@ -1,0 +1,16 @@
+\contentsline {chapter}{Preface}{2}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Design Catalog}{3}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Margin Heatmaps}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}archimedean\_spiral}{6}{section.2.1}%
+\contentsline {section}{\numberline {2.2}concentric}{12}{section.2.2}%
+\contentsline {section}{\numberline {2.3}fibonacci\_spiral}{18}{section.2.3}%
+\contentsline {section}{\numberline {2.4}golden\_angle}{23}{section.2.4}%
+\contentsline {section}{\numberline {2.5}hexagonal}{28}{section.2.5}%
+\contentsline {section}{\numberline {2.6}jittered\_lattice}{34}{section.2.6}%
+\contentsline {section}{\numberline {2.7}poisson\_disk}{40}{section.2.7}%
+\contentsline {section}{\numberline {2.8}rectangular}{45}{section.2.8}%
+\contentsline {section}{\numberline {2.9}ring\_offset\_concentric}{48}{section.2.9}%
+\contentsline {section}{\numberline {2.10}square}{54}{section.2.10}%
+\contentsline {chapter}{\numberline {3}Seed Variance (poisson\_disk, jittered\_lattice)}{60}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Density vs. Safety}{63}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Cross-Family Summary Table}{65}{chapter.5}%

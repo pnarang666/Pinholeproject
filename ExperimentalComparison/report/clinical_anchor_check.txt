@@ -1,0 +1,92 @@
+CLINICAL ANCHOR CHECK -- 1000um pinhole vs Miller & Johnson (1977),
+as quoted in Shen (2026)
+==========================================================================
+
+CALIBRATION LIMITATION (stated up front, not glossed over):
+This project's own measured r_EE_50 for the 1000b photos is in PIXELS.
+No pixel-to-micrometer conversion exists yet (documented limitation of
+the existing ExperimentalComparison pipeline -- see comparison_summary.txt).
+No conversion factor is invented here. Part 1 below is therefore a
+QUALITATIVE SHAPE comparison only -- NOT a quantitative validation of the
+clinical claim against measured data.
+
+CITATION: the clinical anchor (a 1000um/1mm pinhole tolerates ~5D of
+induced refractive error while remaining >= 20/40 Snellen acuity) is
+Miller & Johnson (1977), as quoted in Shen (2026) -- an independent,
+non-computational reference point. It is not this project's own finding.
+
+PART 1 -- qualitative shape comparison (measured, uncalibrated pixels)
+--------------------------------------------------------------------------
+20/40 Snellen = logMAR 0.301 = MAR of 2 arcmin. At this project's own
+f_prime_um = n_prime/P0 * 1e6 = 22266.667 um (n_prime=1.336, P0=60.0D,
+traced to new_sweeps/run_blur_sweep.py and stage2_fixed/myopia_axial.py's
+reduced-eye convention), the corresponding retinal blur radius is:
+  r_20/40_um = f_prime_um * tan(2 arcmin) = 12.954 um
+This is an absolute physical length -- it cannot be compared directly to
+the uncalibrated pixel measurements below; it is reported here as the
+reference value a future calibrated re-measurement should be checked
+against, and is used directly (calibration-free) in Part 2.
+
+What the clinical claim implies about SHAPE: acuity stays at/above 20/40
+out to M=5D, which implies the retinal blur radius stays at or below
+~13.0um (roughly bounded / slowly-growing, not a fast runaway climb)
+across M=1..5D. The 1977 study does not claim what happens beyond 5D, so
+no specific inflection point or growth rate past M=5D is implied here --
+only that growth should be SLOW/BOUNDED through M=5, not that it must
+break down sharply exactly at M=5D.
+
+This project's own MEASURED 1000b r_EE_50_px, normalized to M=1 (no M=0
+photo exists for this folder -- same convention as all_measurements.csv):
+  M=1: r_EE_50_px=1058.7, normalized=1.0000  <- normalization reference
+  M=2: r_EE_50_px=1101.0, normalized=1.0399
+  M=3: r_EE_50_px=1083.6, normalized=1.0235
+  M=4: r_EE_50_px=924.3, normalized=0.8730
+  M=6: r_EE_50_px=964.7, normalized=0.9112
+  M=8: r_EE_50_px=1016.6, normalized=0.9602
+
+Shape observed: normalized values range 0.873-1.040 across M=1..8 --
+i.e. roughly FLAT/bounded (within about +/-13% of the M=1 value), NOT a
+clear monotonic growth curve, and with no visible inflection specifically
+near M=5 (M=4 is the local minimum, M=2 the local maximum, in this small,
+single-photo-per-M dataset).
+
+VERDICT (shape only): the measured curve staying roughly flat/bounded
+across the whole tested range is NOT INCONSISTENT with the clinical
+claim's implication of bounded acuity loss through M=5 -- both are
+'flat, not runaway growth.' But this is a weak agreement: the clinical
+claim implies flatness only through 5D with 20/40 as the specific
+threshold, while this measured curve is flat (by a different, unrelated
+criterion -- pixel-ratio variability) all the way to M=8 with no way to
+locate where, or whether, a real acuity threshold is crossed. This is
+NOT a quantitative validation of the 5D/20/40 figure -- only a
+shape-level observation that neither confirms nor contradicts it.
+
+PART 2 -- calibration-free check: ASM THEORY (not measured pixels) vs the
+clinical threshold
+--------------------------------------------------------------------------
+blur_sweep.csv's own r_EE_50_um for a_hole_um=1000 is already an absolute
+physical quantity (um), not a camera-pixel measurement -- so, unlike the
+measured photos, it CAN be compared to r_20/40_um directly, with no
+calibration gap. This is an extra check beyond what was asked for the
+measured data, using data that was never pixel-based to begin with.
+
+   M    r_EE_50_um (ASM)  vs r_20/40=12.95um
+   0               5.043  at/below (>=20/40 by this proxy)
+   1               5.880  at/below (>=20/40 by this proxy)
+   2              10.597  at/below (>=20/40 by this proxy)
+   3              15.347  ABOVE (<20/40 by this proxy)
+   4              21.718  ABOVE (<20/40 by this proxy)
+   6              34.730  ABOVE (<20/40 by this proxy)
+   8              49.814  ABOVE (<20/40 by this proxy)
+
+ASM's own r_EE_50_um for this aperture crosses r_20/40_um between M=2 and M=3D -- well BEFORE the clinical
+anchor's ~5D figure, IF r_EE_50 (50%-encircled-energy radius) is treated
+as a like-for-like stand-in for the MAR-based acuity blur radius. This is
+a genuine, reportable tension between this project's ASM model and the
+clinical literature anchor -- NOT explained or resolved here. Plausible,
+unverified candidate reasons (none confirmed): r_EE_50 (a fixed-fraction
+encircled-energy radius) and the MAR-equivalent blur-disc radius implied
+by a Snellen acuity test are not necessarily the same optical quantity;
+the clinical study's viewing/testing conditions (letter contrast,
+luminance, subject accommodation) differ from this project's idealized
+point-source model. Reported as an open discrepancy, not explained away.

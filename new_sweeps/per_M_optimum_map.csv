@@ -1,0 +1,9 @@
+M_diopters,figure,blur_optimal_um,r_EE_50_at_blur_opt_um,acuity_optimal_um,logmar_at_acuity_opt,aperture_gap_pct
+0.0,fig_M0.png,700,7.33,2000,-0.344,185.7
+1.0,fig_M1.png,700,7.33,1250,-0.12,78.6
+2.0,fig_M2.png,750,8.01,750,0.076,0.0
+3.0,fig_M3.png,600,10.57,750,0.112,25.0
+4.0,fig_M4.png,500,12.02,600,0.181,20.0
+5.0,fig_M5.png,500,13.29,600,0.24,20.0
+6.0,fig_M6.png,400,14.47,500,0.259,25.0
+8.0,fig_M8.png,400,17.87,400,0.331,0.0

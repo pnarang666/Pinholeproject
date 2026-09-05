@@ -1,0 +1,29 @@
+\section{Purpose}
+
+Every failure this project has hit shared one shape: a formula that is correct
+in the common case broke silently at an edge case, and the break wasn't caught
+until a human recomputed one number by hand and noticed it didn't match. This
+document exists to make that hand-check repeatable: three physical quantities,
+their formulas, why each formula is what it is, and one fully worked, verified
+example you can reproduce with a calculator.
+
+\section{The Three Quantities That Decide a Winner}
+
+Every candidate array design is judged on exactly three physical properties.
+All three depend only on the hole coordinates, the hole radius, and the pupil
+radius --- nothing exotic.
+
+\begin{enumerate}
+  \item \textbf{Viability} --- does any light get through at all, at the
+  gaze angle being checked?
+  \item \textbf{Ghost margin} --- if two holes are both illuminated at once,
+  do they produce a double image?
+  \item \textbf{Packing density} --- how many holes fit per unit area, i.e.\
+  how much of the design actually contributes light?
+\end{enumerate}
+
+A design only counts as a real answer if all three check out --- and the
+entire point of a hand-check is that each of these three is simple enough to
+compute on paper for one design in a couple of minutes.
+
+\newpage

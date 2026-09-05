@@ -1,0 +1,105 @@
+RSS vs ASM THEORETICAL MODEL COMPARISON -- PLAIN-LANGUAGE SUMMARY
+==========================================================================
+
+EYE CONSTANTS (traced to new_sweeps/run_blur_sweep.py, the actual script
+that generated blur_sweep.csv -- not assumed separately, see
+rss_comparison.py docstring for the full derivation):
+  P0 = 60.0 D, n_prime = 1.336, vacuum wavelength = 550 nm
+  f_prime_um = n_prime/P0 * 1e6 = 22266.667 um  (NOT naive 1/P0 --
+    run_blur_sweep.py used refractive_index_correction=True)
+  lambda_um used in c_diff = vacuum/n_prime = 0.411677 um (media-reduced,
+    matching phase2_retina.py's own documented f_prime/wavelength pairing --
+    pairing a media-reduced f_prime with the raw vacuum wavelength would be
+    the exact inconsistency that module's own docstring warns against)
+
+This reuses the measured data and ASM comparison from all_measurements.csv
+as-is (including its existing exposure/saturation notes) -- nothing was
+re-measured or re-flagged here.
+
+PER-APERTURE RESULT
+--------------------------------------------------------------------------
+
+400b (a_hole_um=400):
+    M=0, predicted_RSS=1.0, measured=1.0, %dev_RSS=+0.0%, %dev_ASM=+0.0%, closer=n/a (M=0 tie)
+    M=1, predicted_RSS=1.02804, measured=0.98988, %dev_RSS=-3.7%, %dev_ASM=-1.8%, closer=ASM
+    M=2, predicted_RSS=1.1079, measured=0.8972, %dev_RSS=-19.0%, %dev_ASM=-12.3%, closer=ASM
+    M=3, predicted_RSS=1.22952, measured=0.85878, %dev_RSS=-30.1%, %dev_ASM=-18.0%, closer=ASM
+    M=4, predicted_RSS=1.38193, measured=0.97901, %dev_RSS=-29.2%, %dev_ASM=-9.4%, closer=ASM
+    M=6, predicted_RSS=1.74554, measured=1.03924, %dev_RSS=-40.5%, %dev_ASM=-12.3%, closer=ASM
+    M=8, predicted_RSS=2.15382, measured=1.04123, %dev_RSS=-51.7%, %dev_ASM=-26.5%, closer=ASM
+
+600b (a_hole_um=600):
+    M=0, predicted_RSS=1.0, measured=1.0, %dev_RSS=+0.0%, %dev_ASM=+0.0%, closer=n/a (M=0 tie)
+    M=1, predicted_RSS=1.13483, measured=1.02817, %dev_RSS=-9.4%, %dev_ASM=+0.3%, closer=ASM
+    M=2, predicted_RSS=1.46676, measured=1.04696, %dev_RSS=-28.6%, %dev_ASM=-4.2%, closer=ASM
+    M=3, predicted_RSS=1.89489, measured=1.06202, %dev_RSS=-44.0%, %dev_ASM=-12.8%, closer=ASM
+    M=4, predicted_RSS=2.3676, measured=1.12359, %dev_RSS=-52.5%, %dev_ASM=-24.1%, closer=ASM
+    M=6, predicted_RSS=3.37082, measured=1.12765, %dev_RSS=-66.5%, %dev_ASM=-54.7%, closer=ASM
+    M=8, predicted_RSS=4.40706, measured=1.12765, %dev_RSS=-74.4%, %dev_ASM=-65.3%, closer=ASM
+
+700b (a_hole_um=700):
+    M=0, predicted_RSS=1.0, measured=1.0, %dev_RSS=+0.0%, %dev_ASM=+0.0%, closer=n/a (M=0 tie)
+    M=1, predicted_RSS=1.23825, measured=1.03116, %dev_RSS=-16.7%, %dev_ASM=-0.5%, closer=ASM
+    M=2, predicted_RSS=1.77005, measured=0.98134, %dev_RSS=-44.6%, %dev_ASM=-17.5%, closer=ASM
+    M=3, predicted_RSS=2.4082, measured=0.80566, %dev_RSS=-66.5%, %dev_ASM=-46.4%, closer=ASM
+    M=4, predicted_RSS=3.08745, measured=1.02679, %dev_RSS=-66.7%, %dev_ASM=-53.5%, closer=ASM
+    M=6, predicted_RSS=4.49419, measured=0.93611, %dev_RSS=-79.2%, %dev_ASM=-71.2%, closer=ASM
+    M=8, predicted_RSS=5.927, measured=0.97726, %dev_RSS=-83.5%, %dev_ASM=-79.3%, closer=ASM
+
+1000b (a_hole_um=1000):
+  No measured normalized ratio available for this folder (no valid M=0
+  reference photo) -- RSS's predicted ratio is still reported below
+  (it's a closed-form formula, needs no measured reference), but no
+  measured-vs-model comparison or 'closer model' verdict is possible.
+    M=1, predicted_RSS=1.79472
+    M=2, predicted_RSS=3.1439
+    M=3, predicted_RSS=4.58141
+    M=4, predicted_RSS=6.04454
+    M=6, predicted_RSS=8.99762
+    M=8, predicted_RSS=11.96437
+
+1200b (a_hole_um=1200):
+  No ASM theory match for this aperture in blur_sweep.csv -- RSS-ONLY
+  comparison (RSS is closed-form, works for any aperture size).
+    M=0, predicted_RSS=1.0, measured=1.0, %dev_RSS=+0.0%
+    M=1, predicted_RSS=2.3676, measured=0.93251, %dev_RSS=-60.6%
+    M=2, predicted_RSS=4.40706, measured=0.87645, %dev_RSS=-80.1%
+    M=3, predicted_RSS=6.51535, measured=0.97712, %dev_RSS=-85.0%
+    M=4, predicted_RSS=8.64225, measured=0.80436, %dev_RSS=-90.7%
+    M=6, predicted_RSS=12.91508, measured=0.76639, %dev_RSS=-94.1%
+    M=8, predicted_RSS=17.1975, measured=0.80747, %dev_RSS=-95.3%
+
+--------------------------------------------------------------------------
+
+TALLY (rows where BOTH ASM and RSS predictions and a measured ratio exist,
+excluding M=0 -- every model equals the measured ratio there by construction
+(it's the normalization point itself), so it is not a real predictive test.
+i.e. 400b/600b/700b at M=1..8; 1200b has no ASM match, 1000b has no measured
+ratio, so neither can contribute a 'closer model' verdict):
+  18 comparable rows: ASM closer in 18, RSS closer in 0.
+  Mean |%deviation|: ASM = 28.3%, RSS = 44.8%.
+
+HONEST VERDICT
+  ASM fits the measured data better on average (28.3% vs
+  44.8% mean |deviation|, 18/18 rows closer to ASM).
+
+--------------------------------------------------------------------------
+
+1200b (RSS-only, no ASM match in blur_sweep.csv):
+  M=0: predicted_RSS=1.0, measured=1.0, %dev_RSS=+0.0%
+  M=1: predicted_RSS=2.3676, measured=0.93251, %dev_RSS=-60.6%
+  M=2: predicted_RSS=4.40706, measured=0.87645, %dev_RSS=-80.1%
+  M=3: predicted_RSS=6.51535, measured=0.97712, %dev_RSS=-85.0%
+  M=4: predicted_RSS=8.64225, measured=0.80436, %dev_RSS=-90.7%
+  M=6: predicted_RSS=12.91508, measured=0.76639, %dev_RSS=-94.1%
+  M=8: predicted_RSS=17.1975, measured=0.80747, %dev_RSS=-95.3%
+
+--------------------------------------------------------------------------
+
+1000b (measured M=0 unparseable -- RSS predicted ratio only, no comparison):
+  M=1: predicted_RSS=1.79472, predicted_ASM=1.16604 (measured ratio: n/a)
+  M=2: predicted_RSS=3.1439, predicted_ASM=2.10144 (measured ratio: n/a)
+  M=3: predicted_RSS=4.58141, predicted_ASM=3.04351 (measured ratio: n/a)
+  M=4: predicted_RSS=6.04454, predicted_ASM=4.30698 (measured ratio: n/a)
+  M=6: predicted_RSS=8.99762, predicted_ASM=6.88727 (measured ratio: n/a)
+  M=8: predicted_RSS=11.96437, predicted_ASM=9.87867 (measured ratio: n/a)

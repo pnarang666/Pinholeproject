@@ -9,6 +9,19 @@ is exactly the Airy diffraction pattern of the aperture, with closed-form encirc
 energy EE(x) = 1 - J0(x)^2 - J1(x)^2, x = pi*a_hole*r/(wavelength*v_r) (Born & Wolf).
 This exercises the entire chain (aperture, ASM gap propagation, pupil clip, lens phase,
 ASM retina propagation, encircled energy) against a known-correct answer, not a toy case.
+
+PHYSICS_AUDIT.md item D -- what this gate does NOT catch, stated explicitly rather than
+left implicit: this gate runs at EXACT focus (v_r == f_eye by construction at M=0). A
+lens-power scaling error (item A: pairing the wrong k with f_eye) shifts WHERE the true
+geometric focus sits, but propagate_to_retina still only propagates to f_eye -- so a
+mis-scaled lens error at this configuration partly shows up as the retina plane being
+evaluated slightly off the wave's true (wrongly-shifted) focus, not as a change to the
+in-focus PATTERN'S SHAPE, which is why this gate PASSED at existing tolerances even
+while item A's bug was present (see PHYSICS_AUDIT.md item A for the quantified
+before/after). This gate validates pattern shape at exact focus; it is NOT sensitive to
+a pure lens-power scaling error in the general (non-zero-defocus) case, and must not be
+treated as the only physics check on this pipeline -- see PHYSICS_AUDIT.md for the R1
+sweep (non-zero M, non-zero d_gap) as the check that actually exposed item A's impact.
 """
 
 import numpy as np

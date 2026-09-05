@@ -1,0 +1,32 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+\newcommand{\intuitbox}[1]{\par\noindent\colorbox{blue!10}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{Physical Intuition}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+\newcommand{\checkbox}[1]{\par\noindent\colorbox{green!10}{\begin{minipage}{\dimexpr\textwidth-2\fboxsep\relax}\vspace{2pt}\textbf{How to Verify This by Hand}\\[3pt]#1\vspace{2pt}\end{minipage}}\par\vspace{6pt}}
+
+\title{Array Model Verification Handbook\\
+\large Physics, Mathematics, and a Hand-Checkable Worked Example\\
+\normalsize IYPT Pinhole Sunglasses Project}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\input{verif_section1.tex}
+\input{verif_section2.tex}
+\input{verif_section3.tex}
+\input{verif_section4.tex}
+\input{verif_section5.tex}
+\input{verif_section6.tex}
+\input{verif_section7.tex}

@@ -1,0 +1,37 @@
+regime,N_eff_worst,N_eff_mean,f0_cpd,mtf_f0,csf_threshold_contrast,reason,a_hole_um,pitch_um
+B,23,25.604444444444443,0.2991993003418851,0.9652435989308736,16337.309910759628,MTF(f0) below CSF detection threshold,300,700
+B,13,15.577777777777778,0.2327105669325773,0.974730169654329,117344.79646796362,MTF(f0) below CSF detection threshold,300,900
+B,8,8.715555555555556,0.17453292519943295,0.9839864712633916,1000000.0,MTF(f0) below CSF detection threshold,300,1200
+B,4,5.586666666666667,0.13962634015954636,0.9894300216533222,1000000.0,MTF(f0) below CSF detection threshold,300,1500
+B,2,3.151111111111111,0.10471975511965978,0.9948690425313388,1000000.0,MTF(f0) below CSF detection threshold,300,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,300,4800
+B,23,25.604444444444443,0.2991993003418851,0.9718319786199927,16337.309910759628,MTF(f0) below CSF detection threshold,400,700
+B,13,15.577777777777778,0.2327105669325773,0.9797046218770834,117344.79646796362,MTF(f0) below CSF detection threshold,400,900
+B,8,8.715555555555556,0.17453292519943295,0.9872159041516237,1000000.0,MTF(f0) below CSF detection threshold,400,1200
+B,4,5.586666666666667,0.13962634015954636,0.9915712178628944,1000000.0,MTF(f0) below CSF detection threshold,400,1500
+B,2,3.151111111111111,0.10471975511965978,0.9959203080723499,1000000.0,MTF(f0) below CSF detection threshold,400,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,400,4800
+B,23,25.604444444444443,0.2991993003418851,0.9753623827866289,16337.309910759628,MTF(f0) below CSF detection threshold,700,700
+B,13,15.577777777777778,0.2327105669325773,0.9831534699613018,117344.79646796362,MTF(f0) below CSF detection threshold,700,900
+B,8,8.715555555555556,0.17453292519943295,0.989802070917037,1000000.0,MTF(f0) below CSF detection threshold,700,1200
+B,4,5.586666666666667,0.13962634015954636,0.9933442448726774,1000000.0,MTF(f0) below CSF detection threshold,700,1500
+B,2,3.151111111111111,0.10471975511965978,0.9968680515903586,1000000.0,MTF(f0) below CSF detection threshold,700,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,700,4800
+B,23,25.604444444444443,0.2991993003418851,0.9684041802469773,16337.309910759628,MTF(f0) below CSF detection threshold,1000,700
+B,13,15.577777777777778,0.2327105669325773,0.9793501321524295,117344.79646796362,MTF(f0) below CSF detection threshold,1000,900
+B,8,8.715555555555556,0.17453292519943295,0.987958639251709,1000000.0,MTF(f0) below CSF detection threshold,1000,1200
+B,4,5.586666666666667,0.13962634015954636,0.9922179883705173,1000000.0,MTF(f0) below CSF detection threshold,1000,1500
+B,2,3.151111111111111,0.10471975511965978,0.9964401188802204,1000000.0,MTF(f0) below CSF detection threshold,1000,2000
+A,1,1.96,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,2500
+A,0,1.231111111111111,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,3200
+A,0,0.7866666666666666,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,4000
+A,0,0.5377777777777778,,,,N_eff(worst-case)<=1: no second hole simultaneously active,1000,4800

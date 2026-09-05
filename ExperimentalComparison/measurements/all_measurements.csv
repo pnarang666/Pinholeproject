@@ -1,0 +1,35 @@
+folder,filename,parsed_M,aperture_um,measured_r_EE_50_px,normalized_ratio_measured,predicted_ratio_theory,pct_deviation,notes
+400b,0400.dng,0,400.0,1142.144,1.0,1.0,0.0,
+400b,1400.dng,1,400.0,1130.581,0.98988,1.00807,-1.8,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+400b,2400.dng,2,400.0,1024.736,0.8972,1.02353,-12.34,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+400b,3400.dng,3,400.0,980.846,0.85878,1.0473,-18.0,
+400b,4400.dng,4,400.0,1118.167,0.97901,1.08069,-9.41,
+400b,6400.dng,6,400.0,1186.964,1.03924,1.18446,-12.26,
+400b,8400.dng,8,400.0,1189.235,1.04123,1.41708,-26.52,
+600b,M0600b.dng,0,600.0,1193.835,1.0,1.0,0.0,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M1600b.dng,1,600.0,1227.469,1.02817,1.02456,0.35,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M2600b.dng,2,600.0,1249.898,1.04696,1.09278,-4.19,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M3600b.dng,3,600.0,1267.875,1.06202,1.2183,-12.83,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M4600b.dng,4,600.0,1341.386,1.12359,1.48048,-24.11,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M6600b.dng,6,600.0,1346.233,1.12765,2.48711,-54.66,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+600b,M8600B.dng,8,600.0,1346.233,1.12765,3.2513,-65.32,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,0700b.dng,0,700.0,1327.178,1.0,1.0,0.0,
+700b,1700b.dng,1,700.0,1368.534,1.03116,1.03659,-0.52,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,2700b.dng,2,700.0,1302.413,0.98134,1.18928,-17.48,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,3700b.dng,3,700.0,1069.251,0.80566,1.50395,-46.43,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,4700b4.dng,4,700.0,1362.733,1.02679,2.20751,-53.49,possible retake (extra digit in filename); core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,6700b.dng,6,700.0,1242.389,0.93611,3.25513,-71.24,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+700b,8700b.dng,8,700.0,1296.994,0.97726,4.71147,-79.26,
+1000b,11000.dng,1,1000.0,1058.723,,1.16604,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1000b,21000.dng,2,1000.0,1100.951,,2.10144,,
+1000b,31000.dng,3,1000.0,1083.637,,3.04351,,
+1000b,41000.dng,4,1000.0,924.304,,4.30698,,
+1000b,61000.dng,6,1000.0,964.661,,6.88727,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1000b,81000.dng,8,1000.0,1016.579,,9.87867,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,01200.dng,0,1200.0,1439.281,1.0,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,11200.dng,1,1200.0,1342.14,0.93251,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,21200.dng,2,1200.0,1261.455,0.87645,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,31200.dng,3,1200.0,1406.357,0.97712,,,
+1200b,41200.dng,4,1200.0,1157.706,0.80436,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,61200.dng,6,1200.0,1103.057,0.76639,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+1200b,81200.dng,8,1200.0,1162.172,0.80747,,,core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low

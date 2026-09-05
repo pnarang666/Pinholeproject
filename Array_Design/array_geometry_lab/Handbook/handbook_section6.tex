@@ -1,0 +1,109 @@
+\section{Choosing a Winner: The Two Comparison Metrics}
+
+Once every candidate design has been checked against both safety gates,
+many designs pass. The question becomes: among the safe ones, which is
+actually best? ``Best'' needs a definition, and this project deliberately
+tried two different ones rather than assuming a single answer.
+
+\subsection{Metric 1: Maximum Packing Density}
+
+Simple: among every design that clears both safety gates, pick the one
+with the most holes per unit area. More holes per area means more open
+area overall (for a fixed hole size), which means more light gets through
+--- directly useful once transmission/brightness is brought back into the
+picture later.
+
+\intuitbox{Why not just rank by \emph{safety margin} instead? Because a design that is
+safe with enormous margin (holes spaced very far apart) is not necessarily
+useful --- it might only fit a handful of holes. Ranking by margin alone
+would reward uselessly sparse designs. Density is the metric that actually
+reflects the practical goal.
+}
+\subsection{Metric 2: The Pareto Front}
+
+Metric 1 collapses everything to a single winning point, which hides any
+trade-off that might exist between density and safety margin. Metric 2
+instead reports the full \emph{Pareto front} --- every design for which no
+other design is simultaneously denser \emph{and} safer. This shows the
+whole trade-off curve rather than one point on it.
+
+In the current dataset, this front collapses to a single point at every
+myopia level --- meaning, at the tested spacing resolution, safety in this
+project turned out to be close to binary (trivially safe versus clearly
+unsafe) rather than a graded trade-off. This was checked to be a genuine
+property of the data, not a bug in the Pareto logic itself, using a
+synthetic test dataset built specifically to confirm the dominance-checking
+code \emph{can} produce a multi-point front when one actually exists.
+
+\codemapbox{Both metrics live in \texttt{comparison\_metric/metrics.py}, operating on
+whatever survives \texttt{gates.py}'s filter --- deliberately kept as two
+separate, swappable functions so a future third metric does not require
+rewriting the comparison logic.
+}
+\section{Closing the Loop: Confirming the Theory Against Real Physics}
+
+Everything above --- the ghost formula, the vignetting geometry, both
+metrics --- uses fast, \emph{closed-form} formulas. They were validated once
+against real wave-optics simulation for a simple two-hole case
+(Section~2), but never checked against the specific, sometimes irregular,
+multi-hole patterns that actually won the comparison. A formula validated
+for a simple case is not automatically guaranteed to hold for a more
+complex one built from the same physics.
+
+\subsection{The Confirmation Step}
+
+The winning designs from Metric~1 were each propagated through the
+project's full multi-hole wave-optics engine (the same validated
+simulation machinery used for the original single-aperture optimization,
+not a shortcut) --- and the resulting simulated image was inspected
+directly, with actual peak-detection on the simulated retina, rather than
+trusting the formula's prediction.
+
+\intuitbox{This distinction matters: the closed-form formula \emph{predicts} where
+ghost images should land. The full simulation \emph{measures} where they
+actually land, by literally propagating light through the eye model and
+looking at the resulting image. Confirmation means these two independent
+methods agree; it is not simply re-running the same formula a second time.
+}
+The result: \textbf{9 out of 9 finalist designs were confirmed} --- the
+full simulation reproduced each finalist's predicted ghost-safety and
+vignetting-safety exactly, at every tested gaze angle. One genuinely useful
+side-finding also came out of this step: three of the nine finalists
+revealed that an older reference file (\texttt{blur\_sweep.csv}) had been
+computed at a since-corrected, lower simulation resolution --- caught
+because three finalists with \emph{different} hole sizes reported the
+\emph{identical} stale blur value to many decimal places, which is not
+something real, correctly-computed diffraction physics would ever do for
+different apertures. That reference file has since been regenerated at
+the corrected resolution.
+
+\codemapbox{This confirmation pass lives in
+\texttt{array\_geometry\_lab\_phase2\_confirmation/}, importing (not
+copying) the original validated simulation engine directly --- correctness
+matters more than speed here, since only a handful of finalist designs
+need checking, unlike the thousand-plus-candidate sweep that justified
+using fast closed-form copies everywhere else.
+}
+\section{Summary: What a Design Needs to Pass}
+
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+\textbf{Step} & \textbf{Requirement} \\
+\midrule
+1 & Hole size fixed by the existing acuity-optimal chart, per myopia level \\
+2 & Generate a candidate geometry (pattern, hole count, spacing) \\
+3 & \textbf{Gate 1:} no ghost-image pair violates the resolvable-separation limit \\
+4 & \textbf{Gate 2:} Gate 1 holds at every tested gaze angle, not just $\varphi=0$ \\
+5 & Among survivors, rank by packing density (Metric 1) or inspect the trade-off front (Metric 2) \\
+6 & Confirm the winner(s) against full wave-optics simulation, not just the formula \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A design that passes all six steps has been checked, independently, at two
+different levels of physical detail (fast formula and full simulation), and
+is the point at which this project's theoretical work hands off to physical
+fabrication and measurement.
+
+\end{document}

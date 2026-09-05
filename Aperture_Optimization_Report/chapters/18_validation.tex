@@ -1,0 +1,146 @@
+\chapter{Validation Against Clinical Data}
+\label{ch:validation}
+
+\section{The import-shadowing bug: two validation efforts had never tested the corrected optics}
+
+Independent of the Chapter~\ref{ch:physics_audit} wavelength fix, a second, separate
+bug was found while investigating it: \texttt{stage4\_human\_vision/pipeline.py}
+inserted the \emph{deprecated} \texttt{stage2/} directory into \texttt{sys.path} and
+imported the retina-optics module from there, not \texttt{stage2\_fixed/}. Because
+Python caches imported modules by bare name, and \texttt{stage4\_human\_vision}'s own
+\texttt{\_\_init\_\_.py} runs first whenever anything under that package is imported,
+this \emph{silently shadowed} \texttt{R7acuity}'s own, correctly-targeted
+\texttt{stage2\_fixed/} import too --- confirmed directly via
+\texttt{sys.modules['phase2\_retina'].\_\_file\_\_}, not assumed. \textbf{Both
+Chapter~\ref{ch:acuity_models}'s and Chapter~\ref{ch:r7acuity}'s originally-published
+validation numbers were therefore computed against the deprecated, still-buggy optics
+module the whole audit exists to replace} --- never against \texttt{stage2\_fixed/} at
+all, despite both living in code paths whose own documentation states they sit on top
+of the corrected pipeline. The fix repointed \texttt{pipeline.py}'s (and the identically-affected
+\texttt{stage3\_human\_vision/metrics.py}'s) import at \texttt{stage2\_fixed/}; both
+validation efforts were then re-run.
+
+\section{Stage 4 (closed-form) vs.\ Wang (2009): before and after}
+
+Same dataset throughout (Wang 2009, ``Ideal Pinhole,'' 5 real apertures $500/750/1000/
+1200/1500\um$, sensitivity across $M=[0,2,5]\,$D --- the paper reports no per-point
+$M$, the same limitation carried through every comparison in this chapter), same
+predictor (the recommended \texttt{mtf10\_vsotf\_brightness\_adjusted} model of
+Chapter~\ref{ch:acuity_models}).
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$M$ (D) & $R^2$ pre-fix & $R^2$ post-fix & $\Delta R^2$ \\
+\midrule
+0 & $-6.39$ & $-4.80$ & $+1.59$ \\
+2 & $-4.98$ & $-1.41$ & $+3.57$ \\
+5 & $-2.84$ & $-0.68$ & $+2.16$ \\
+\bottomrule
+\end{tabular}
+\caption{Stage 4 recommended predictor vs.\ Wang (2009), $R^2$ before and after the optics fix ($n=5$ per row).}
+\label{tab:stage4-prepost}
+\end{table}
+
+\textbf{Still fails the stated significance bar ($R^2>0$ and $p<0.05$) at every $M$
+tested --- but a real, substantial, consistent improvement in the right direction at
+every $M$.} Notably, Pearson $r$ \emph{worsened or flipped sign} at $M=0,2$ even as
+$R^2$ improved, because $R^2$ penalizes systematic bias/offset (every pre-fix predicted
+point sat above the diagonal --- a genuine calibration problem, not just weak
+correlation) while Pearson $r$ measures only rank correlation; the corrected optics
+reduced the bias enough to improve $R^2$ while disturbing whatever weak rank-ordering
+existed before. Reported as-is, not smoothed over by picking whichever statistic looks
+better. \textbf{Interpretation}: this is evidence \emph{against} pure data-scarcity
+being the whole story (a purely data-limited problem would not systematically improve
+when the underlying optics are corrected) and evidence \emph{for} at least part of the
+original failure being real, fixable upstream optical-model error --- while the
+remaining gap (still $R^2\ll0$ at every $M$) stays undistinguished between data
+scarcity, an uncalibrated brightness-correction offset, and whatever else remains
+unaccounted for.
+
+\section{An honest calibration attempt, and why it still fails}
+
+A linear recalibration $\text{logMAR}_{cal}=a\cdot\text{logMAR}_{pred}+b$, fit against
+Wang 2009, was evaluated with \textbf{leave-one-out cross-validation}, not an in-sample
+fit-and-score (which would trivially overfit at $n=5$).
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+Evaluation & $R^2$ & Pearson $r$ & $p$ \\
+\midrule
+In-sample (fit on all 5, scored on same 5), $M=0$ & $0.156$ & $0.395$ & $0.510$ \\
+\textbf{Leave-one-out (honest), $M=0$} & $\mathbf{-0.586}$ & $\mathbf{-0.352}$ & $0.562$ \\
+In-sample, $M=2$ & $0.154$ & $0.393$ & $0.513$ \\
+\textbf{Leave-one-out, $M=2$} & $\mathbf{-0.590}$ & $\mathbf{-0.372}$ & $0.537$ \\
+Pooled (15 points), in-sample & $0.132$ & $0.364$ & $0.183$ \\
+\textbf{Pooled, grouped leave-one-out (deployed fit's real score)} & $\mathbf{-0.566}$ & $\mathbf{-0.460}$ & $\mathbf{0.085}$ \\
+\bottomrule
+\end{tabular}
+\caption{Calibration attempt: in-sample (misleadingly reasonable-looking) vs.\ honest leave-one-out scores.}
+\label{tab:calibration-loo}
+\end{table}
+
+The in-sample $R^2$ ($0.13$--$0.16$) looks deceptively reasonable --- exactly the
+overfitting trap a governing brief warned against. The honest leave-one-out $R^2$ is
+\textbf{negative in every case}, and Pearson $r$ even \textbf{flips sign} under
+leave-one-out --- a clear sign the fitted line is not stable at this sample size; which
+4-of-5 points are fit on changes the answer's \emph{direction}, not just its magnitude.
+\textbf{External check}: the pooled calibration, fit on all 15 Wang-2009 points,
+predicts $\text{logMAR}=0.499$ at the one additional real anchor available (Kim et al.\
+2017, $900\um$/$M\approx2.7\,$D, $n=36$, reporting $0.20\pm0.21$) --- residual
+$+0.30$ logMAR, outside 1 standard deviation of the observed value, independently
+confirming the leave-one-out result does not generalize.
+
+\section{R7acuity vs.\ Wang (2009): the second, structurally independent failure}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$M$ (D) & R7 ideal-observer $R^2$ & Pearson $r$ & $p$ \\
+\midrule
+0 & $-24.62$ & $0.787$ & $0.114$ \\
+2 & $-28.06$ & $0.187$ & $0.764$ \\
+5 & $-19.10$ & $0.956$ & $\mathbf{0.011}$ \\
+\bottomrule
+\end{tabular}
+\caption{R7acuity ideal-observer model vs.\ Wang (2009), pre-optics-fix (see Chapter~\ref{ch:r7acuity} for why post-fix calibration crashes instead).}
+\label{tab:r7-wang}
+\end{table}
+
+\textbf{Fails the stated bar at every $M$, and fails \emph{more severely}
+($R^2\in[-28.1,-19.1]$) than Stage 4's own numbers.} The failure signature is
+different, though, and this distinction is stated explicitly rather than rounded up to
+``confirms the same story'': R7's predicted logMAR clusters tightly around
+$-0.83$ to $-1.16$ (i.e.\ roughly $20/3$ to $20/7$ Snellen-equivalent) against observed
+$0.28$--$1.00$ logMAR ($20/38$ to $20/200$) --- the model predicts dramatically
+\emph{better} acuity than was ever clinically observed, at almost every condition,
+regardless of aperture or defocus. This is why $R^2$ (which penalizes a constant
+offset) is so deeply negative even where Pearson $r$ is positive and, at $M=5\,$D,
+nominally significant ($r=0.956$, $p=0.011$) --- the \emph{ranking} across apertures is
+partly right at $M=5\,$D, but the \emph{absolute scale} is off by roughly a full
+logMAR unit almost everywhere. As Chapter~\ref{ch:r7acuity} documents, once the optics
+were corrected, this over-optimism turned out not to be a one-off artifact but a
+demonstrated failure of the calibration itself to generalize across optical
+conditions.
+
+\section{Honest conclusion}
+
+\textbf{No acuity model in this project --- across two structurally different
+architectures, both honestly validated with no post-hoc tuning after the fact --- clears
+$R^2>0$ and $p<0.05$ against either available clinical dataset.} The corrected optics
+measurably \emph{narrow} Stage 4's gap (Section 18.2) without closing it, which is
+itself evidence that part of the original failure was real, fixable optical-model
+error rather than pure data scarcity --- but the remaining, still-large gap is
+consistent with genuine data-scarcity causes that no further model-side tuning can fix:
+$n=5$ per myopia level, one clinically non-monotonic point (observed logMAR
+$0.28\to0.31\to\mathbf{1.00}\to0.40\to0.50$ across the five Wang apertures --- a large,
+unexplained spike no smooth optics-based model can fit with five points), and no
+public dataset anywhere recording per-subject refractive error alongside aperture. Per
+this project's own stated priorities (Chapter~\ref{ch:limitations}), what this needs
+is more/better real clinical data --- a modern replication with per-subject refraction
+across a real aperture sweep, at $N\gg5$ --- not a fourth predictor or a
+differently-parametrized calibration term.

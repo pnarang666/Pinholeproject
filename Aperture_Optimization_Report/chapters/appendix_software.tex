@@ -1,0 +1,52 @@
+\chapter{Software Architecture Note}
+\label{app:software}
+
+\section{Provenance of every number in this report}
+
+Every sweep in this report was produced by directly calling this project's own
+pre-existing, independently-tested compute functions --- never a re-derivation written
+specifically for this document. Concretely, every figure and table traces to one of:
+(a) \texttt{new\_sweeps/blur\_sweep.csv} and \texttt{acuity\_sweep\_stage4.csv}, this
+project's own most recent full-grid corrected-optics runs (Chapters~\ref{ch:r1sweep}
+and~\ref{ch:stage4}); or (b) a fresh run of \texttt{master\_dashboard/wrappers.py}'s
+thin wrapper functions, generated specifically for this report by this report's own
+\texttt{generate\_report\_data.py} --- the same functions that back this project's
+live interactive dashboard, so every number here is independently reproducible by
+running that dashboard.
+
+\section{The deprecated-optics isolation mechanism}
+
+Chapter~\ref{ch:deprecated_vs_corrected}'s comparison requires deliberately loading
+the pre-fix \texttt{stage2/} optics module --- the one piece of this report's pipeline
+that must, by design, differ from every other chapter's \texttt{stage2\_fixed/}-based
+result. \texttt{stage2/} and \texttt{stage2\_fixed/} define same-named Python modules
+(\texttt{phase2\_retina}, \texttt{myopia\_axial}, \texttt{pipeline\_junction}); since
+Python caches imports by bare module name process-wide, a naive import of the
+deprecated copy risks \emph{permanently shadowing} the corrected copy for every other
+chapter's sweep run afterward in the same process --- precisely the failure mode
+documented in Chapter~\ref{ch:validation}.
+
+This is avoided with an isolated import context manager
+(\texttt{wrappers.\_isolated\_\allowbreak stage2\_deprecated\_\allowbreak import()}) that: (1) saves whatever is
+currently cached under the three colliding names; (2) removes \texttt{stage2\_fixed/}
+from the Python import path and inserts \texttt{stage2/} in its place, for the
+duration of one sweep call only; (3) asserts the freshly-imported module resolves to
+the expected deprecated file path, refusing to proceed otherwise; (4) on exit,
+restores the original path and cached modules, and \textbf{re-verifies} that the
+corrected pipeline is exactly as it was before --- raising a fatal error, not a silent
+pass-through, if it is not. This was independently tested, not merely asserted to
+work: a corrected-optics sweep run immediately before and immediately after the
+deprecated-optics sweep in Chapter~\ref{ch:deprecated_vs_corrected} produces
+bit-for-bit identical results.
+
+\section{Registry-driven dashboard architecture}
+
+\texttt{master\_dashboard/} --- the live, interactive companion to this static report
+--- is built on one design principle relevant to how this report's own data was
+produced: every stage is one entry in a single registry dict
+(\texttt{master\_dashboard/registry.py}) mapping a stage key to its real entry point,
+parameter widgets, and output shape; the dashboard's own UI code contains no
+stage-specific physics, sweep loops, or plotting math anywhere. This report's data
+generator (\S B.1 above) calls the identical wrapper functions that registry points
+at, so this report and the live dashboard are guaranteed to agree, not two
+independently-maintained sources of the same numbers.

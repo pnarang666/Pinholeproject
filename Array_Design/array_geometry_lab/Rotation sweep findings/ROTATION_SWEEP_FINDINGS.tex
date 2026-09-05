@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{xcolor}
+
+% Allow line breaks after underscores in \texttt{...} filenames/identifiers --
+% this report has many long snake_case filenames (e.g.
+% sweep_results_with_density_PREROTATION_legacy.csv) that otherwise overflow the
+% page margin as a single unbreakable token. Tested in isolation before applying
+% here (a naive \renewcommand{\_}{\_...} self-references and blows the input
+% stack -- \let the original meaning first).
+\makeatletter
+\let\origunderscore\_
+\renewcommand{\_}{\origunderscore\penalty0\hskip0pt\relax}
+\makeatother
+% Safety net for the remaining unbreakable tokens the underscore fix above
+% doesn't cover (e.g. two adjacent \texttt{} groups joined by a bare "/" with no
+% underscore anywhere nearby) -- standard, minimal-visual-impact fix: let the
+% paragraph breaker stretch inter-word spacing further before giving up and
+% overflowing the margin.
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+\title{Rotation Sweep Findings\\
+\large IYPT Pinhole Sunglasses Project --- Array Design Sub-Study}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{The question this task answers}
+Does any rotated square/hexagonal/rectangular candidate beat
+\texttt{jittered\_lattice}'s current winning density among structurally-safe
+survivors, once lattice orientation (relative to this project's own established
+anisotropic-gaze finding) is actually tested instead of assumed fixed at one
+arbitrary angle?
+
+\section{Headline result}
+\textbf{No -- and the reversal is total, not marginal: \texttt{jittered\_lattice}
+now wins at ZERO of 9 M-scopes} (it previously won 5 of 9: $M=1,2,3,6,8$). A
+\textbf{rotated} \texttt{square} or \texttt{hexagonal} lattice now wins at 6 of 9
+scopes ($M=1,2,3,6,8,$ global); \texttt{archimedean\_spiral} still wins
+$M=4/5$; \texttt{rectangular} still wins $M=0$. \textbf{This is a real,
+reportable change to the Metric-1 winner list, not a rounding effect} --
+confirmed by direct inspection of the underlying gate values, not just the
+summary density numbers (see Section~\ref{sec:mechanism}).
+
+\section{Per-M comparison: old winner vs. new (rotation-inclusive) winner}
+\begin{table}[h]
+\centering\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrlrl}
+\toprule
+\textbf{$M$} & \textbf{old density (um$^{-2}$)} & \textbf{new winner} & \textbf{new density (um$^{-2}$)} & \textbf{change} \\
+\midrule
+0.0 & 2.9630e-07 & rectangular (rot=0) & 2.9630e-07 & same winner \\
+1.0 & 9.4864e-08 & \textbf{square (rot=45$^\circ$)} & 1.1111e-07 & \textbf{CHANGED, +17.1\%} \\
+2.0 & 1.0126e-07 & \textbf{square (rot=45$^\circ$)} & 1.1111e-07 & \textbf{CHANGED, +9.7\%} \\
+3.0 & 1.0126e-07 & \textbf{square (rot=45$^\circ$)} & 1.1111e-07 & \textbf{CHANGED, +9.7\%} \\
+4.0 & 2.3085e-07 & archimedean\_spiral & 2.3085e-07 & same winner \\
+5.0 & 2.3085e-07 & archimedean\_spiral & 2.3085e-07 & same winner \\
+6.0 & 1.0471e-07 & \textbf{square (rot=45$^\circ$)} & 1.1111e-07 & \textbf{CHANGED, +6.1\%} \\
+8.0 & 1.0614e-07 & \textbf{square (rot=45$^\circ$)} & 1.1111e-07 & \textbf{CHANGED, +4.7\%} \\
+global$^\ast$ & 2.5000e-07 & \textbf{hexagonal (rot=30$^\circ$)} & 2.8868e-07 & \textbf{CHANGED, +15.5\%} \\
+\bottomrule
+\end{tabular}
+\caption{Old winner column omits family (all 5 changed rows were
+\texttt{jittered\_lattice}, except global which was \texttt{square} at rot=0).
+$^\ast$global's winner-change is flagged with a numerical-fragility caveat, see
+Section~\ref{sec:mechanism}. Full per-row detail:
+\texttt{comparison\_metric/metric1\_max\_density\_per\_M.csv} (new) vs.\
+\texttt{metric1\_max\_density\_per\_M\_PREROTATION\_legacy.csv} (old).}
+\end{table}
+
+\section{How far behind is \texttt{jittered\_lattice} now, even where it lost?}
+Comparing the new winner's density against \texttt{jittered\_lattice}'s OWN best
+structurally-safe density at each $M$ (not just ``did it win,'' but ``by how
+much''):
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{lr}
+\toprule
+\textbf{$M$} & \textbf{new winner leads jittered\_lattice's own best by} \\
+\midrule
+0.0 & +15.1\% \\
+1.0 & +17.1\% \\
+2.0 & +9.7\% \\
+3.0 & +9.7\% \\
+4.0 & +123.5\% \\
+5.0 & +123.5\% \\
+6.0 & +6.1\% \\
+8.0 & +4.7\% \\
+global & +122.7\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\texttt{jittered\_lattice} is not close anywhere -- the smallest margin ($M=8$)
+is still a 4.7\% lead for the new winner, and at $M=4/5/$global the gap is over
+100\% (\texttt{archimedean\_spiral}/\texttt{hexagonal} were always well ahead
+there; rotation only changed who's ahead at the other 6 scopes).
+
+\section{Mechanism -- confirmed by direct inspection, not inferred from the summary alone}
+\label{sec:mechanism}
+\textbf{Density itself never changes with rotation} (rotating a rigid lattice
+changes neither its packing density nor its ghost margin, which depends only on
+pairwise distance). What changes is \textbf{which candidates pass the safety
+gates} -- specifically \texttt{worst\_case\_vignetting\_margin}, exactly as this
+task's own premise predicted (orientation relative to the anisotropic gaze axis
+matters for vignetting, not for ghosting).
+
+\subsection*{$M=1,2,3,6,8$ (square, pitch=3000um, $N=50$) -- clean, robust, unaffected by any numerical edge case}
+Direct check of the underlying rows:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+rotation\_deg & worst\_case\_vignetting\_margin & structurally\_safe \\
+\midrule
+0.0  & $-5.939$ / $-7.050$ (varies by $M$) & False \\
+15.0 & $-7.050$ & False \\
+30.0 & $-7.050$ & False \\
+45.0 & $+\infty$ & \textbf{True} $\leftarrow$ flips to safe \\
+\bottomrule
+\end{tabular}
+\end{center}
+\texttt{N\_actual} for this candidate is \textbf{perfectly stable across all 4
+rotation angles} (20/20/20/20, 50/50/50/50, 100/100/100/100 -- verified
+directly) -- this pitch (3000um) is far from the hole diameter (a\_hole=1250um at
+$M=1$D, ratio=0.417), so no overlap-rejection boundary is anywhere near being
+touched. This is a genuine geometric effect: rotating the lattice by 45 degrees
+moves specific hole positions enough that no pair of holes is ever simultaneously
+active under the pupil across the full gaze sweep
+(\texttt{worst\_case\_vignetting\_margin} goes to a clean $+\infty$, not a
+marginal small-positive value), where at 0/15/30 degrees a pair does become
+active at some tested gaze angle and produces a firmly negative margin.
+\textbf{High confidence finding.}
+
+\subsection*{$M=$global (hexagonal, pitch=2000um, rotation=30$^\circ$) -- real, but flagged as numerically fragile}
+Here \texttt{pitch\_um} (2000) exactly equals \texttt{a\_hole\_um} (2000, the
+largest acuity-optimal aperture across the $M$ range, used for global-scope
+overlap validity per this project's own established convention) -- \textbf{exact
+tangency, ratio=1.0}, a case this project's own \texttt{compute\_density.py}
+already documents as fragile: \texttt{reject\_overlapping()}'s strict $d^2 >
+a_{\rm hole}^2$ test sits exactly on a floating-point knife-edge at exact
+tangency. Direct check confirms \texttt{N\_actual} for this candidate actually
+VARIES across rotation angles at the same $N_{\rm requested}$ (e.g.\
+$N_{\rm requested}=20$ gives $N_{\rm actual}=7,9,7,9$ at rotation$=0/15/30/45$
+respectively) -- a symptom of rotation's own floating-point rounding
+(irrational $\cos$/$\sin$ values) nudging which near-tied points survive the
+exact-tangency boundary, not a bug in the rotation transform itself (verified
+elsewhere that rotation preserves \texttt{N\_actual} exactly away from this
+boundary -- see Section~\ref{sec:order}).
+
+\textbf{The $M=$global winner-change is real for the specific rotation angles
+tested} (rotation=30$^\circ$ genuinely reaches \texttt{structurally\_safe=True}
+with \texttt{worst\_case\_vignetting\_margin}$=+\infty$ at this pitch),
+\textbf{but it should be read as ``a numerically narrow window this project's
+own known exact-tangency edge case opened up,'' not as a broad, robustly-safe
+orientation} the way the $M=1$--8 finding is. Recommend re-checking this
+specific candidate at a pitch slightly off exact tangency (e.g.\ 1990 or
+2010um) before treating it as a settled design choice.
+
+\section{Step 1 order requirement: rotation\_deg=0.0 exact-reproduction, confirmed before the sweep ran}
+\label{sec:order}
+Per this task's explicit ORDER requirement, \texttt{spot\_check\_generators.py}
+was extended and run BEFORE the rotation sweep: \texttt{rotation\_deg=0.0}
+reproduces the pre-rotation-support output bit-for-bit (\texttt{np.array\_equal},
+not just \texttt{np.allclose}) for all three families, and
+\texttt{rotation\_deg=30.0} was independently verified to (a) actually change
+coordinates, (b) preserve \texttt{N\_actual} exactly, and (c) preserve every
+pairwise distance exactly -- all PASS. (The one place \texttt{N\_actual} does
+vary with rotation in the real sweep, described above, is the pre-existing
+exact-tangency edge case, confirmed by direct inspection to be a
+floating-point boundary effect specific to \texttt{pitch\_um==a\_hole\_um}, not
+a contradiction of this check -- the spot-check's own $N=50$/pitch=900/a\_hole=400
+case is nowhere near that boundary.)
+
+\section{What was changed, and what was preserved}
+\begin{itemize}
+  \item \texttt{generators/base\_generator.py}: added
+  \texttt{rotate\_points(coords\_um, rotation\_deg)} (shared helper, avoids
+  duplicating the same rotation matrix in 3 files). \texttt{reject\_overlapping},
+  \texttt{recenter\_on\_centroid}, \texttt{finalize} unchanged.
+  \item \texttt{generators/square.py}, \texttt{generators/hexagonal.py},
+  \texttt{generators/rectangular.py}: added \texttt{rotation\_deg=0.0} parameter,
+  applied before \texttt{bg.finalize()}. Core lattice construction (meshgrid,
+  radial sort) unchanged.
+  \item \texttt{sweep/run\_rotation\_sweep.py} (new): re-swept ONLY
+  square/hexagonal/rectangular, ONLY adding rotation\_deg in $\{0,15,30,45\}$ on
+  the EXISTING N/spacing grid -- no other family touched or re-run.
+  \item \texttt{sweep\_results.csv}: original preserved as
+  \texttt{sweep\_results\_PREROTATION\_legacy.csv} (6395 rows, untouched).
+  Existing square/hexagonal/rectangular rows retroactively tagged with
+  \texttt{;rotation\_deg=0.0} in their \texttt{spacing\_params} string (text-only,
+  no numeric column touched). New rows for rotation in $\{15,30,45\}$ appended.
+  \textbf{No duplicate rows} -- verified by exact-duplicate count matching the
+  number of existing tagged rows precisely (702), not assumed; a first attempt at
+  this check found a real bug (an \texttt{M}-column string/float dtype mismatch
+  from the CSV round-trip silently broke \texttt{drop\_duplicates()}, caught
+  because the dedup count didn't match the expected value and was investigated
+  before proceeding). Final: 8933 rows.
+  \item \texttt{sweep\_results\_with\_density.csv}: re-run via the UNMODIFIED
+  \texttt{degeneracy\_filter.py}/\texttt{compute\_density.py}. Previous version
+  preserved as \texttt{sweep\_results\_with\_density\_PREROTATION\_legacy.csv}.
+  432 rows excluded (108 designs x 4 rotation angles -- the same known-degenerate
+  combinations recurring per rotation, since the degeneracy criteria are
+  rotation-invariant). \texttt{open\_area\_fraction<=1.0001} assertion:
+  \textbf{passed, zero violations}, 8501 surviving rows.
+  \item \texttt{comparison\_metric/\allowbreak metric1\_max\_density\_per\_M.csv}: re-run via
+  the UNMODIFIED \texttt{gates.py}/\texttt{metrics.py} (Metric 1 only, via the new
+  \texttt{comparison\_metric/\allowbreak run\_metric1\_only.py}). Previous version preserved
+  as \texttt{metric1\_max\_density\_per\_M\_PREROTATION\_legacy.csv}.
+  \item Untouched, as required: every other family's data (concentric,
+  fibonacci\_spiral, golden\_angle, archimedean\_spiral, ring\_offset\_concentric,
+  poisson\_disk, jittered\_lattice), \texttt{array\_optimization/}, and every
+  Phase 2 confirmation file.
+\end{itemize}
+
+\section{Reproduction}
+\begin{verbatim}
+cd Array_Design/array_geometry_lab
+python3 spot_check_generators.py               # step 1 gate -- must pass first
+python3 sweep/run_rotation_sweep.py             # step 2-3
+cd comparison_metric
+python3 compute_density.py                      # step 4
+python3 run_metric1_only.py                     # step 5
+\end{verbatim}
+
+\end{document}

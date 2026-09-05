@@ -3,7 +3,17 @@
 import os
 import sys
 
-_STAGE2_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage2"))
+# Points at stage2_fixed/, not stage2/ -- see PHYSICS_AUDIT.md and RESULTS.md's
+# "Re-run against corrected optics" section. Was stage2/ until this fix; that
+# deprecated copy carries the lens-phase/retina-propagation wavelength bug (item A)
+# plus the two other bugs stage2_fixed/ was created to fix (CHANGES.md). This module
+# is also the reason R7acuity's own (correctly stage2_fixed/-targeted) import got
+# silently shadowed back to stage2/: importing anything under stage4_human_vision
+# runs this file first via __init__.py, caching 'phase2_retina' in sys.modules under
+# its bare name before R7acuity's own import ever ran. Repointing here (rather than
+# reordering imports elsewhere) fixes the shadowing at its source for every caller,
+# not just the one that happened to import in a different order.
+_STAGE2_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage2_fixed"))
 _STAGE3_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage3_human_vision"))
 for _path in (_STAGE2_DIR, _STAGE3_DIR):
     if _path not in sys.path:

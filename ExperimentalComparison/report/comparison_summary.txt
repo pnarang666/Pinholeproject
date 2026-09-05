@@ -1,0 +1,130 @@
+EXPERIMENTAL vs THEORETICAL r_EE_50 COMPARISON -- PLAIN-LANGUAGE SUMMARY
+==========================================================================
+
+CALIBRATION STATUS: pixel-to-micrometer conversion is NOT calibrated.
+All comparisons below are between two calibration-independent ratios --
+measured r_EE_50(M)/r_EE_50(M=0) in pixels vs. the same ratio computed
+from blur_sweep.csv's theoretical r_EE_50_um. No absolute-size claim is
+made or possible from this data yet.
+
+METHODOLOGY NOTES (found during this run, not assumed going in):
+- sips writes a REAL 16-bit-per-channel TIFF (confirmed via TIFF tag
+  inspection). The installed Pillow silently downcast this to 8-bit on
+  array read -- caught before any measurement was finalized; all reading
+  in this pipeline uses OpenCV instead, verified to preserve true uint16
+  values losslessly. Exposure-flag thresholds are therefore 5%/95% of
+  the native 0-65535 range, not literal 0/255.
+- This machine had only ~1-3GB free disk system-wide during this run
+  (pre-existing, unrelated to this task -- /Users volume was ~99% full).
+  Full-resolution 16-bit TIFFs run ~290MB raw / ~176MB lossless-compressed
+  each; 41 of them would not fit. Per your choice, tiff_converted/ holds a
+  50%-linear-downsized, lossless-deflate-compressed copy of each image.
+  ALL measurements (blob detection, centroid, r_EE_50) were computed on
+  the FULL-RESOLUTION pixel data in memory before downsizing -- the kept
+  TIFF files are a smaller copy for reference/viewing, not what was
+  measured.
+- Real phone-camera point-source photos in this set show a compact bright
+  core plus a wide veiling-glare halo and thin near-peak diffraction
+  spikes that connect to the frame edge or a secondary ghost blob at a
+  naive low threshold. The blob-isolation threshold is auto-raised per
+  image until the core bounding box is compact; see analyze.py docstring.
+
+PER-APERTURE RESULT
+--------------------------------------------------------------------------
+
+400b (a_hole_um=400):
+  Matched theory well (|%dev|<=20%): M=0 (+0.0%), M=1 (-1.8%), M=2 (-12.3%), M=3 (-18.0%), M=4 (-9.4%), M=6 (-12.3%)
+  Diverged from theory (|%dev|>20%): M=8 (-26.5%)
+    [1400.dng, M=1] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [2400.dng, M=2] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+
+600b (a_hole_um=600):
+  Matched theory well (|%dev|<=20%): M=0 (+0.0%), M=1 (+0.3%), M=2 (-4.2%), M=3 (-12.8%)
+  Diverged from theory (|%dev|>20%): M=4 (-24.1%), M=6 (-54.7%), M=8 (-65.3%)
+    [M0600b.dng, M=0] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M1600b.dng, M=1] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M2600b.dng, M=2] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M3600b.dng, M=3] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M4600b.dng, M=4] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M6600b.dng, M=6] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [M8600B.dng, M=8] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+
+700b (a_hole_um=700):
+  Matched theory well (|%dev|<=20%): M=0 (+0.0%), M=1 (-0.5%), M=2 (-17.5%)
+  Diverged from theory (|%dev|>20%): M=3 (-46.4%), M=4 (-53.5%), M=6 (-71.2%), M=8 (-79.3%)
+    [1700b.dng, M=1] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [2700b.dng, M=2] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [3700b.dng, M=3] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [4700b4.dng, M=4] possible retake (extra digit in filename); core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [6700b.dng, M=6] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+
+1000b (a_hole_um=1000):
+  NOTE: No valid M=0 (reference) image for 1000b -- normalized ratios cannot be computed for this folder; raw r_EE_50_px only is reported.
+  No measured-vs-predicted comparison available for this folder (see NOTE above).
+    [11000.dng, M=1] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [61000.dng, M=6] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [81000.dng, M=8] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+
+1200b (a_hole_um=1200):
+  NOTE: No exact a_hole_um=1200 row exists in blur_sweep.csv (nearest available: [1000.0, 1250.0, 1500.0]) -- theory comparison skipped for 1200b, not guessed/interpolated.
+  No measured-vs-predicted comparison available for this folder (see NOTE above).
+    [01200.dng, M=0] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [11200.dng, M=1] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [21200.dng, M=2] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [41200.dng, M=4] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [61200.dng, M=6] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+    [81200.dng, M=8] core pixel-saturated (>=65535 in a channel) -- r_EE_50 may be biased low
+
+--------------------------------------------------------------------------
+
+Nopinholeb (control -- no aperture, NOT compared to blur_sweep.csv theory):
+  M=0: r_EE_50_px=1333.04, normalized_ratio=1.0  [core pixel-saturated (>=65535 in a channel)]
+  M=1: r_EE_50_px=1291.568, normalized_ratio=0.96889  [core pixel-saturated (>=65535 in a channel)]
+  M=2: r_EE_50_px=1338.934, normalized_ratio=1.00442  [core pixel-saturated (>=65535 in a channel)]
+  M=3: r_EE_50_px=1420.081, normalized_ratio=1.0653  [core pixel-saturated (>=65535 in a channel)]
+  M=4: r_EE_50_px=1444.727, normalized_ratio=1.08378  [core pixel-saturated (>=65535 in a channel)]
+  M=6: r_EE_50_px=1360.359, normalized_ratio=1.02049  [core pixel-saturated (>=65535 in a channel)]
+  M=8: r_EE_50_px=1336.501, normalized_ratio=1.0026  [core pixel-saturated (>=65535 in a channel)]
+
+--------------------------------------------------------------------------
+
+EXCLUDED / UNRESOLVED FILES
+  Flagged for exposure (excluded from comparison): 0 file(s)
+  Unparseable / excluded filenames: 2 file(s) -- see unparseable_files.csv
+    400b/20260826_225126.dng: anomalous filename (timestamp-style), not M-mapped, excluded per task spec
+    1000b/010006.dng: does not match this folder's established filename pattern -- not guessed
+
+--------------------------------------------------------------------------
+
+HONEST BOTTOM LINE
+  21 measured/predicted ratio pairs available across all apertures.
+  Mean |%deviation| = 24.3%, median = 12.8%, max = 79.3%.
+  8/21 pairs diverge by more than 20% -- reported plainly above, not smoothed over.
+  1200b has no exact match in blur_sweep.csv (nearest: 1000um, 1250um) --
+  not interpolated or guessed; theory comparison is skipped for that folder.
+  1000b's own M=0 file (010006.dng) does not match the folder's established
+  filename pattern -- logged as unparseable, not guessed; 1000b's normalized
+  ratios (both measured and predicted) are therefore unavailable.
+
+  A clear pattern in the divergence itself, checked rather than assumed: for
+  600b and 700b, measured blur growth plateaus (ratio stays roughly 1.0-1.1x)
+  while theory predicts continued strong growth (up to ~3.3x for 600b, ~4.7x
+  for 700b at M=8) -- deviation gets steadily WORSE at higher M for both
+  apertures. Before reporting this as a real disagreement, two artifact
+  explanations were checked and ruled out:
+    (1) ROI/padding truncation -- verified directly on 600b/M=8: the found
+        r_EE_50_px sits at only ~50% of the maximum radius available inside
+        its analysis window, i.e. the algorithm had plenty of room to report
+        a larger radius if the data supported one and did not hit a boundary.
+    (2) Core pixel saturation -- plausible in principle (a clipped core could
+        suppress the apparent growth of a photometric radius), but checked
+        against the data and rejected as the sole explanation: 600b is
+        saturated at EVERY M including M=0 (where deviation is 0% by
+        definition), so saturation being present cannot by itself explain
+        deviation getting worse specifically at higher M within that folder.
+  With both of those ruled out, the plateau looks like a genuine measured
+  effect, not a pipeline artifact -- but its actual physical cause (the real
+  M-diopter lenses' optical power vs. nominal, sensor auto-exposure/ISP
+  behavior at large defocus, or a genuine limitation of the theoretical
+  model at large blur) is NOT determined by this data and is left as an open
+  question rather than guessed.

@@ -1,0 +1,16 @@
+M_diopters,a_hole_um,observed_logmar,predicted_logmar,recommended_model,junction_check_passed
+0.0,500,0.28,0.24479761509242326,mtf10_vsotf_brightness_adjusted,True
+0.0,750,0.31,0.06892792187735543,mtf10_vsotf_brightness_adjusted,True
+0.0,1000,1.0,-0.05623027504919535,mtf10_vsotf_brightness_adjusted,True
+0.0,1200,0.4,-0.13531478591653096,mtf10_vsotf_brightness_adjusted,True
+0.0,1500,0.5,-0.23218935867652993,mtf10_vsotf_brightness_adjusted,True
+2.0,500,0.28,0.23781714036009036,mtf10_vsotf_brightness_adjusted,True
+2.0,750,0.31,0.07579363839323636,mtf10_vsotf_brightness_adjusted,True
+2.0,1000,1.0,0.12228719616865859,mtf10_vsotf_brightness_adjusted,True
+2.0,1200,0.4,0.35907036631844763,mtf10_vsotf_brightness_adjusted,True
+2.0,1500,0.5,0.5289025364610186,mtf10_vsotf_brightness_adjusted,True
+5.0,500,0.28,0.24470615759301056,mtf10_vsotf_brightness_adjusted,True
+5.0,750,0.31,0.5645011798111804,mtf10_vsotf_brightness_adjusted,True
+5.0,1000,1.0,0.7767659820665105,mtf10_vsotf_brightness_adjusted,True
+5.0,1200,0.4,0.8752175696918745,mtf10_vsotf_brightness_adjusted,True
+5.0,1500,0.5,0.9864072062339984,mtf10_vsotf_brightness_adjusted,True

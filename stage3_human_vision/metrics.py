@@ -2,10 +2,17 @@
 New optical metrics computed from Stage 2's retinal PSF: RMS spot radius, Strehl
 ratio, MTF (with MTF50/MTF10), Airy diameter, F-number, and throughput.
 
-Imports stage1_v2/stage2 for primitives (make_grid, second_moment_radius,
+Imports stage1_v2/stage2_fixed for primitives (make_grid, second_moment_radius,
 run_pipeline_point) -- never reimplements the ASM propagator or mask generator, per
-the same rule stage2/pipeline_junction.py already follows. Every formula here is keyed
-to a literature.py citation.
+the same rule stage2_fixed/pipeline_junction.py already follows. Every formula here is
+keyed to a literature.py citation.
+
+Points at stage2_fixed/, not stage2/ (was stage2/ until this fix -- see
+PHYSICS_AUDIT.md and RESULTS.md). Set explicitly here rather than relying on whichever
+copy happens to already be cached in sys.modules['phase2_retina'] by an earlier
+import elsewhere in the process -- that implicit, import-order-dependent sharing is
+exactly the mechanism that caused stage4_human_vision's own import to get silently
+shadowed (see stage4_human_vision/pipeline.py's docstring note).
 """
 
 import os
@@ -14,7 +21,7 @@ import sys
 import numpy as np
 
 _STAGE1_V2_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage1_v2"))
-_STAGE2_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage2"))
+_STAGE2_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "stage2_fixed"))
 for _d in (_STAGE1_V2_DIR, _STAGE2_DIR):
     if _d not in sys.path:
         sys.path.insert(0, _d)
@@ -113,16 +120,24 @@ def find_best_focus_v_r(a_hole, wavelength, d_gap, D_pupil_um, f_eye, n_prime,
     intensity for a given aperture, via bounded golden-section search. Used only to
     investigate the "Strehl ratio ill-posedness" finding above -- see README.md and
     comparison.py. Returns (best_v_r, best_peak, hit_boundary: bool).
+
+    Currently has no callers anywhere in the codebase (confirmed by search) -- kept
+    for the documented investigative purpose above, not dead weight to be deleted.
+    Fixed here anyway (PHYSICS_AUDIT.md item A pattern: resolve the effective
+    wavelength once, pass to both lens_phase and propagate_to_retina) so it doesn't
+    silently reintroduce the same bug if it's ever revived.
     """
     from scipy import optimize
 
     cornea = junction.run_gap_to_cornea(a_hole, wavelength, d_gap, grid_N, window_L_mm)
     dx = cornea["dx"]
+    effective_wavelength = (wavelength / n_prime) if refractive_index_correction else wavelength
 
     def neg_peak(v_r):
         field = _p2.pupil_clip(cornea["U_cornea"], dx, D_pupil_um)
-        field = _p2.lens_phase(field, dx, wavelength, f_eye)
-        U, _ = _p2.propagate_to_retina(field, dx, wavelength, v_r, refractive_index_correction, n_prime)
+        field = _p2.lens_phase(field, dx, effective_wavelength, f_eye)
+        U, _ = _p2.propagate_to_retina(field, dx, effective_wavelength, v_r,
+                                        refractive_index_correction=False, n_prime=n_prime)
         return -np.abs(U).max() ** 2
 
     res = optimize.minimize_scalar(neg_peak, bounds=v_r_bounds, method="bounded",

@@ -1,0 +1,10 @@
+finalist_id,family,M_csv,M_resolved,a_hole_um,N_actual,p1_ghost_margin_phi0,p1_n_active_pairs_phi0,p2_n_included_phi0,p2_n_resolved_peaks_phi0,ghost_structural_agree,p1_vignetting_margin,vign_mismatch_phis,vign_structural_agree,single_r_EE_50_fresh_gridN4096_um,array_r_EE_50_measured_um,blur_arraying_diff_um,blur_arraying_tol_um,blur_arraying_agree,blur_sweep_csv_gridN2048_um,blur_sweep_vs_fresh_diff_pct,blur_sweep_stale,CLASSIFICATION
+M0.0_rectangular,rectangular,0.0,0.0,2000.0,11,inf,0.0,1,1,True,1.0,[],True,3.66376570563,3.66376570563,2.20268248086e-13,1.46484375,True,7.32753141126,100.0,True,CONFIRMED
+M1.0_jittered_lattice,jittered_lattice,1.0,1.0,1250.0,20,inf,0.0,1,1,True,inf,[],True,6.31642875211,6.31642875211,4.08739708746e-12,1.46484375,True,7.32753141126,16.0075051714,True,CONFIRMED
+M2.0_jittered_lattice,jittered_lattice,2.0,2.0,750.0,20,inf,0.0,1,1,True,inf,[],True,8.06993015688,8.06993015688,1.30562227696e-12,1.46484375,True,8.01114456418,0.728452310682,False,CONFIRMED
+M3.0_jittered_lattice,jittered_lattice,3.0,3.0,750.0,20,inf,0.0,1,1,True,inf,[],True,11.343467184,11.343467184,1.21929133456e-11,1.46484375,True,11.876437143,4.69847490489,False,CONFIRMED
+M4.0_archimedean_spiral,archimedean_spiral,4.0,4.0,600.0,50,inf,0.0,0,0,True,inf,[],True,12.1437038873,,,,True,12.6026423328,3.77922954701,False,CONFIRMED
+M5.0_archimedean_spiral,archimedean_spiral,5.0,5.0,600.0,50,inf,0.0,0,0,True,inf,[],True,16.3400330606,,,,True,16.1079758375,1.42017597021,False,CONFIRMED
+M6.0_jittered_lattice,jittered_lattice,6.0,6.0,500.0,20,inf,0.0,1,1,True,inf,[],True,15.6296090994,15.6296090994,3.75539599418e-11,1.46484375,True,15.630614366,0.00643180937109,False,CONFIRMED
+M8.0_jittered_lattice,jittered_lattice,8.0,8.0,400.0,20,inf,0.0,1,1,True,inf,[],True,17.4462249479,17.4462249479,9.8872021681e-12,1.46484375,True,17.8740637007,2.45232853577,False,CONFIRMED
+Mglobal_square,square,global,0.0,2000.0,9,inf,,1,1,True,inf,[],True,3.66376570563,3.66376570563,2.20268248086e-13,1.46484375,True,7.32753141126,100.0,True,CONFIRMED

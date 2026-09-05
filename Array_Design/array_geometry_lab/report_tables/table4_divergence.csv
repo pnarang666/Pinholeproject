@@ -1,0 +1,11 @@
+family,inf_ghost_rows,also_vig_safe,vig_fails,divergence_pct
+concentric,98,61,37,37.755102040816325
+rectangular,190,112,78,41.05263157894737
+poisson_disk,302,178,124,41.05960264900662
+square,60,35,25,41.666666666666664
+hexagonal,60,33,27,45.0
+ring_offset_concentric,102,55,47,46.07843137254902
+archimedean_spiral,66,26,40,60.60606060606061
+jittered_lattice,1690,628,1062,62.84023668639053
+fibonacci_spiral,54,6,48,88.88888888888889
+golden_angle,54,6,48,88.88888888888889

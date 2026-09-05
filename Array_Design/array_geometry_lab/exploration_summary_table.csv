@@ -1,0 +1,11 @@
+family,n_rows_tested,n_candidate_points,n_structurally_safe_rows,n_inf_margin_rows,best_finite_ghost_margin,mean_seed_std,max_seed_std
+archimedean_spiral,135,15,26,66,-3.3370214651166417,,
+concentric,324,36,78,102,1.0,,
+fibonacci_spiral,135,15,15,54,1.0,,
+golden_angle,135,15,15,54,1.0,,
+hexagonal,162,18,43,76,1.0,,
+jittered_lattice,3888,432,736,1740,1.0,0.18241857033887474,4.330127018922194
+poisson_disk,864,96,180,302,1.0,0.6561063881188757,4.841229182759271
+rectangular,486,54,135,226,1.0,,
+ring_offset_concentric,324,36,70,106,1.0,,
+square,162,18,45,72,1.0,,

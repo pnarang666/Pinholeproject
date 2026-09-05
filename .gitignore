@@ -21,3 +21,11 @@ env/
 # --- Jupyter/streamlit local state ---
 .streamlit/
 .ipynb_checkpoints/
+*.dng
+*.DNG
+*.raw
+*.RAW
+*.mp4
+*.mov
+*.tiff
+*.tif
