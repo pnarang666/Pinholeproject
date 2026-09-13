@@ -1,0 +1,70 @@
+TIMELINE -- Array_Design/legacy_archive/
+Simple dated log of what was tried and abandoned. Full technical detail for every
+entry below is in this same folder's README.md -- this file is just the short
+date+reason version.
+
+All 7 defects below were found and archived on the SAME audit day:
+
+2026-08-16 -- grid_N=2048 wave-optics propagation grid -- ABANDONED, superseded by
+  grid_N=4096 -- reason: gave an aperture-independent artifact value (identical blur
+  to 11 decimals for different aperture sizes); confirmed 2x-too-large vs the 4096
+  rerun. See 01_gridN2048_artifact/.
+
+2026-08-16 -- ghost-separation formula "delta_r = s*v_r/d_gap" -- ABANDONED,
+  superseded by "delta_r = s*M/(P0-M)" -- reason: does not vanish at M=0 (geometrically
+  required to); R²=-1701.7 against real propagation data (worse than predicting the
+  mean), vs R²=0.995 for the replacement. See 02_legacy_ghost_formula/.
+
+2026-08-16 -- alignment-offset ensemble at n_offsets=15 -- ABANDONED, superseded by
+  n_offsets=61 -- reason: too coarse to resolve worst-case alignment reliably (uses
+  the already-correct ghost formula, just under-sampled). See
+  03_insufficient_alignment_sampling/.
+
+2026-08-16 -- fixed straight-ahead-gaze-only (phi=0) safety check -- ABANDONED,
+  superseded by full gaze-angle integration -- reason: 37.8%-88.9% of phi=0-safe
+  designs (family-dependent) fail once gaze rotation is checked. Also in this
+  folder: a placeholder UNIFORM gaze-usage weighting -- ABANDONED, superseded by a
+  literature-grounded Gaussian (sigma ~6 deg, from measured saccade-amplitude
+  statistics) -- though the field-averaged robustness CONCLUSION held under both.
+  See 04_pre_vignetting/.
+
+2026-08-16 -- sweep development snapshots legacy1-legacy6 -- ABANDONED, superseded by
+  later stabilized runs -- reason: ordinary iteration while the family set/seed
+  handling/column schema were still being finalized, not a specific physics defect.
+  One plot from this era was entirely blank (max()-aggregation bug, fixed by
+  switching to median). See 05_superseded_sweep_iterations/.
+
+2026-08-16 -- packing-density metric (pre-cleanup) -- ABANDONED, superseded by a
+  Minkowski/offset-buffer-corrected version -- reason: 412/6615 rows (6.2%) reported
+  open-area fraction > 1.0 (physically impossible); the M=0 and global winners under
+  this metric were a single stray hole (N_actual=1) misranked as the densest design
+  in the study. See 06_degeneracy_contaminated/.
+
+2026-08-16 -- lattice sweep at a single fixed orientation (no rotation parameter) --
+  ABANDONED, superseded by a 0/15/30/45-degree rotation sweep -- reason: rotation
+  changed metrics in 76% of 810 tested parameter groups (mostly via which holes
+  survive overlap rejection) -- not a no-op, so the un-rotated sweep is an
+  incomplete design space, not a wrong-but-usable one. See 07_pre_rotation/.
+
+2026-09-13 -- entire candidate pool/ranking chain (sweep_results.csv through
+  gaze_weighted_winner_per_M.csv, FINAL_WINNER_PER_M.csv, shen_model outputs) --
+  ABANDONED, superseded by a full pipeline re-run -- reason: a_hole(M) was sourced
+  live from new_sweeps/per_M_optimum_map.csv, which was itself computed on a stale
+  (grid_N=2048) acuity sweep (see new_sweeps/legacy_archive/
+  01_acuity_gridN2048_artifact/). VERIFIED, not assumed: re-running the whole chain
+  on the corrected acuity data produced byte-identical gaze_weighted_winner_per_M.csv
+  and FINAL_WINNER_PER_M.csv (and byte-identical fabrication_package masks) -- the
+  bug never actually changed which aperture won, only the intermediate pool's raw
+  numbers. See 08_stale_acuity_aperture_artifact/.
+
+STILL-ACTIVE-BUT-KNOWN-WRONG (per README.md, not archived on purpose -- a later
+pipeline step archives them itself): metric1_max_density_per_M.csv and
+metric2_pareto_front_per_M.csv, as of the 2026-08-16 audit -- apples-to-oranges
+density formula across families (1.56x-2.25x bias) + both safety gates rewarding a
+zero-hole "blackout" design as maximally safe. NOTE (checked while writing this
+timeline, 2026-09): these two files now live at
+array_geometry_lab/array_data/evaluation_results/ (README.md's stated path,
+array_geometry_lab/comparison_metric/, no longer exists -- the folder was
+reorganized since). See array_geometry_lab/array_data/evaluation_results/'s own
+TIMELINE.txt for what superseded them (compute_density.py's AUDIT FIX, then
+paper_score.py, then the gaze-weighted ranking).

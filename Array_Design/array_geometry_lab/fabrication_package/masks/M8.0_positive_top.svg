@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50.0mm" height="50.0mm" viewBox="-25.0 -25.0 50.0 50.0">
+<rect x="-25.00000" y="-25.00000" width="50.00000" height="50.00000" fill="black" stroke="none"/>
+<circle cx="-0.20000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-2.20000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="1.80000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="1.80000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-2.20000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-4.20000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="3.80000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-0.20000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-0.20000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-6.20000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="5.80000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="5.80000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-6.20000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="3.80000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-4.20000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="3.80000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-4.20000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-8.20000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="7.80000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="1.80000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-2.20000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-2.20000" cy="10.60015" r="0.17500" fill="white" stroke="none"/>
+<circle cx="1.80000" cy="10.60015" r="0.17500" fill="white" stroke="none"/>
+<circle cx="7.80000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-10.20000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="9.80000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="9.80000" cy="3.67195" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-8.20000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="7.80000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-10.20000" cy="-3.25626" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-8.20000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="5.80000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-6.20000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-6.20000" cy="10.60015" r="0.17500" fill="white" stroke="none"/>
+<circle cx="5.80000" cy="10.60015" r="0.17500" fill="white" stroke="none"/>
+<circle cx="11.80000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-12.20000" cy="0.20785" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-0.20000" cy="-13.64856" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-0.20000" cy="14.06425" r="0.17500" fill="white" stroke="none"/>
+<circle cx="11.80000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-12.20000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="11.80000" cy="7.13605" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-12.20000" cy="-6.72036" r="0.17500" fill="white" stroke="none"/>
+<circle cx="3.80000" cy="-13.64856" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-10.20000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="9.80000" cy="-10.18446" r="0.17500" fill="white" stroke="none"/>
+<circle cx="3.80000" cy="14.06425" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-4.20000" cy="14.06425" r="0.17500" fill="white" stroke="none"/>
+<circle cx="9.80000" cy="10.60015" r="0.17500" fill="white" stroke="none"/>
+<circle cx="-4.20000" cy="-13.64856" r="0.17500" fill="white" stroke="none"/>
+<rect x="-23.00000" y="13.00000" width="10.00000" height="10.00000" fill="none" stroke="white" stroke-width="0.15"/>
+<text x="-18.00000" y="26.00000" font-size="2.2" text-anchor="middle" fill="white">10.0 mm ref</text>
+<circle cx="-21.00000" cy="-21.00000" r="0.75000" fill="white" stroke="none"/>
+<circle cx="21.00000" cy="-21.00000" r="0.75000" fill="white" stroke="none"/>
+<circle cx="-21.00000" cy="21.00000" r="0.75000" fill="white" stroke="none"/>
+<circle cx="21.00000" cy="21.00000" r="0.75000" fill="white" stroke="none"/>
+<text x="0" y="-19.50000" font-size="2.6" text-anchor="middle" fill="white">M=8.0  hexagonal  a_hole=400um  pitch=4000um  N=50 | POSITIVE TOP</text>
+</svg>

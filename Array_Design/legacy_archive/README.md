@@ -207,4 +207,30 @@ margin and every gate outcome in the dataset — inherits this approximation.
 | 05_superseded_sweep_iterations | 14 | Development snapshots, schema unstable |
 | 06_degeneracy_contaminated | 7 | Open-area fraction > 1, impossible densities |
 | 07_pre_rotation | 3 | Orientation never explored |
-| **Total** | **37** | |
+| 08_stale_acuity_aperture_artifact | 16 | a_hole(M) sourced from a stale (grid_N=2048) acuity sweep -- final winners verified byte-identical after fix |
+| **Total** | **53** | |
+
+---
+
+## 08_stale_acuity_aperture_artifact/ — candidate pool built on a stale a_hole(M)
+
+**Defect:** `new_sweeps/run_acuity_sweep.py` never picked up the 2026-08-16 grid fix
+(`grid_N=2048` default left in place at that one call site) — see
+`new_sweeps/legacy_archive/01_acuity_gridN2048_artifact/README.md`. This lab's own
+`ghost_margin.py::load_acuity_optimal_aperture()` reads `new_sweeps/
+per_M_optimum_map.csv`'s `acuity_optimal_um` live as the `a_hole(M)` fed into every
+candidate's hole generation (`sweep/run_sweep.py`) — so the entire candidate pool,
+every ranking table, and the gaze-weighted/final winners were all generated against
+a stale aperture-per-M choice.
+
+**Caught by:** a direct numeric mismatch found while building fresh result charts
+(`table1_optimum_summary.csv` claimed r_EE_50=7.33µm at 700µm/M=0; corrected
+`blur_sweep.csv` gives 6.9175µm for that identical point).
+
+**Verified after the fix (not assumed):** re-ran this lab's entire pipeline
+end-to-end on the corrected acuity data. `diff` on `gaze_weighted_winner_per_M.csv`
+and `FINAL_WINNER_PER_M.csv` (old vs. new): **zero differences**, every column,
+byte-for-byte. `fabrication_package/`'s hole coordinates and SVG masks: also
+byte-identical after regeneration. The bug inflated raw blur/logMAR magnitudes but
+never changed which discrete aperture won the argmin — every previously-shipped
+result stands unchanged. See this folder's own `README.md` for the full account.

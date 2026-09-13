@@ -543,10 +543,3 @@ rectangular,100,48,pitch_x_um=1500.0;pitch_y_um=1500.0;rotation_deg=30.0,2000.0,
 rectangular,100,48,pitch_x_um=1500.0;pitch_y_um=1500.0;rotation_deg=30.0,2000.0,,global,"hole_footprint_area=3.1416e+06um^2 > cell_area=2.2500e+06um^2 (requested pitch cannot geometrically host a hole of this size as a periodic tiling, independent of N_actual)"
 rectangular,100,48,pitch_x_um=1500.0;pitch_y_um=1500.0;rotation_deg=45.0,2000.0,,0.0,"hole_footprint_area=3.1416e+06um^2 > cell_area=2.2500e+06um^2 (requested pitch cannot geometrically host a hole of this size as a periodic tiling, independent of N_actual)"
 rectangular,100,48,pitch_x_um=1500.0;pitch_y_um=1500.0;rotation_deg=45.0,2000.0,,global,"hole_footprint_area=3.1416e+06um^2 > cell_area=2.2500e+06um^2 (requested pitch cannot geometrically host a hole of this size as a periodic tiling, independent of N_actual)"
-concentric_centered,20,1,ring_spacing_um=700.0;holes_per_ring0=6,2000.0,,0.0,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,1,ring_spacing_um=700.0;holes_per_ring0=6,2000.0,,global,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,1,ring_spacing_um=700.0;holes_per_ring0=8,2000.0,,0.0,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,2,ring_spacing_um=700.0;holes_per_ring0=8,1250.0,,1.0,N_actual=2 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,1,ring_spacing_um=700.0;holes_per_ring0=8,2000.0,,global,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,1,ring_spacing_um=1000.0;holes_per_ring0=8,2000.0,,0.0,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)
-concentric_centered,20,1,ring_spacing_um=1000.0;holes_per_ring0=8,2000.0,,global,N_actual=1 < MIN_N_ACTUAL_HULL=3 (convex hull area is mathematically undefined below 3 points)

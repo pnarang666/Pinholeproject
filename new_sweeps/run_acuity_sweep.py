@@ -10,6 +10,15 @@ adaptation) is touched -- every call uses stage4_human_vision's own existing def
 
 Run once, from scratch -- does not read or append to any existing CSV.
 
+CORRECTED 2026-09-12: grid_N was previously left at run_stage4_point's own
+default (2048) -- the same grid-resolution artifact run_blur_sweep.py fixed
+on 2026-08-16 (r_EE values ~2x too large for large apertures), but this
+script's own call site was never updated to match. Now passes grid_N=4096
+explicitly, matching run_blur_sweep.py, so the two sweeps are on the same
+corrected grid. The stale (grid_N=2048) acuity_sweep_stage4.csv, and every
+file derived from it (table1_optimum_summary.csv, per_M_optimum_map.csv,
+figures/fig_M*.png), was regenerated -- see new_sweeps/TIMELINE.txt.
+
 Run: python3 run_acuity_sweep.py
 """
 import os
@@ -41,7 +50,7 @@ def main():
         for a_um in A_HOLE_UM:
             n += 1
             r = run_stage4_point(a_hole_um=a_um, wavelength_nm=WAVELENGTH_NM,
-                                  d_gap_mm=D_GAP_MM, M_diopters=M)
+                                  d_gap_mm=D_GAP_MM, M_diopters=M, grid_N=4096)
             row = {"a_hole_um": a_um, "M_diopters": M, "junction_ok": r.junction_check_passed}
             if r.junction_check_passed:
                 row["recommended_model"] = r.acuity["recommended_model"]

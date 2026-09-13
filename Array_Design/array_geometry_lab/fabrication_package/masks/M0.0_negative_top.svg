@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35.0mm" height="35.0mm" viewBox="-17.5 -17.5 35.0 35.0">
+<circle cx="0.40000" cy="0.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="0.40000" cy="4.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="4.40000" cy="0.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-3.60000" cy="0.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="0.40000" cy="-3.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="4.40000" cy="4.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-3.60000" cy="4.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="4.40000" cy="-3.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-3.60000" cy="-3.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="0.40000" cy="8.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="8.40000" cy="0.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="0.40000" cy="-7.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-7.60000" cy="0.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-3.60000" cy="-7.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-7.60000" cy="4.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-3.60000" cy="8.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="4.40000" cy="8.20000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="-7.60000" cy="-3.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="8.40000" cy="-3.80000" r="0.97500" fill="black" stroke="none"/>
+<circle cx="4.40000" cy="-7.80000" r="0.97500" fill="black" stroke="none"/>
+<rect x="-15.50000" y="5.50000" width="10.00000" height="10.00000" fill="none" stroke="black" stroke-width="0.15"/>
+<text x="-10.50000" y="18.50000" font-size="2.2" text-anchor="middle" fill="black">10.0 mm ref</text>
+<circle cx="-13.50000" cy="-13.50000" r="0.75000" fill="black" stroke="none"/>
+<circle cx="13.50000" cy="-13.50000" r="0.75000" fill="black" stroke="none"/>
+<circle cx="-13.50000" cy="13.50000" r="0.75000" fill="black" stroke="none"/>
+<circle cx="13.50000" cy="13.50000" r="0.75000" fill="black" stroke="none"/>
+<text x="0" y="-12.00000" font-size="2.6" text-anchor="middle" fill="black">M=0.0  square  a_hole=2000um  pitch=4000um  N=20 | NEGATIVE TOP</text>
+</svg>

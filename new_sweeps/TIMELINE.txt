@@ -1,0 +1,62 @@
+new_sweeps/ -- TIMELINE
+=======================
+Dates from git log (git history for this folder starts 2026-08-08) and file
+mtimes.
+
+2026-08-08 -- First blur-optimization + acuity sweeps built from scratch
+  (commit c57a532 "Add fresh from-scratch sweeps: blur-optimization model +
+  acuity model"). Produced an initial blur_sweep.csv and
+  acuity_sweep_stage4.csv using run_blur_sweep.py with GRID_N=2048.
+  STATUS: superseded in place (see 2026-08-16 entry) -- the original
+  GRID_N=2048 run's log survives as blur_sweep_run.log (still dated
+  2026-08-08), but the CSV it produced does not survive in this folder; it
+  was moved out and preserved at
+  Array_Design/legacy_archive/01_gridN2048_artifact/blur_sweep_gridN2048_legacy.csv
+  (see that folder's own TIMELINE.txt) when the corrected sweep overwrote
+  blur_sweep.csv here.
+
+2026-08-08 -- r7acuity_calibration_attempt.log records a FAILED calibration
+  run ("CALIBRATION FAILED (fresh run, from scratch): target 1.0 not
+  bracketed by [0.0556, 0.0556] at sigma in [0.0001, 1.0] -- widen the
+  search bracket"). STATUS: abandoned/inconclusive as logged -- no
+  corrected re-run log for this specific calibration exists in this folder;
+  not clear from evidence in this folder alone whether it was later fixed
+  elsewhere or the approach was dropped.
+
+2026-08-08 -- Extended the blur-only calculation to also report
+  r_EE(70/80/90%), not just r_EE_50 (commit 8bc9f9a). Additive, not a
+  replacement of the 50%-only result.
+
+2026-08-09 -- Added per-myopia-level blur-vs-acuity optimum maps
+  (commit 83aa5bd) -- Per_Myopia_Optimum_Map.pdf/tex,
+  per_M_optimum_map.csv. Additive analysis layer on top of the sweep data,
+  not a replacement.
+
+2026-08-16 -- run_blur_sweep.py's GRID_N corrected from 2048 to 4096
+  (docstring: "Corrected 2026-08-16: was 2048, matched the r_max_lens grid
+  artifact already found and fixed in array_optimization/ ... confirmed
+  stale via Phase 2 full-physics confirmation: blur_sweep.csv values at
+  grid_N=2048 were exactly 2x the grid_N=4096 fresh value for large
+  apertures"). blur_sweep.csv regenerated at the corrected resolution
+  (commit 8db676e "Raw Array model with scattered and invalid datasets
+  too", same day). STATUS: ADOPTED -- this is the blur_sweep.csv every
+  downstream pipeline (ExperimentalComparison/, Array_Design/
+  array_geometry_lab/) reads today. The pre-fix CSV is preserved, not
+  deleted -- see the 2026-08-08 entry above for where.
+
+2026-09-12 -- Found run_acuity_sweep.py was NEVER updated to match the
+  2026-08-16 grid fix above: it calls stage4_human_vision.pipeline's
+  run_stage4_point() without passing grid_N, silently using that function's
+  own default (grid_N=2048) -- the same artifact, in a different call site.
+  Caught via a direct numeric mismatch: table1_optimum_summary.csv claimed
+  r_EE_50=7.33um at a=700um/M=0, but corrected blur_sweep.csv gives
+  6.9175um for that identical point. STATUS: FIXED -- run_acuity_sweep.py
+  now passes grid_N=4096 explicitly (matching run_blur_sweep.py; the shared
+  stage4_human_vision/pipeline.py default was deliberately left at 2048,
+  since 7 other files depend on it). acuity_sweep_stage4.csv and every file
+  derived from it (table1_optimum_summary.csv, per_M_optimum_map.csv,
+  optimum_comparison.csv, table2_representative_apertures.csv, fig_M*.png,
+  fig1-5*.png) were re-run/regenerated. All pre-fix versions moved to
+  legacy_archive/01_acuity_gridN2048_artifact/ (see that folder's own
+  README.md) -- none left in new_sweeps/ root, so current and stale data
+  cannot be mixed up by filename collision.
