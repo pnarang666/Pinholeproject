@@ -91,10 +91,44 @@ silently picking one standard and hiding the other.
 
 - The underlying physics (ghost formula, overlap geometry) is identical —
   only the *aggregation* of gaze angles is new.
-- The worst-case gates remain the primary safety criterion for anything
-  presented as "guaranteed safe." The gaze-weighted numbers are reported
-  as a secondary, realistic-use metric, not a substitute pass/fail rule.
-- This does not resolve which design should be preferred — it makes the
-  actual trade-off (rare severe failure vs. common mild failure) visible
-  and quantified, which is a precondition for that decision, not the
-  decision itself.
+- This does not resolve which design should be preferred on its own — it
+  makes the actual trade-off (rare severe failure vs. common mild failure)
+  visible and quantified, which is a precondition for that decision, not
+  the decision itself.
+
+## UPDATE, 2026-09-13 -- gaze-weighted is now this project's PRIMARY standard
+
+Per explicit user decision, the ranking hierarchy stated above (worst-case
+primary, gaze-weighted secondary) is superseded: **gaze-weighted ghost %,
+combined with a hard blindness gate, is now the project's primary
+methodology**, judged more realistic than a pure worst-case-across-every-
+tested-gaze-angle criterion. The worst-case gates (`gates.py`,
+`effective_density_ranking.py`, `metrics.py`) are NOT deleted or edited —
+their output remains valid, reported data — but they are no longer this
+project's headline answer.
+
+The new primary ranking (`comparison_metric/primary_ranking_gaze_weighted.py`,
+output `array_data/evaluation_results/PRIMARY_WINNER_PER_M.csv`):
+  1. HARD GATE: exclude any candidate with `time_weighted_blind_pct > 1.0%`.
+  2. Among survivors, minimize `time_weighted_ghost_pct` (tie-break on
+     `time_weighted_blind_pct`).
+
+**Checked, not assumed, before picking 1.0% as the gate threshold:** a
+strict 0%-blind gate was tried first and produces a sharp cliff at M=6D and
+M=8D — every genuinely-zero-blind candidate at those M has 27–30% ghost,
+while the excellent 0%-ghost candidates that exist there (hexagonal,
+pitch=4000µm) carry a small nonzero blind time (0.33–0.71%). A bare-zero
+threshold is exactly the "margin vs. zero" failure this project's own
+`gates.py` already diagnosed once before — so a small, explicit, documented
+tolerance (1.0%, chosen to clear every observed winner's own blind_pct with
+headroom while staying obviously non-degenerate) is used instead, matching
+established project precedent rather than introducing a new unexamined
+convention.
+
+**Result:** hexagonal wins M=1–6, square wins M=0/8/global — identical
+family choices to the old (ungated) `gaze_weighted_winner_per_M.csv`, since
+every one of those winners already happened to clear the 1.0% gate on its
+own. The gate did not have to override any existing pick; it exists to
+guarantee that a future re-run, on different candidate data, cannot
+silently select a degenerate mostly-blind design the way the old ungated
+ranking's own docstring warned it theoretically could.

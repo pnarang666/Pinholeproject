@@ -1,0 +1,92 @@
+TIMELINE -- Array_Design/array_geometry_lab/array_data/evaluation_results/
+Simple dated log of this folder's ranking-metric lineage. Dates from file mtimes
+(this folder's git history is squashed into one commit, so mtimes are the finer-
+grained real signal here); reasons from the generating scripts' own docstrings.
+
+2026-08-16 22:01 -- family_ranking.csv -- first cross-family ranking output.
+
+2026-08-16 22:02 -- paper_score_winner_per_M.csv (S_paper metric, a formula-based
+  score combining aperture/diffraction ratio, packing-density closeness to an ideal,
+  a geometry-margin term, and coverage) -- a separate, still-live metric, not
+  superseded by what follows below (paper_score.py explicitly does not import from or
+  get overwritten by the density-metric fix).
+
+2026-08-16 22:21 -- paper_soft_gates_winner_per_M.csv.
+
+2026-08-16 22:31 -- metric1_max_density_per_M.csv, metric2_pareto_front_per_M.csv --
+  ABANDONED (flagged wrong the same evening by the project's own 2026-08-16 audit,
+  per legacy_archive/README.md's "known-invalid files still in place" section) --
+  two independent defects: (A) density formula was apples-to-oranges across families
+  (unit-cell-area for lattices vs convex-hull for others), giving a 1.56x-2.25x
+  systematic bias, worst at small N; (B) both safety gates test only for absence of
+  ghosting, so a zero-hole "blackout" design scores as maximally safe (confirmed real
+  consequence: the M=4/M=5 winners under this metric were exactly such blackout
+  designs). NOT re-archived into legacy_archive/ -- still present at this path,
+  intentionally left here per the audit's own note ("the pending fix pipeline
+  archives them itself").
+
+2026-08-16 22:32 -- FINAL_WINNER_PER_M.csv -- the worst-case-gated winner-per-M
+  table (square family, pitch 2000-3000um, rotation 45 deg for M>=1) -- this is
+  the PRIMARY safety-gated ranking track, still active, NOT superseded by the
+  gaze-weighted track below (the two answer different questions and are both
+  reported -- see GAZE_WEIGHTED_APPROACH.md: "this does not replace... both numbers
+  are reported").
+
+2026-08-17 15:10 -- effective_density_winner_per_M_cmin0.csv (and _cmin55 variant)
+  -- reason for the new run: compute_density.py's own "AUDIT FIX (Defect A)" --
+  packing density recomputed with ONE family-agnostic formula (buffered convex hull
+  of the actual generated hole coordinates) instead of the old per-family formula,
+  closing exactly the apples-to-oranges defect that made metric1/metric2 (above)
+  unreliable. Confirmed by controlled test: geometrically identical arrangements
+  across different families now produce bit-identical density.
+
+2026-08-17 20:57 -- gaze_weighted_winner_per_M.csv -- NEWEST, ADDITIVE (not a
+  replacement) -- ranks candidates by time-weighted ghost/blind percentage using a
+  measured eye eccentricity distribution (peaked at center, ~half of viewing time
+  within 6 deg) instead of a single worst-case gate across 0-25 deg. Explicitly
+  reported ALONGSIDE FINAL_WINNER_PER_M.csv, not instead of it -- see
+  GAZE_WEIGHTED_APPROACH.md and gaze_weighted_ranking.py's own module docstring for
+  the honestly-flagged "rewards blindness" caveat this ranking rule can still fall
+  into if taken uncritically (checked directly for this table: no degenerate
+  all-dark winner found).
+
+Net effect on the "which array design to build" question, as of this timeline: two
+still-live, parallel answers exist (FINAL_WINNER_PER_M.csv = worst-case-safe;
+gaze_weighted_winner_per_M.csv = realistic time-weighted performance) -- the
+fabrication_package/ folder (2026-09, this session) used gaze_weighted_winner_per_M.csv
+specifically, per that task's own instruction; it did not use FINAL_WINNER_PER_M.csv.
+
+2026-09-13 -- METHODOLOGY CHANGE, explicit user decision: gaze-weighted (time-
+  weighted ghost %) promoted from secondary to this project's PRIMARY ranking,
+  judged more realistic than a pure worst-case-across-every-gaze-angle criterion.
+  FINAL_WINNER_PER_M.csv (worst-case) is NOT deleted or edited -- still valid,
+  still reported -- but is no longer the headline answer. New primary ranking:
+  comparison_metric/primary_ranking_gaze_weighted.py -> PRIMARY_WINNER_PER_M.csv,
+  adding a hard blindness gate (time_weighted_blind_pct <= 1.0%) alongside the
+  ghost-minimization the old gaze_weighted_ranking.py already did ungated.
+  CHECKED, not assumed: a strict 0%-blind gate was tried first and produces a
+  sharp cliff at M=6D/8D (forces ghost up to 27-30%, since every genuinely-zero-
+  blind candidate there has real ghost, while the excellent 0%-ghost hexagonal
+  candidates carry a small 0.33-0.71% blind time) -- the same "margin vs. zero"
+  failure mode gates.py's own audit fix already diagnosed once before. 1.0%
+  tolerance used instead (clears every existing winner's own blind_pct with
+  headroom). Result: SAME family choices as the old ungated ranking (hexagonal
+  M=1-6, square M=0/8/global) -- the gate didn't have to override anything, it
+  exists to prevent a future re-run from silently picking a degenerate design.
+  See GAZE_WEIGHTED_APPROACH.md's "UPDATE, 2026-09-13" section for full detail.
+
+Separate side-thread, same folder (CENTERED_CONCENTRIC_COMPARISON.md, 2026-08-17):
+2026-08-17 -- ring_offset_concentric.py's center hole found displaced up to 1704.8um
+  off-axis for a truncated (partial final ring) candidate -- root cause: the shared
+  recenter_on_centroid() step in base_generator.py shifts a truncated ring's centroid
+  away from (0,0), not a missing-center-hole bug as first suspected (that suspicion
+  was checked and found FALSE before writing any fix). FIX: concentric_centered.py --
+  recenters ring points on their own centroid BEFORE prepending the center hole, so
+  the center hole survives at exactly (0,0) regardless of truncation (verified to
+  1.6e-13um). This family was then found to fail this project's WORST-CASE safety
+  gate specifically via a complete blackout in the 20-25 deg gaze range, while being
+  better than the then-current winner everywhere inside 15 deg -- this exact case is
+  cited in GAZE_WEIGHTED_APPROACH.md as the motivating example for building the
+  gaze-weighted ranking (above) in the first place. STATUS: not simply abandoned --
+  a real, still-documented edge case that worst-case-only evaluation could not
+  distinguish from "broken everywhere."
