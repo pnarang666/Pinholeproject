@@ -1,0 +1,13 @@
+TIMELINE -- Array_Design/photometry/
+Simple dated log.
+
+2026-08-01 -- noghost_constraint.csv (original) -- ABANDONED, superseded by
+  noghost_constraint_corrected.csv/.py (2026-08-14) -- reason: built on the same
+  disproven ghost-separation formula documented in Array_Design/ghosting/TIMELINE.txt
+  and Array_Design/legacy_archive/02_legacy_ghost_formula/ (R²=-1701.7 against real
+  propagation data). The original file was later moved into that legacy archive as
+  noghost_constraint_legacy.csv (archived 2026-08-16).
+
+2026-08-14 -- noghost_constraint_corrected.py/.csv -- ADOPTED -- rebuilt on the
+  corrected formula "delta_r=s*M/(P0-M)", same day the corrected formula itself was
+  written into Array_Design/ghosting/ (see that folder's TIMELINE.txt, Pass 4).

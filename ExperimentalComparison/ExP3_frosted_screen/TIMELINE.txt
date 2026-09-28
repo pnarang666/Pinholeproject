@@ -1,0 +1,38 @@
+ExP3_frosted_screen/ -- TIMELINE
+================================
+Built 2026-09-02, all in one session (per this session's own record).
+
+2026-09-02 -- Frosted-screen fixed-lens/moving-screen sweep pipeline
+  (analyze_exp3.py) built to measure spot radius vs. displacement across
+  six apertures (400/500/600/800/1000/1400um) + a no-pinhole control.
+  IN-PROCESS FIX, same build: measure_spot() originally computed intensity
+  as max(R,G,B) per pixel (a reasonable first guess for a blue-LED point
+  source). Against this task's own hand-verified reference for the 1000um
+  aperture (45.6px at 0mm, 63.6px at 20mm, monotonic), max(R,G,B) gave
+  95.78px/110.16px -- roughly 2x too large AND non-monotonic. Tested
+  systematically against blue-only, green-only, red-only, and BT.601
+  standard grayscale before picking a fix, rather than guessing: BT.601
+  luma (cv2.cvtColor(img, COLOR_BGR2GRAY)) reproduced 45.58px/63.60px,
+  matching the reference to within rounding. STATUS: fixed before any
+  downstream fit, plot, or report was produced -- the max(R,G,B) version's
+  numbers were never reported anywhere.
+  Same build: 5 timestamped 20260902_*.jpg calibration/setup shots
+  identified and excluded outright (logged in measurements/
+  excluded_files.csv with reason), not measured, not guessed.
+
+2026-09-02 -- report/ExP3_Frosted_Screen_Report.pdf first built.
+  IN-PROCESS FIX, same build: the summary page's verdict-text block
+  visually overlapped the third subplot's title below it. STATUS: fixed by
+  adjusting the page's gridspec height ratios/spacing before the PDF was
+  finalized and reported.
+
+2026-09-03/07 -- exp3_summary.txt's and this report's own "12.1x faster"
+  no-pinhole-control-vs-largest-aperture figure was found (while building
+  ExperimentalComparison/final_report/) to not match its own stated
+  comparator -- see ExperimentalComparison/TIMELINE.txt for the correction
+  (15.8x). STATUS: this folder's own exp3_summary.txt and
+  ExP3_Frosted_Screen_Report.pdf were left UNCHANGED (not retracted or
+  edited) -- the corrected number lives only in
+  ExperimentalComparison/final_report/IYPT_Final_Report.pdf, which states
+  the correction explicitly rather than silently overwriting this folder's
+  original numbers.

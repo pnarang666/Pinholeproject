@@ -1,0 +1,182 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\definecolor{keycol}{RGB}{44,110,158}
+\definecolor{warncol}{RGB}{178,58,72}
+
+\newenvironment{keybox}[1]{%
+  \par\vspace{4pt}\noindent{\color{keycol}\rule{\linewidth}{1.1pt}}\par\vspace{2pt}%
+  \noindent\textbf{\textcolor{keycol}{#1}}\par\smallskip\ignorespaces
+}{%
+  \par\vspace{2pt}\noindent{\color{keycol}\rule{\linewidth}{1.1pt}}\vspace{6pt}
+}
+\newenvironment{warnbox}[1]{%
+  \par\vspace{4pt}\noindent{\color{warncol}\rule{\linewidth}{1.1pt}}\par\vspace{2pt}%
+  \noindent\textbf{\textcolor{warncol}{#1}}\par\smallskip\ignorespaces
+}{%
+  \par\vspace{2pt}\noindent{\color{warncol}\rule{\linewidth}{1.1pt}}\vspace{6pt}
+}
+\newcommand{\needsverify}[1]{\textcolor{warncol}{\textbf{[NEEDS VERIFICATION: #1]}}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Pinhole Sunglasses -- IYPT 2027 Problem 1}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newcommand{\dgap}{d_{\mathrm{gap}}}
+
+\title{\textbf{Pinhole Sunglasses: A Physically-Grounded Design and Evaluation\\
+Pipeline for Multi-Aperture Myopia Correction}\\[0.3cm]
+\large IYPT 2027 -- Problem 1 -- Full Research Compilation}
+\author{Parikshit Narang}
+\date{Compiled \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+A pinhole reduces the blur circle a defocused (myopic) eye forms on the retina by
+restricting the bundle of rays that reach any one retinal point -- the stenopeic
+effect -- without requiring a corrective lens. This project builds, validates, and
+experimentally tests a complete physical pipeline for pinhole-based myopia correction,
+from a single aperture to a full multi-aperture array intended to restore a normal
+field of view. Single-aperture blur is modelled first by a closed-form
+root-sum-of-squares (RSS) approximation, then superseded by an exact Angular Spectrum
+Method (ASM) wave-optics simulation after the RSS model was measured to diverge from
+the exact result by 64.8\% on average (up to 192.8\%) and a specific implementation
+defect -- a single Fourier transform silently evaluated at the eye's true focal plane
+rather than the myopic retina -- was found and corrected. Predicted blur is converted
+to predicted visual acuity (LogMAR) via a cited contrast-sensitivity and brightness
+model. Two independent array-safety evaluation frameworks are developed: Model A, a
+single-axis worst-case gate; and Model B, a full two-dimensional, empirically
+gaze-time-weighted evaluation that generalizes Model A's single-axis assumption and
+becomes this project's primary standard following an explicit, documented methodology
+decision. Both models are applied to eleven array geometry families; hexagonal packing
+emerges as the safest choice for six of eight tested myopia powers, and this result is
+connected to a first-principles argument from lattice symmetry (the crystallographic
+restriction theorem) and demonstrated with matched-spacing real-geometry data. A
+comprehensive ghosting theory (Dirac-comb array spectrum, Barten (1999) contrast
+sensitivity) reverses an earlier heuristic-CSF-based safety classification for the
+entire tested dense-pitch range, and a harmonic-series extension shows the fundamental
+ghosting frequency is never the most dangerous one. Single-aperture predictions are
+validated against original photographic and optical-bench experiments; array-level
+predictions are validated against a real, though small and non-per-subject-resolved,
+published clinical dataset (Wang, 2009), against which the model's raw form fails a
+formal $R^2>0$ significance bar at every tested condition, and a case study following
+one specific bug (an optics import-shadowing defect) is used to show that model
+accuracy against that same external dataset improved measurably, though not
+sufficiently, once corrected. This paper documents the pipeline, every quantitative
+result with its file-level provenance, four independently-identified and corrected
+implementation defects with full before/after evidence, and an honest account of what
+remains unresolved.
+\end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\chapter{Introduction and Problem Statement}
+\label{ch:intro}
+
+\section{The official problem}
+IYPT 2027 Problem 1 (``Pinhole Sunglasses'') asks: myopic (short-sighted) people cannot
+focus light from distant objects onto the retina without a corrective lens; investigate
+whether an array of small apertures -- a pinhole occluder built into a wearable frame --
+can substitute for a corrective lens over a useful field of view, and characterize the
+trade-offs involved.\footnote{Problem statement summarized from
+\texttt{IYPT\_Pinhole\_Sunglasses\_Problem\_Statement.md} (repository root, verified
+present; see Section~13 for full provenance).} A single small aperture is well known to
+improve the perceived sharpness of a defocused image (the pinhole or stenopeic effect,
+Section~\ref{sec:stenopeic}); the open engineering question this project addresses is
+what happens when that single aperture is replaced by an \emph{array} of apertures
+large enough, in aggregate, to give a normal field of view, while each individual
+aperture remains small enough to retain the stenopeic benefit.
+
+\section{Why this is genuinely hard}
+A single pinhole trades brightness and field of view for depth of focus. An array of
+pinholes must additionally avoid two new, array-specific failure modes that do not
+exist for a single aperture at all:
+\begin{itemize}
+  \item \textbf{Ghosting.} If the eye's pupil simultaneously admits light through two
+  or more apertures, it forms two or more laterally-shifted copies of the same retinal
+  image -- double or multiple vision.
+  \item \textbf{Blinding.} If the eye's pupil, at some gaze direction, admits light
+  through \emph{zero} apertures, no image reaches the retina at all at that gaze
+  direction -- a genuine dark gap in the field of view.
+  \item \textbf{Vignetting.} As the eye rotates to look through different parts of the
+  array, the pupil physically shifts relative to the (head-fixed) aperture pattern,
+  changing which apertures are active -- the wearer's own eye movements are themselves
+  part of the optical system, not a fixed viewing condition.
+\end{itemize}
+None of these three effects has a single-aperture analogue; all three are properties of
+the \emph{arrangement} of apertures, not of any one aperture's own optics. This project
+treats single-aperture optics (Chapters~\ref{ch:single}--\ref{ch:single-exp}) and
+array-level geometry (Chapters~\ref{ch:array-theory}--\ref{ch:array-exp}) as two
+genuinely separate physics problems, connected only by the fact that every aperture in
+a real array shares identical per-hole optics with a standalone single aperture of the
+same diameter -- a claim used repeatedly below and verified directly in
+Section~\ref{sec:array-vs-single}.
+
+\section{Design variables and constraints}
+The design variables available to this project are: the aperture diameter
+$a_{\mathrm{hole}}$ (per myopia power $M$, since the optimal aperture is itself a
+function of the wearer's own refractive error); the array \emph{family} (the geometric
+rule generating hole positions -- square, hexagonal, ring-based, spiral-based, and
+others, Section~\ref{sec:array-repr}); the array pitch or spacing; and, where relevant,
+the lattice rotation. The physical constraints are the wearer's own pupil diameter
+(taken as $D_{\mathrm{pupil}}=4000\,\mu$m throughout, a standard photopic value), the
+reduced-eye power $P_0=60$D, and the gaze range over which the design must remain safe
+(this project evaluates $\varphi\in[0^\circ,25^\circ]$ eccentricity, with one bin at
+$27^\circ$ used and explicitly flagged as outside the validated small-angle range of
+the underlying pupil-shift formula -- Section~\ref{sec:vignetting}).
+
+\section{What ``success'' means for this document}
+Every number in this paper is required to trace to a specific file in the project
+repository, cited by path and by that file's modification time, so that a reader can
+independently confirm it is the current, not a superseded, result (Section~0 of the
+task brief that produced this document; see the Data Provenance Appendix,
+Chapter~\ref{ch:provenance}). Four real implementation defects were found and corrected
+during the project's own development; rather than silently updating results and moving
+on, this paper documents each one as a worked case study (Chapter~\ref{ch:errors}),
+because the corrections are themselves part of the project's contribution -- they show
+where a plausible-looking model was wrong, why, and by how much.
+
+\input{sections/02_single_aperture_theory}
+\input{sections/03_acuity_model}
+\input{sections/04_single_aperture_experiments}
+\input{sections/05_array_theory}
+\input{sections/05c_ghosting_literature_review}
+\input{sections/05b_all_generators}
+\input{sections/06_model_a}
+\input{sections/07_model_b}
+\input{sections/08_array_fabrication_experiments}
+\input{sections/08b_model_comparison}
+\input{sections/09_errors}
+\input{sections/10_discussion}
+\input{sections/11_limitations}
+\input{sections/12_future_work}
+\input{sections/13_provenance}
+\input{sections/14_code_appendix}
+\input{sections/15_quick_reference}
+\input{sections/16_full_acuity_table}
+\input{sections/17_full_barten_table}
+\input{sections/18_additional_full_tables}
+\input{sections/19_ghosting_passes_1_3}
+\input{sections/20_full_hole_coordinates}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

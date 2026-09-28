@@ -1,0 +1,49 @@
+M_diopters,evaluation_model,family,a_hole_um,N_actual,predicted_logmar,theoretical_pinhole_optimum_aperture_um,theoretical_pinhole_optimum_logmar,deviation_from_theoretical_optimum_logmar,wang2009_real_observed_logmar,deviation_from_wang2009_observed_logmar,wang2009_match_note
+0.0,worst_case_gate_FINAL_WINNER_old_primary,square,2000.0,9,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,worst_case_gate_FINAL_WINNER_old_primary,square,1250.0,100,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,worst_case_gate_FINAL_WINNER_old_primary,square,750.0,100,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,worst_case_gate_FINAL_WINNER_old_primary,square,750.0,100,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,worst_case_gate_FINAL_WINNER_old_primary,square,600.0,50,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,worst_case_gate_FINAL_WINNER_old_primary,square,600.0,50,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,worst_case_gate_FINAL_WINNER_old_primary,square,500.0,50,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,worst_case_gate_FINAL_WINNER_old_primary,square,400.0,50,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+0.0,gaze_weighted_ungated,square,2000.0,20,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,gaze_weighted_ungated,hexagonal,1250.0,20,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,gaze_weighted_ungated,hexagonal,750.0,20,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,gaze_weighted_ungated,hexagonal,750.0,20,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,gaze_weighted_ungated,hexagonal,600.0,20,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,gaze_weighted_ungated,hexagonal,600.0,20,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,gaze_weighted_ungated,hexagonal,500.0,100,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,gaze_weighted_ungated,hexagonal,400.0,50,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+0.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,square,2000.0,20,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,1250.0,20,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,750.0,20,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,750.0,20,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,600.0,20,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,600.0,20,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,500.0,100,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,gaze_weighted_plus_blindness_gate_CURRENT_PRIMARY,hexagonal,400.0,50,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+0.0,metric1_max_density,square,2000.0,9,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,metric1_max_density,square,1250.0,100,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,metric1_max_density,square,750.0,100,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,metric1_max_density,square,750.0,100,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,metric1_max_density,square,600.0,50,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,metric1_max_density,square,600.0,50,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,metric1_max_density,square,500.0,50,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,metric1_max_density,square,400.0,50,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+0.0,effective_density_cmin0,hexagonal,2000.0,7,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,effective_density_cmin0,ring_offset_concentric,1250.0,20,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,effective_density_cmin0,ring_offset_concentric,750.0,20,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,effective_density_cmin0,ring_offset_concentric,750.0,20,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,effective_density_cmin0,ring_offset_concentric,600.0,20,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,effective_density_cmin0,ring_offset_concentric,600.0,20,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,effective_density_cmin0,ring_offset_concentric,500.0,20,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,effective_density_cmin0,ring_offset_concentric,400.0,20,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+0.0,effective_density_cmin55,ring_offset_concentric,2000.0,11,-0.357,2000.0,-0.357,0.0,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+1.0,effective_density_cmin55,square,1250.0,20,-0.1199,1250.0,-0.12,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+2.0,effective_density_cmin55,ring_offset_concentric,750.0,20,0.0756,750.0,0.076,-0.0004,0.31,-0.2344,exact aperture match to Wang (2009)
+3.0,effective_density_cmin55,ring_offset_concentric,750.0,20,0.1117,750.0,0.112,-0.0003,0.31,-0.1983,exact aperture match to Wang (2009)
+4.0,effective_density_cmin55,ring_offset_concentric,600.0,20,0.1808,600.0,0.181,-0.0002,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+5.0,effective_density_cmin55,ring_offset_concentric,600.0,20,0.2401,600.0,0.24,0.0001,,,no Wang (2009) clinical data at this aperture size -- not interpolated
+6.0,effective_density_cmin55,ring_offset_concentric,500.0,20,0.2585,500.0,0.259,-0.0005,0.28,-0.0215,exact aperture match to Wang (2009)
+8.0,effective_density_cmin55,ring_offset_concentric,400.0,20,0.3307,400.0,0.331,-0.0003,,,no Wang (2009) clinical data at this aperture size -- not interpolated

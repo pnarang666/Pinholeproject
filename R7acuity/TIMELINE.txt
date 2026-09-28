@@ -1,0 +1,41 @@
+R7acuity -- dated timeline (dates from git log, this folder's own README.md/RESULTS.md)
+==========================================================================
+
+2026-08-03 -- BUILT: independent visual-acuity model, template-matching ideal-observer
+  Monte Carlo simulation (Watson & Ahumada 2008 architecture) -- deliberately built on a
+  different architecture from stage4_human_vision/acuity.py's closed-form MTF-cutoff
+  formula, to test whether stage4's failed clinical validation (Wang 2009, R^2<0) was a
+  DATA problem (n=5, noisy) or a MODEL problem. STATUS AT THIS POINT: passed its own
+  noise-sigma calibration; ran once against Wang 2009.
+
+2026-08-06 -- REVEALED AS INVALID, THEN FIXED: `run_validation.py`'s import order caused
+  a Python sys.modules name collision (importing stage4_human_vision first silently
+  cached the DEPRECATED stage2/phase2_retina.py under the bare name "phase2_retina",
+  so R7acuity's own later `import phase2_retina` silently reused the deprecated,
+  wrong-wavelength optics instead of stage2_fixed/). CONSEQUENCE: every R^2/RMSE number
+  computed before this date was run against the wrong optics -- preserved unedited in
+  RESULTS.md as the honest historical record, not deleted.
+  FIX: stage4_human_vision/pipeline.py's own sys.path insertion repointed at
+  stage2_fixed/ (fixed at the source, not by reordering this file's imports).
+
+2026-08-06 -- RE-RUN AGAINST CORRECTED OPTICS -- ABANDONED (blocked, not fixed):
+  calibrate_noise_sigma() now raises AssertionError -- the locked reference condition
+  (3mm aperture, M=0) scores at ceiling performance across ~5 orders of magnitude of
+  noise sigma once the corrected optics are used, so the calibration search bracket
+  never finds its target. Per this project's own no-post-hoc-tuning rule, the search
+  bracket was NOT widened to force a number through. The Wang-2009 comparison was
+  therefore never re-attempted against the corrected optics -- there is no honestly
+  calibrated sigma to attempt it with. STATUS: open/blocked, not resolved. See
+  RESULTS.md's "Re-run against corrected optics" section for the full trace.
+
+2026-08-09 -- NOTED AS BLOCKED ELSEWHERE: master_dashboard/README.md documents this same
+  crash explicitly ("R7acuity's ideal-observer Monte Carlo calibration currently
+  crashes against the corrected optics") -- the dashboard's R7acuity tab falls back to
+  showing only the closed-form Strehl/VSOTF cross-check, clearly labeled as such, never
+  as R7's real ideal-observer answer.
+
+Also noted, not dated (no evidence of when, or whether, this was worked on):
+  R7acuity/corrections/ and R7acuity/core/ (a registered-strategy plugin system) exist
+  as empty directories on this branch -- master_dashboard/README.md confirms this by
+  direct listing, describing them as "separate, uncommitted work on a different,
+  unmerged line of development." Not resolved here; flagged as-is.

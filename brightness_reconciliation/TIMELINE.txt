@@ -1,0 +1,39 @@
+brightness_reconciliation -- dated timeline (date from file mtimes -- git only shows
+"initial commit" 2026-08-01 for this folder, confirming it existed by then, not the
+exact authored date)
+==========================================================================
+
+2026-07-29 (~22:24-22:25, per file mtimes) -- BUILT: a targeted check of whether
+  stage3a's reverse-engineered 6.25-9% relative-illuminance brightness floor agrees
+  with the independent, literature-derived ABSOLUTE troland thresholds (Van Nes &
+  Bouman 1967's 300 Td floor; CIE 191:2010's ~3-5 cd/m^2 boundary) found separately in
+  this project's illumination literature review. These two pieces of work had never
+  been checked against each other before this.
+
+RESULT (not an abandonment -- a real, dated finding that PARTIALLY CONFIRMED the
+existing approach and surfaced a separate bug):
+  - At this project's own DEFAULT scene luminance (10,000 cd/m^2, used throughout every
+    Stage 3/4 sweep), the two absolute floors and the 6.25-9% figure flatly DISAGREE --
+    both absolute floors are cleared by an aperture far smaller than even the pure
+    blur-only optimum, meaning brightness would not be a binding constraint at all
+    under the project's own default assumption.
+  - At a clinically-realistic luminance instead (100-300 cd/m^2, closer to how the
+    actual clinical acuity studies this project validates against were likely
+    conducted), Van Nes & Bouman's independently-derived floor lands at ~1128um at
+    300 cd/m^2 -- close to the reverse-engineered 900-1250um range and inside the
+    verified clinical bracket. Stated explicitly as corroboration, not a tuned match
+    (the literature number was never adjusted to produce this).
+  - SURFACED, NOT FIXED HERE: `DEFAULT_SCENE_LUMINANCE_CDM2=10000` in
+    stage3_human_vision/photometry.py -- used throughout every Stage 3/4 sweep to
+    date -- is flagged as likely the wrong luminance for comparing against clinical
+    acuity data. This does not invalidate prior results as internally-consistent optics
+    (relative aperture comparisons are unaffected by an overall luminance scale), but
+    means none of them are directly comparable in absolute terms to clinical data.
+
+STATUS: this specific finding is a completed, one-shot investigation (no evidence of a
+later revision). Recommended next step, stated in FINDINGS.md and NOT done here: re-run
+Stage 3/4's photometry-dependent sweeps at a clinically-realistic luminance (100-300
+cd/m^2) and check whether Stage 4's failed acuity validation changes at all. Open
+question not resolved: whether CIE or Van Nes & Bouman is the "correct" criterion for
+THIS specific question (pinhole-restricted acuity) -- the two disagree with each other
+by 2-3x, encoding different physiological criteria, not interchangeable numbers.

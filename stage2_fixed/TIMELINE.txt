@@ -1,0 +1,66 @@
+TIMELINE -- stage2_fixed/
+==========================================================================
+Dates from real git commits (this repo's history begins 2026-08-01;
+commit hashes shown are confirmed via `git log --follow`).
+
+- 2026-07-27 -- forked from stage2/ (see stage2/TIMELINE.txt) with two
+  targeted bug fixes, everything else byte-identical to stage2/:
+    1. sweep_myopia.py finalize_row() -- energy-conservation check now
+       compares against the actual discrete input power of the
+       rasterized aperture, not a continuous reference area (removed a
+       ~0.05-0.35% pixelation artifact from a fidelity-measuring column).
+    2. pipeline_junction.py validate_junction() -- corrected a wraparound
+       safety check that had used a lower-bound divergence formula
+       mislabeled as an upper-bound/"conservative" estimate; added an
+       explicit, documented margin_factor=3.0 as a visible first-pass
+       safety inflation (flagged in its own docstring as unvalidated).
+  STATUS: adopted.
+
+- 2026-08-06 (commit 3ddbe6f) -- F.1: pre-fix baseline captured
+  (validation_gate + R1 sweep) before starting a second, separate
+  physics audit (items A-F below).
+
+- 2026-08-06 (commit 28d796c) -- Item A: fixed a lens-phase/
+  retina-propagation WAVELENGTH MISMATCH (the core bug; see
+  LENS_WAVELENGTH_FIX.md for the full writeup).
+
+- 2026-08-06 (commit 1dd53f1) -- Item B: pass the corrected effective
+  wavelength through to junction.validate_junction() as well.
+
+- 2026-08-06 (commit 5ad71cf) -- Item C: added a lens-phase Nyquist
+  sampling check (informational only, does not gate/fail a run).
+
+- 2026-08-06 (commit 0345baa) -- Item D: documented (not fixed --
+  determined to be inherent, not a bug) a circularity in
+  validation_gate.py's exact-focus check.
+
+- 2026-08-06 (commit bc32f7d) -- Item E: documented design choices
+  E1-E4, added E2's integrated escape estimate.
+
+- 2026-08-06 (commit 5092613) -- F.2: post-fix validation_gate.py output
+  captured.
+
+- 2026-08-06 (commit 97e9964) -- F.3: post-fix R1 sweep run. RESULT:
+  ***the original 300-400um blur-only optimum does NOT survive this
+  fix*** -- optimum aperture moved to 500-750um across M=1-6D (e.g.
+  M=1: 300um -> 700um, +133%; M=2: 300um -> 750um, +150%), with r_EE(50%)
+  at the new optimum dropping 26-68% depending on M. Confirmed
+  reproducible (identical to the micron on an independent branch run).
+  STATUS: the project's original headline optimum-aperture result is
+  ABANDONED as of this commit, superseded by these corrected numbers.
+  Flagged as a live downstream-staleness risk for stage3a, model_comparison,
+  and (partially) stage3_integrated, which had not yet been re-run against
+  the corrected optics as of this audit (see PHYSICS_AUDIT.md's own
+  "downstream consequences" list).
+
+- 2026-08-06 (commit 47a40ff) -- F.4: acuity-model smoke tests, both ran
+  clean; R7acuity numbers unaffected by this fix.
+
+- 2026-08-06 (commit f53fa6b) -- Add PHYSICS_AUDIT.md, the full A-F
+  writeup.
+
+- 2026-08-06 (commit fc4ecbd) -- Consolidate: preserve LENS_WAVELENGTH_FIX.md
+  from the fix/lens-wavelength-consistency branch into this folder.
+
+STATUS (current): active/adopted -- the corrected retinal-propagation
+stage. stage2/ is kept only as the frozen pre-fix reference build.

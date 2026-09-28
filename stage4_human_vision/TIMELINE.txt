@@ -1,0 +1,78 @@
+TIMELINE -- stage4_human_vision/
+==========================================================================
+Dates from file mtimes and confirmed git commits (repo history starts
+2026-08-01).
+
+- 2026-07-28/29 -- Stage 4 built: troland-based retinal illuminance, a
+  real Watson-Yellott pupil-diameter model (constants independently
+  verified, including a non-trivial continuity check at age=20), neural
+  light adaptation.
+  Pass 1 (undated commit, before 2026-08-06): validation.py's
+  regression_stats() had RMSE/MAE/R^2/Pearson r but no significance test
+  -- added the Pearson p-value and an n count (mirroring
+  stage3_human_vision's existing approach), needed to satisfy this
+  stage's own DESIGN.md promise of reporting validated statistics.
+  STATUS: adopted.
+
+- (undated, "Pass 1" end-to-end run) -- ran the actual validation test
+  this stage was building toward: its VSOTF-adjusted acuity predictor
+  against the real Wang 2009 clinical dataset (n=5).
+  RESULT: FAILED. R^2 = -2.84 to -6.39 (negative -- worse than predicting
+  the mean), p = 0.50-0.51 (not remotely significant) at every myopia
+  level tested.
+  STATUS: this specific predictor is a documented FAILURE, reported
+  honestly in RESULTS.md rather than hidden or re-tuned to force a
+  better number.
+
+- 2026-08-06 (commit 32c9fb9, "Fix import-shadowing bug: point
+  pipeline.py and metrics.py at stage2_fixed/") -- same bug and fix as
+  stage3_human_vision (see that folder's TIMELINE.txt): was silently
+  importing pre-wavelength-fix optics.
+
+- 2026-08-06 (commit c6e4e1e, "Re-run both acuity validations against
+  corrected optics (post import-shadow fix)") -- re-ran the Wang 2009 and
+  Kim et al. 2017 validations on the corrected stage2_fixed optics.
+
+- 2026-08-06 (commit e0e3438, "Append corrected-optics sections to both
+  RESULTS.md files") -- new results sections APPENDED, original
+  (pre-fix, already-failed) results kept in place alongside them, not
+  overwritten.
+
+- "Pass 2" (dated 2026-08-06 per CHANGES.md's own framing, triggered
+  directly by the Pass-1 validation failure above):
+    1. acuity.py predict_acuity() -- replaced an uncited sqrt(snr)/10
+       exponent term with a cited additive logMAR correction (Tidbury,
+       Czanner & Newsham 2016 for the slope; Van Nes & Bouman 1967 for
+       the 300 td knee). The OLD term is KEPT, unchanged, as
+       vsotf_snr_legacy in the returned models dict -- not deleted, both
+       remain available.
+    2. calibration.py (new) -- fit a linear calibration against Wang 2009
+       with leave-one-out cross-validation. In-sample R^2 looked
+       plausible (0.13-0.16), but leave-one-out R^2 was NEGATIVE in every
+       case (-0.54 to -0.59) and Pearson r flipped sign between in-sample
+       and held-out fits -- strong evidence the in-sample fit was noise.
+       STATUS: this calibration attempt is an ABANDONED/FAILED approach,
+       reported honestly per the project's own stated brief ("fit once,
+       reported honestly, NOT tuned further to force a better number").
+    3. An external check against a second real dataset (Kim et al. 2017,
+       n=36) also missed: predicted 0.499 logMAR vs observed 0.20+/-0.21
+       -- outside 1 standard deviation.
+    4. outputs/stage4_full_sweep.csv and validation CSVs/PNGs
+       regenerated; logmar_recommended and snellen_denominator updated in
+       place, logmar_vsotf_snr_legacy and logmar_calibrated added as new
+       columns (old mtf10/mtf50 columns untouched).
+
+- HONEST CONCLUSION (stated directly in this folder's own RESULTS.md,
+  not softened here): "this cannot be properly validated with the
+  clinical data currently available publicly." Root causes diagnosed:
+  n=5 is too small; the Wang dataset itself is non-monotonic
+  (0.28->0.31->1.00->0.40->0.50 across 5 apertures, an unexplained spike
+  no smooth model can fit); no available dataset has per-subject
+  refractive error.
+
+STATUS (current): the CLINICAL-ACUITY-VALIDATION goal this stage was
+built toward is an explicitly abandoned/failed line of work (both the
+original predictor and the subsequent calibration attempt failed
+honestly-reported validation). The underlying illuminance/pupil-model
+infrastructure (Watson-Yellott, troland-based illuminance) itself is not
+abandoned -- only the validated-predictor goal is.

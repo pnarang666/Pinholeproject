@@ -1,0 +1,118 @@
+\chapter{Additional Full Results Tables}
+\label{ch:additional-tables}
+
+Three further live results files, referenced in passing in
+Chapters~\ref{ch:model-a}--\ref{ch:model-b} but not shown in full there, reproduced
+here in full per this paper's provenance discipline.
+
+\section{Family ranking: best-of-eleven per myopia power}
+\label{sec:family-ranking-full}
+Source: \texttt{array\_data/evaluation\_results/family\_ranking.csv} (1258 rows total,
+mtime 2026-09-13 00:37) -- too large to reproduce in full; the rank-1 (highest packing
+density, density-only ranking, no safety gate applied) row per myopia power is shown
+below, computed directly from the live file.
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$M$ (D) & Rank-1 family & $a_{\mathrm{hole}}$ ($\mu$m) & Families competing \\
+\midrule
+0 & square & 2000 & 10 \\
+1 & square & 1250 & 8 \\
+2 & square & 750 & 6 \\
+3 & square & 750 & 6 \\
+4 & square & 600 & 7 \\
+5 & square & 600 & 7 \\
+6 & square & 500 & 6 \\
+8 & square & 400 & 6 \\
+global & square & 2000 & 8 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Square wins the pure density-only ranking at every myopia power -- consistent with
+Model~A/Metric~1's own reported result (Section~\ref{sec:model-a-results}), confirming
+that result is not an artifact of Model~A's own gating step, since this ranking applies
+no safety gate at all. The number of families with at least one candidate surviving to
+be ranked varies (6--10) across myopia powers, reflecting that not every family
+produces a viable candidate at every aperture/spacing combination tested.
+
+\section{Effective-density ranking, both fusion-threshold variants}
+\label{sec:eff-density-full}
+Source: \texttt{effective\_density\_winner\_per\_M\_cmin0.csv} and
+\texttt{...\_cmin55.csv} (mtime 2026-09-13 01:01, both). Ranks by
+$n_{\mathrm{active\_holes},\varphi=0}/A_{\mathrm{hull}}$ (only holes that actually admit
+light, not raw hole count) rather than raw packing density -- the correction this
+ranking script was built to apply, after a confirmed finding that every prior
+margin-aware winner has exactly one active hole at $\varphi=0$
+(Section~\ref{sec:array-vs-single}), making raw packing density count many structurally
+inert holes.
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$M$ (D) & Family ($c_{\min}=0$) & Family ($c_{\min}=55\,\mu$m) & Blind rate (both variants) \\
+\midrule
+0 & hexagonal & ring\_offset\_concentric & 0.173 / 0.156 \\
+1 & ring\_offset\_concentric & square & 0.113 / 0.082 \\
+2 & ring\_offset\_concentric & ring\_offset\_concentric & 0.107 \\
+3 & ring\_offset\_concentric & ring\_offset\_concentric & 0.107 \\
+4 & ring\_offset\_concentric & ring\_offset\_concentric & 0.105 \\
+5 & ring\_offset\_concentric & ring\_offset\_concentric & 0.105 \\
+6 & ring\_offset\_concentric & ring\_offset\_concentric & 0.103 \\
+8 & ring\_offset\_concentric & ring\_offset\_concentric & 0.101 \\
+global & hexagonal & hexagonal & 0.173 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Notably different winners from both the pure-density ranking above and from
+Model~B (Chapter~\ref{ch:model-b}): this metric rewards \emph{active}-hole density
+specifically, and \texttt{ring\_offset\_concentric} -- despite the single-axis
+blackout risk documented in Section~\ref{sec:model-a-limitation} for a
+\emph{different} specific candidate of this same family -- wins most $M$ values here.
+This is reported as a genuine, unresolved tension between evaluation criteria, not
+smoothed into a single ``best'' answer: Model~B (Chapter~\ref{ch:model-b}) remains this
+project's primary standard specifically because it is the only one of these rankings
+that directly measures gaze-time-weighted safety rather than a density proxy for it.
+
+\section{Metric 2: the full density/margin Pareto front}
+\label{sec:metric2-full}
+Source: \texttt{metric2\_pareto\_front\_per\_M.csv} (18 rows total, mtime 2026-09-13
+00:37) -- the complete 2D (density, binding-margin) Pareto front per myopia power, shown
+here in full since it is small enough to reproduce entirely.
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$M$ (D) & Family & $a_{\mathrm{hole}}$ ($\mu$m) & Binding margin \\
+\midrule
+0 & square, rectangular (tied) & 2000 & 1.0 \\
+1 & square, rectangular (tied) & 1250 & 1.0 \\
+2 & square, rectangular (tied) & 750 & 1.0 \\
+3 & square, rectangular (tied) & 750 & 1.0 \\
+4 & square, rectangular (tied) & 600 & 1.0 \\
+5 & square, rectangular (tied) & 600 & 1.0 \\
+6 & square, rectangular (tied) & 500 & 1.0 \\
+8 & square, rectangular (tied) & 400 & 1.0 \\
+global & square, rectangular (tied) & 2000 & 1.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every Pareto front in this project's own data has exactly 2 points (never more), and
+they are square and rectangular \emph{tied} at every myopia power -- direct numerical
+confirmation of the exact-equivalence identity these two generators are built to
+satisfy (Section~\ref{sec:all-generators}: rectangular reduces to square exactly at
+equal $x$/$y$ pitch), not a coincidence of the ranking.
+
+\texttt{binding\_margin} is defined as $\min(\text{worst\_case\_ghost\_margin},\allowbreak
+\text{worst\_case\_vignetting\_margin})$ per candidate (\texttt{metrics.py},
+\texttt{\_binding\_margin\_with\_sentinel}, verified read directly) -- but both
+underlying margins are $+\infty$ for every row shown above (structurally safe, zero
+active hole pairs, Section~\ref{sec:model-a-results}). Since a finite sentinel value is
+needed for these rows to participate in ordinary 2D Pareto-dominance comparison
+(letting raw $+\infty$ into the comparison would make every such row trivially
+co-dominant regardless of density, collapsing the density/margin tradeoff this metric
+exists to show), and \emph{every} candidate in this survivor set has an infinite
+margin, there is no finite margin value anywhere in the set to scale a sentinel from --
+the implementation's own documented fallback for exactly this degenerate case is a
+fixed sentinel of $1.0$, used here because ranking then falls entirely to density (the
+two tied candidates' shared density value, not shown in this abbreviated table but
+present in the source CSV). The uniform 1.0 seen above is this documented fallback
+behaviour, not a tautology of the underlying formula.

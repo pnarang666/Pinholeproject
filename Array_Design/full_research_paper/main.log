@@ -1,0 +1,2503 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.8.15)  28 SEP 2026 20:55
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**main.tex
+(./main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2025/01/22 v1.4n Standard LaTeX document class
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2025/01/22 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count275
+\c@chapter=\count276
+\c@section=\count277
+\c@subsection=\count278
+\c@subsubsection=\count279
+\c@paragraph=\count280
+\c@subparagraph=\count281
+\c@figure=\count282
+\c@table=\count283
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen148
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count284
+\Gm@cntv=\count285
+\c@Gm@tempcnt=\count286
+\Gm@bindingoffset=\dimen149
+\Gm@wd@mp=\dimen150
+\Gm@odd@mp=\dimen151
+\Gm@even@mp=\dimen152
+\Gm@layoutwidth=\dimen153
+\Gm@layoutheight=\dimen154
+\Gm@layouthoffset=\dimen155
+\Gm@layoutvoffset=\dimen156
+\Gm@dimlist=\toks18
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2025/07/09 v2.17z AMS math features
+\@mathmargin=\skip51
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2024/11/17 v2.01 AMS text
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks19
+\ex@=\dimen157
+))
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen158
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2022/04/08 v2.04 operator names
+)
+\inf@bad=\count287
+LaTeX Info: Redefining \frac on input line 233.
+\uproot@=\count288
+\leftroot@=\count289
+LaTeX Info: Redefining \overline on input line 398.
+LaTeX Info: Redefining \colon on input line 409.
+\classnum@=\count290
+\DOTSCASE@=\count291
+LaTeX Info: Redefining \ldots on input line 495.
+LaTeX Info: Redefining \dots on input line 498.
+LaTeX Info: Redefining \cdots on input line 619.
+\Mathstrutbox@=\box53
+\strutbox@=\box54
+LaTeX Info: Redefining \big on input line 721.
+LaTeX Info: Redefining \Big on input line 722.
+LaTeX Info: Redefining \bigg on input line 723.
+LaTeX Info: Redefining \Bigg on input line 724.
+\big@size=\dimen159
+LaTeX Font Info:    Redeclaring font encoding OML on input line 742.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 743.
+\macc@depth=\count292
+LaTeX Info: Redefining \bmod on input line 904.
+LaTeX Info: Redefining \pmod on input line 909.
+LaTeX Info: Redefining \smash on input line 939.
+LaTeX Info: Redefining \relbar on input line 969.
+LaTeX Info: Redefining \Relbar on input line 970.
+\c@MaxMatrixCols=\count293
+\dotsspace@=\muskip17
+\c@parentequation=\count294
+\dspbrk@lvl=\count295
+\tag@help=\toks20
+\row@=\count296
+\column@=\count297
+\maxfields@=\count298
+\andhelp@=\toks21
+\eqnshift@=\dimen160
+\alignsep@=\dimen161
+\tagshift@=\dimen162
+\tagwidth@=\dimen163
+\totwidth@=\dimen164
+\lineht@=\dimen165
+\@envbody=\toks22
+\multlinegap=\skip52
+\multlinetaggap=\skip53
+\mathdisplay@stack=\toks23
+LaTeX Info: Redefining \[ on input line 2950.
+LaTeX Info: Redefining \] on input line 2951.
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2024/12/31 v1.2e Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2025/09/29 v1.2d Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen166
+\Gin@req@width=\dimen167
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen168
+\lightrulewidth=\dimen169
+\cmidrulewidth=\dimen170
+\belowrulesep=\dimen171
+\belowbottomsep=\dimen172
+\aboverulesep=\dimen173
+\abovetopsep=\dimen174
+\cmidrulesep=\dimen175
+\cmidrulekern=\dimen176
+\defaultaddspace=\dimen177
+\@cmidla=\count299
+\@cmidlb=\count300
+\@aboverulesep=\dimen178
+\@belowrulesep=\dimen179
+\@thisruleclass=\count301
+\@lastruleclass=\count302
+\@thisrulewidth=\dimen180
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2025-10-13 v4.24 Multi-page Table package (DPC)
+\LTleft=\skip54
+\LTright=\skip55
+\LTpre=\skip56
+\LTpost=\skip57
+\LTchunksize=\count303
+\LTcapwidth=\dimen181
+\LT@head=\box55
+\LT@firsthead=\box56
+\LT@foot=\box57
+\LT@lastfoot=\box58
+\LT@gbox=\box59
+\LT@cols=\count304
+\LT@rows=\count305
+\c@LT@tables=\count306
+\c@LT@chunks=\count307
+\LT@p@ftn=\toks24
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/tools/array.sty
+Package: array 2025/09/25 v2.6n Tabular extension package (FMi)
+\col@sep=\dimen182
+\ar@mcellbox=\box60
+\extrarowheight=\dimen183
+\NC@list=\toks25
+\extratabsurround=\skip58
+\backup@length=\skip59
+\ar@cellbox=\box61
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2026-01-29 v7.01p Hypertext links for LaTeX
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.
+sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/pdfescape/pdfescape.sty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/hycolor/hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2026-01-29 v2.58 Cross-referencing by name of section
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/refcount/refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/gettitlestring/gettitlestr
+ing.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/kvoptions/kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count308
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2025/10/02 v2.5m e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count309
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/stringenc/stringenc.sty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\@linkdim=\dimen184
+\Hy@linkcounter=\count310
+\Hy@pagecounter=\count311
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2026-01-29 v7.01p Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/intcalc/intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count312
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/hyperref/puenc.def
+File: puenc.def 2026-01-29 v7.01p Hyperref: PDF Unicode definition (HO)
+Now handling font encoding PU ...
+... no UTF-8 mapping file for font encoding PU
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 4072.
+Package hyperref Info: Hyper figures OFF on input line 4201.
+Package hyperref Info: Link nesting OFF on input line 4206.
+Package hyperref Info: Hyper index ON on input line 4209.
+Package hyperref Info: Plain pages OFF on input line 4216.
+Package hyperref Info: Backreferencing OFF on input line 4221.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4468.
+\c@Hy@tempcnt=\count313
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip18
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4807.
+\XeTeXLinkMargin=\dimen185
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/bitset/bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count314
+\Field@Width=\dimen186
+\Fld@charsize=\dimen187
+Package hyperref Info: Hyper figures OFF on input line 6084.
+Package hyperref Info: Link nesting OFF on input line 6089.
+Package hyperref Info: Hyper index ON on input line 6092.
+Package hyperref Info: backreferencing OFF on input line 6099.
+Package hyperref Info: Link coloring ON on input line 6102.
+Package hyperref Info: Link coloring with OCG OFF on input line 6109.
+Package hyperref Info: PDF/A mode OFF on input line 6114.
+\Hy@abspage=\count315
+\c@Item=\count316
+\c@Hfootnote=\count317
+)
+Package hyperref Info: Driver (autodetected): hpdftex.
+ (/usr/local/texlive/2026basic/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2026-01-29 v7.01p Hyperref driver for pdfTeX
+\Fld@listcount=\count318
+\c@bookmark@seq@number=\count319
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/rerunfilecheck/rerunfilechec
+k.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/generic/uniquecounter/uniquecounte
+r.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
+)
+\Hy@SectionHShift=\skip60
+) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip61
+\bibsep=\skip62
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count320
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics-cfg/color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+Package: fancyhdr 2025/02/07 v5.2 Extensive control of page headers and footers
+
+\f@nch@headwidth=\skip63
+\f@nch@offset@elh=\skip64
+\f@nch@offset@erh=\skip65
+\f@nch@offset@olh=\skip66
+\f@nch@offset@orh=\skip67
+\f@nch@offset@elf=\skip68
+\f@nch@offset@erf=\skip69
+\f@nch@offset@olf=\skip70
+\f@nch@offset@orf=\skip71
+\f@nch@height=\skip72
+\f@nch@footalignment=\skip73
+\f@nch@widthL=\skip74
+\f@nch@widthC=\skip75
+\f@nch@widthR=\skip76
+\@temptokenb=\toks26
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count321
+\lst@gtempboxa=\box62
+\lst@token=\toks27
+\lst@length=\count322
+\lst@currlwidth=\dimen188
+\lst@column=\count323
+\lst@pos=\count324
+\lst@lostspace=\dimen189
+\lst@width=\dimen190
+\lst@newlines=\count325
+\lst@lineno=\count326
+\lst@maxwidth=\dimen191
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2025/11/14 1.11b (Carsten Heinz)
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2025/11/14 1.11b (Carsten Heinz)
+\c@lstnumber=\count327
+\lst@skipnumbers=\count328
+\lst@framebox=\box63
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2025/11/14 1.11b listings configuration
+))
+Package: listings 2025/11/14 1.11b (Carsten Heinz)
+
+==> First Aid for listings.sty no longer applied!
+    Expected:
+        2024/09/23 1.10c (Carsten Heinz)
+    but found:
+        2025/11/14 1.11b (Carsten Heinz)
+    so I'm assuming it got fixed.
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/l3backend/l3backend-pdftex.d
+ef
+File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count329
+) (./main.aux
+
+LaTeX Warning: Label `tab:full-acuity-sweep' multiply defined.
+
+
+LaTeX Warning: Label `tab:full-acuity-sweep' multiply defined.
+
+
+LaTeX Warning: Label `tab:full-barten-sweep' multiply defined.
+
+
+LaTeX Warning: Label `tab:full-pass1-sweep' multiply defined.
+
+)
+\openout1 = `main.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 45.
+LaTeX Font Info:    ... okay on input line 45.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=452.9679pt
+* \textheight=700.50687pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count330
+\scratchdimen=\dimen192
+\scratchbox=\box64
+\nofMPsegments=\count331
+\nofMParguments=\count332
+\everyMPshowfont=\toks28
+\MPscratchCnt=\count333
+\MPscratchDim=\dimen193
+\MPnumerator=\count334
+\makeMPintoPDFobject=\count335
+\everyMPtoPDFconversion=\toks29
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.s
+ty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package hyperref Info: Link coloring ON on input line 45.
+ (./main.out) (./main.out)
+\@outlinefile=\write3
+\openout3 = `main.out'.
+
+\c@lstlisting=\count336
+LaTeX Font Info:    Trying to load font information for U+msa on input line 47.
+
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 47.
+
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.84 \end{abstract}
+                    [1] (./main.toc
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.39 ...ude formula omitted}{29}{subsection.5.3.3}
+                                                  % [1
+
+] [2] [3])
+\tf@toc=\write4
+\openout4 = `main.toc'.
+
+ [4]
+(./main.lof
+Overfull \hbox (64.80083pt too wide) in paragraph at lines 3--3
+ \OT1/cmr/m/n/10.95 400 \OML/cmm/m/it/10.95 ^^V$\OT1/cmr/m/n/10.95 m -- the two
+ ex-tremes of the real per-$\OML/cmm/m/it/10.95 M$ \OT1/cmr/m/n/10.95 aper-ture
+ map (\OT1/cmtt/m/n/10.95 array[]data/evaluation[]results/ 
+ []
+
+
+Overfull \hbox (9.31516pt too wide) in paragraph at lines 3--3
+ \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab/retinal[]light[]distrib
+ution[]simulation/ 
+ []
+
+
+Overfull \hbox (10.13072pt too wide) in paragraph at lines 3--3
+ \OT1/cmtt/m/n/10.95 realistic[]heatmaps/build[]realistic[]heatmaps.py \OT1/cmr
+/m/n/10.95 (mtime of its out-puts: 2026- 
+ []
+
+LaTeX Font Info:    Trying to load font information for OMS+cmtt on input line 
+5.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 5.
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 5.
+
+
+Overfull \hbox (233.59773pt too wide) in paragraph at lines 5--5
+ \OT1/cmr/m/n/10.95 curve above is pre-dict-ing a num-ber for. Source: \OT1/cmt
+t/m/n/10.95 Array[]Design/array[]geometry[]lab/retinal[]light[]distribution[]si
+mulation/ 
+ []
+
+
+Overfull \hbox (148.37027pt too wide) in paragraph at lines 8--8
+ \OT1/cmr/m/n/10.95 CSV the growth-slope ta-ble above is fit from (\OT1/cmtt/m/
+n/10.95 ExperimentalComparison/ExP3[]frosted[]screen/measurements/ 
+ []
+
+
+Overfull \hbox (0.32532pt too wide) in paragraph at lines 8--8
+ \OT1/cmtt/m/n/10.95 all[]spot[]measurements.csv\OT1/cmr/m/n/10.95 , mtime 2026
+-09-02). The no-pinhole con-trol's much 
+ []
+
+[5
+
+]
+Overfull \hbox (139.69748pt too wide) in paragraph at lines 10--10
+ \OT1/cmr/m/n/10.95 unit-slope line the physics pre-dicts. Source: \OT1/cmtt/m/
+n/10.95 Array[]Design/array[]optimization/stage0[]ghost[]validation/ 
+ []
+
+
+Overfull \hbox (23.07733pt too wide) in paragraph at lines 11--11
+ \OT1/cmr/m/n/10.95 trusted. Source: \OT1/cmtt/m/n/10.95 Array[]Design/array[]o
+ptimization/vignetting[]validation.png\OT1/cmr/m/n/10.95 , 
+ []
+
+
+Overfull \hbox (2.18877pt too wide) in paragraph at lines 11--11
+ \OT1/cmr/m/n/10.95 mtime 2026-08-15, the orig-i-nal val-i-da-tion run \OT1/cmt
+t/m/n/10.95 vignetting[]overlap.py \OT1/cmr/m/n/10.95 was copied 
+ []
+
+
+Overfull \hbox (15.6425pt too wide) in paragraph at lines 13--13
+ \OT1/cmtt/m/n/10.95 array[]data/evaluation[]results/family[]ranking[]margin[]v
+s[]N.png\OT1/cmr/m/n/10.95 , mtime 2026- 
+ []
+
+
+Overfull \hbox (153.85605pt too wide) in paragraph at lines 15--15
+ \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab/blindness[]mechanism[]a
+nimation/ blindness[]mechanism[]animation.mp4 
+ []
+
+
+Overfull \hbox (62.84935pt too wide) in paragraph at lines 15--15
+ \OT1/cmr/m/n/10.95 (mtime 2026-09-16 12:58); the un-der-ly-ing sim-u-la-tion r
+euses \OT1/cmtt/m/n/10.95 engine/vignetting[]overlap.py\OT1/cmr/m/n/10.95 's 
+ []
+
+[6]
+Overfull \hbox (10.15694pt too wide) in paragraph at lines 16--16
+ [][] [][][]\OT1/cmr/m/n/10.95 Real re-gen-er-ated nearest-neighbor struc-ture 
+at iden-ti-cal spac-ing (pitch/ring-spacing 
+ []
+
+
+Overfull \hbox (1.64026pt too wide) in paragraph at lines 17--17
+ [][] [][][]\OT1/cmr/m/n/10.95 Real, already-computed gaze-weighted blind%/ghos
+t% for the same four matched- 
+ []
+
+
+Overfull \hbox (140.95494pt too wide) in paragraph at lines 17--17
+ \OT1/cmr/m/n/10.95 spacing de-signs as Fig-ure [][]7.2[][], read di-rectly fro
+m \OT1/cmtt/m/n/10.95 array[]data/theoretical[]data/gaze[]weighted[]metrics.csv
+ 
+ []
+
+
+Overfull \hbox (112.04982pt too wide) in paragraph at lines 19--19
+ \OT1/cmr/m/n/10.95 scope. Source: \OT1/cmtt/m/n/10.95 Array[]Design/array[]geo
+metry[]lab/Design Visualisation/pngs[]for[]presentation/ 
+ []
+
+
+Overfull \hbox (11.99315pt too wide) in paragraph at lines 20--20
+ \OT1/cmr/m/n/10.95 dard, Sec-tion [][]6.2[][]) win-ning de-sign per $\OML/cmm/
+m/it/10.95 M$\OT1/cmr/m/n/10.95 . Note the fam-ily mix (ring[]offset[]concentri
+c 
+ []
+
+
+Overfull \hbox (35.07495pt too wide) in paragraph at lines 21--21
+ \OT1/cmr/m/n/10.95 Source: this anal-y-sis, di-rect call to \OT1/cmtt/m/n/10.9
+5 stage2[]fixed.phase2[]retina.run[]pipeline[]point\OT1/cmr/m/n/10.95 ; 
+ []
+
+
+Overfull \hbox (60.49152pt too wide) in paragraph at lines 23--23
+ \OT1/cmr/m/n/10.95 fixed aper-ture. Re-com-puted di-rectly from the cur-rent \
+OT1/cmtt/m/n/10.95 new[]sweeps/acuity[]sweep[]stage4.csv 
+ []
+
+[7]
+Overfull \hbox (103.28728pt too wide) in paragraph at lines 24--24
+ \OT1/cmr/m/n/10.95 is not a sin-gle uni-ver-sal bias. Source: this anal-y-sis,
+ from \OT1/cmtt/m/n/10.95 wang2009[]validation[]postfix[]predicted.csv\OT1/cmr/
+m/n/10.95 .[][] [][]  
+ []
+
+)
+\tf@lof=\write5
+\openout5 = `main.lof'.
+
+ [8] (./main.lot
+Overfull \hbox (31.14441pt too wide) in paragraph at lines 10--10
+ \OT1/cmr/m/n/10.95 tested (worst-case gate/Model A, un-gated gaze-weighted, ga
+ted gaze-weighted/Model B, 
+ []
+
+
+Overfull \hbox (9.57143pt too wide) in paragraph at lines 10--10
+ \OT1/cmr/m/n/10.95 the same acuity-optimal aper-ture per $\OML/cmm/m/it/10.95 
+M$ \OT1/cmr/m/n/10.95 from \OT1/cmtt/m/n/10.95 new[]sweeps/per[]M[]optimum[]map
+.csv 
+ []
+
+
+Overfull \hbox (21.14514pt too wide) in paragraph at lines 11--11
+ \OT1/cmr/m/n/10.95 Source: \OT1/cmtt/m/n/10.95 stage4[]human[]vision/outputs/w
+ang2009[]validation[]postfix[]stats.csv 
+ []
+
+
+Overfull \hbox (101.21912pt too wide) in paragraph at lines 11--11
+ \OT1/cmr/m/n/10.95 (per-$\OML/cmm/m/it/10.95 M$ \OT1/cmr/m/n/10.95 rows) and \
+OT1/cmtt/m/n/10.95 predicted[]logmar[]analysis/wang2009[]calibration[]pooled[]s
+tats[]postfix.csv 
+ []
+
+
+Overfull \hbox (280.40846pt too wide) in paragraph at lines 17--17
+ [][] [][][]\OT1/cmr/m/n/10.95 Data prove-nance ta-ble. Paths ab-bre-vi-ated \O
+T1/cmtt/m/n/10.95 Array[]Design/.../ \OT1/cmr/m/n/10.95 for \OT1/cmtt/m/n/10.95
+ Array[]Design/array[]geometry[]lab/array[]data/evaluation[]results/ 
+ []
+
+
+Overfull \hbox (15.45357pt too wide) in paragraph at lines 28--28
+ \OT1/cmr/m/n/10.95 ver-ba-tim from \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/
+ghosting[]sweep[]barten.csv\OT1/cmr/m/n/10.95 , mtime 2026- 
+ []
+
+
+Overfull \hbox (15.45357pt too wide) in paragraph at lines 29--29
+ \OT1/cmr/m/n/10.95 ver-ba-tim from \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/
+ghosting[]sweep[]barten.csv\OT1/cmr/m/n/10.95 , mtime 2026- 
+ []
+
+
+Overfull \hbox (182.62056pt too wide) in paragraph at lines 32--32
+ [][] [][][]\OT1/cmr/m/n/10.95 Full 36-point Pass 1 (heuris-tic, un-cor-rected 
+CSF) sweep -- ver-ba-tim from \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/ghosti
+ng[]sweep.csv 
+ []
+
+
+Overfull \hbox (182.62056pt too wide) in paragraph at lines 33--33
+ [][] [][][]\OT1/cmr/m/n/10.95 Full 36-point Pass 1 (heuris-tic, un-cor-rected 
+CSF) sweep -- ver-ba-tim from \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/ghosti
+ng[]sweep.csv 
+ []
+
+
+Overfull \hbox (197.5582pt too wide) in paragraph at lines 34--34
+ [][] [][][]\OT1/cmr/m/n/10.95 Full 36-point Pass 3 (harmonic-extended) sweep -
+- ver-ba-tim from \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/ghosting[]sweep[]h
+armonic.csv 
+ []
+
+[9
+
+])
+\tf@lot=\write6
+\openout6 = `main.lot'.
+
+ [10]
+Chapter 1.
+[11
+
+] (./sections/02_single_aperture_theory.tex [12]
+Chapter 2.
+
+Overfull \hbox (79.94211pt too wide) in paragraph at lines 31--34
+\OT1/cmr/m/n/10.95 (source: \OT1/cmtt/m/n/10.95 stage2[]fixed/myopia[]axial.py\
+OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 new[]sweeps/run[]acuity[]sweep.py \OT1/
+cmr/m/n/10.95 con-stants \OT1/cmtt/m/n/10.95 WAVELENGTH[]NM=550.0\OT1/cmr/m/n/1
+0.95 ,
+ []
+
+[13
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+
+ []
+
+[14]
+Overfull \hbox (61.2026pt too wide) in paragraph at lines 136--139
+\OT1/cmr/m/n/10.95 The full per-point chain, ex-actly as im-ple-mented in \OT1/
+cmtt/m/n/10.95 stage2[]fixed/phase2[]retina.py\OT1/cmr/m/n/10.95 's \OT1/cmtt/m
+/n/10.95 run[]pipeline[]point
+ []
+
+<figures/corneal_illumination_M0.png, id=1042, 462.528pt x 433.62pt>
+File: figures/corneal_illumination_M0.png Graphic file (type png)
+<use figures/corneal_illumination_M0.png>
+Package pdftex.def Info: figures/corneal_illumination_M0.png  used on input lin
+e 161.
+(pdftex.def)             Requested size: 217.42265pt x 203.8345pt.
+<figures/realistic_heatmap_M0.png, id=1044, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M0.png Graphic file (type png)
+<use figures/realistic_heatmap_M0.png>
+Package pdftex.def Info: figures/realistic_heatmap_M0.png  used on input line 1
+66.
+(pdftex.def)             Requested size: 217.42265pt x 203.8345pt.
+<figures/corneal_illumination_M8.png, id=1045, 462.528pt x 433.62pt>
+File: figures/corneal_illumination_M8.png Graphic file (type png)
+<use figures/corneal_illumination_M8.png>
+Package pdftex.def Info: figures/corneal_illumination_M8.png  used on input lin
+e 172.
+(pdftex.def)             Requested size: 217.42265pt x 203.8345pt.
+<figures/realistic_heatmap_M8.png, id=1046, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M8.png Graphic file (type png)
+<use figures/realistic_heatmap_M8.png>
+Package pdftex.def Info: figures/realistic_heatmap_M8.png  used on input line 1
+77.
+(pdftex.def)             Requested size: 217.42265pt x 203.8345pt.
+
+Underfull \hbox (badness 3690) in paragraph at lines 198--198
+\OT1/cmr/m/n/10.95 new) and \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]
+lab/retinal[]light[]distribution[]simulation/
+ []
+
+[15] [16 <./figures/corneal_illumination_M0.png> <./figures/realistic_heatmap_M
+0.png> <./figures/corneal_illumination_M8.png> <./figures/realistic_heatmap_M8.
+png>]
+Underfull \hbox (badness 10000) in paragraph at lines 259--260
+
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 261.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 261.
+
+[17]
+Underfull \hbox (badness 2564) in paragraph at lines 313--313
+[]|\OT1/cmr/m/n/10.95 Radius en-clos-ing half the
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 316--320
+[]|\OT1/cmr/m/n/10.95 Tracks clin-i-cal acu-ity loss more
+ []
+
+[18]
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
+
+ []
+
+
+Underfull \hbox (badness 1968) in paragraph at lines 346--349
+[]|\OT1/cmr/m/n/10.95 Deprecated. Su-per-seded by the di-rect
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 352--353
+[]|$\OML/cmm/m/it/10.95 a[] \OMS/cmtt/m/n/10.95 ^^Y
+ []
+
+) (./sections/03_acuity_model.tex [19] [20]
+Chapter 3.
+
+Overfull \hbox (41.79192pt too wide) in paragraph at lines 4--9
+\OT1/cmr/m/n/10.95 into a Log-MAR pre-dic-tion via a spe-cific, cited pipeline 
+im-ple-mented in \OT1/cmtt/m/n/10.95 stage4[]human[]vision/acuity.py
+ []
+
+
+Overfull \hbox (11.0168pt too wide) in paragraph at lines 20--27
+\OT1/cmr/m/n/10.95 28\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 58$ years (source:
+ \OT1/cmtt/m/n/10.95 stage4[]human[]vision/config.py \OT1/cmr/m/n/10.95 de-faul
+ts, \OT1/cmtt/m/n/10.95 default[]scene[]luminance[]cdm2\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (32.16867pt too wide) detected at line 45
+[]
+ []
+
+[21
+
+]
+Overfull \hbox (13.3891pt too wide) in paragraph at lines 45--50
+\OT1/cmr/m/n/10.95 This is the \OT1/cmtt/m/n/10.95 mtf10[]vsotf[]brightness[]ad
+justed \OT1/cmr/m/n/10.95 model (source: \OT1/cmtt/m/n/10.95 stage4[]human[]vis
+ion/acuity.py\OT1/cmr/m/n/10.95 ,
+ []
+
+File: figures/realistic_heatmap_M0.png Graphic file (type png)
+<use figures/realistic_heatmap_M0.png>
+Package pdftex.def Info: figures/realistic_heatmap_M0.png  used on input line 5
+9.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M1.png, id=1110, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M1.png Graphic file (type png)
+<use figures/realistic_heatmap_M1.png>
+Package pdftex.def Info: figures/realistic_heatmap_M1.png  used on input line 6
+0.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M2.png, id=1111, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M2.png Graphic file (type png)
+<use figures/realistic_heatmap_M2.png>
+Package pdftex.def Info: figures/realistic_heatmap_M2.png  used on input line 6
+1.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M3.png, id=1112, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M3.png Graphic file (type png)
+<use figures/realistic_heatmap_M3.png>
+Package pdftex.def Info: figures/realistic_heatmap_M3.png  used on input line 6
+2.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M4.png, id=1113, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M4.png Graphic file (type png)
+<use figures/realistic_heatmap_M4.png>
+Package pdftex.def Info: figures/realistic_heatmap_M4.png  used on input line 6
+5.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M5.png, id=1114, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M5.png Graphic file (type png)
+<use figures/realistic_heatmap_M5.png>
+Package pdftex.def Info: figures/realistic_heatmap_M5.png  used on input line 6
+6.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+<figures/realistic_heatmap_M6.png, id=1115, 462.528pt x 433.62pt>
+File: figures/realistic_heatmap_M6.png Graphic file (type png)
+<use figures/realistic_heatmap_M6.png>
+Package pdftex.def Info: figures/realistic_heatmap_M6.png  used on input line 6
+7.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+File: figures/realistic_heatmap_M8.png Graphic file (type png)
+<use figures/realistic_heatmap_M8.png>
+Package pdftex.def Info: figures/realistic_heatmap_M8.png  used on input line 6
+8.
+(pdftex.def)             Requested size: 104.18068pt x 97.66615pt.
+
+Underfull \hbox (badness 6559) in paragraph at lines 80--80
+\OT1/cmtt/m/n/10.95 realistic[]heatmaps/realistic[]heatmap[]M\OMS/cmtt/m/n/10.9
+5 f\OT1/cmtt/m/n/10.95 0,1,2,3,4,5,6,8\OMS/cmtt/m/n/10.95 g\OT1/cmtt/m/n/10.95 
+.png\OT1/cmr/m/n/10.95 , all eight gen-er-ated
+ []
+
+[22 <./figures/realistic_heatmap_M1.png> <./figures/realistic_heatmap_M2.png> <
+./figures/realistic_heatmap_M3.png> <./figures/realistic_heatmap_M4.png> <./fig
+ures/realistic_heatmap_M5.png> <./figures/realistic_heatmap_M6.png>])
+(./sections/04_single_aperture_experiments.tex [23]
+Chapter 4.
+
+Overfull \hbox (6.56769pt too wide) in paragraph at lines 4--9
+\OT1/cmr/m/n/10.95 Chap-ter [][]2[][]: a pho-to-graphic scenery test scored by 
+a no-reference im-age qual-ity met-ric (BRISQUE),
+ []
+
+
+Overfull \hbox (23.6031pt too wide) in paragraph at lines 35--38
+\OT1/cmr/m/n/10.95 (source: \OT1/cmtt/m/n/10.95 ExperimentalComparison/ExP1[]cl
+arity[]analysis/measurements/brisque[]scores.csv\OT1/cmr/m/n/10.95 ,
+ []
+
+<figures/brisque_scenery_scores.png, id=1145, 650.43pt x 375.804pt>
+File: figures/brisque_scenery_scores.png Graphic file (type png)
+<use figures/brisque_scenery_scores.png>
+Package pdftex.def Info: figures/brisque_scenery_scores.png  used on input line
+ 41.
+(pdftex.def)             Requested size: 385.02547pt x 222.46216pt.
+
+Underfull \hbox (badness 1622) in paragraph at lines 46--46
+[]\OT1/cmr/m/n/10.95 Figure 4.1: []Mean BRISQUE score per con-di-tion, gen-er-a
+ted di-rectly from the same
+ []
+
+[24
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+
+ []
+
+
+Overfull \hbox (50.73691pt too wide) in paragraph at lines 88--91
+\OT1/cmr/m/n/10.95 (source: \OT1/cmtt/m/n/10.95 ExperimentalComparison/ExP3[]fr
+osted[]screen/measurements/all[]spot[]measurements.csv\OT1/cmr/m/n/10.95 ;
+ []
+
+[25 <./figures/brisque_scenery_scores.png>]
+<figures/frosted_screen_growth_curves.png, id=1157, 578.16pt x 397.485pt>
+File: figures/frosted_screen_growth_curves.png Graphic file (type png)
+<use figures/frosted_screen_growth_curves.png>
+Package pdftex.def Info: figures/frosted_screen_growth_curves.png  used on inpu
+t line 104.
+(pdftex.def)             Requested size: 385.02547pt x 264.70024pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--112
+[]\OT1/cmr/m/n/10.95 Figure 4.2: []Measured spot ra-dius vs. screen dis-place-m
+ent, all seven
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--112
+\OT1/cmr/m/n/10.95 con-di-tions, from the same CSV the growth-slope ta-ble abov
+e is
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--112
+\OT1/cmr/m/n/10.95 fit from (\OT1/cmtt/m/n/10.95 ExperimentalComparison/ExP3[]f
+rosted[]screen/measurements/
+ []
+
+
+Overfull \hbox (275.36737pt too wide) in paragraph at lines 118--128
+\OT1/cmr/m/n/10.95 A single-pinhole log-MAR acu-ity mea-sure-ment pro-to-col is
+ spec-i-fied in \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab/Physics[
+]Guide/LOGMAR[]ACUITY[]PROTOCOL.tex
+ []
+
+[26 <./figures/frosted_screen_growth_curves.png>])
+(./sections/05_array_theory.tex [27]
+Chapter 5.
+
+Overfull \hbox (1.46326pt too wide) in paragraph at lines 6--19
+\OT1/cmr/m/n/10.95 gen-er-a-tor li-brary (\OT1/cmtt/m/n/10.95 Array[]Design/arr
+ay[]geometry[]lab/array[]calculation/generators/\OT1/cmr/m/n/10.95 , ver-
+ []
+
+
+Overfull \hbox (12.95386pt too wide) in paragraph at lines 6--19
+\OT1/cmr/m/n/10.95 i-fied via di-rec-tory list-ing): \OT1/cmtt/m/n/10.95 square
+\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 hexagonal\OT1/cmr/m/n/10.95 , \OT1/cmt
+t/m/n/10.95 rectangular\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 concentric\OT1/
+cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 concentric[]centered\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (23.18434pt too wide) in paragraph at lines 6--19
+\OT1/cmtt/m/n/10.95 ring[]offset[]concentric\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/
+10.95 archimedean[]spiral\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 fibonacci[]sp
+iral\OT1/cmr/m/n/10.95 , \OT1/cmtt/m/n/10.95 golden[]angle\OT1/cmr/m/n/10.95 , 
+\OT1/cmtt/m/n/10.95 poisson[]disk\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (26.63554pt too wide) in paragraph at lines 33--42
+\OT1/cmr/m/n/10.95 The ar-ray's fill fac-tor (frac-tion of the frame area oc-cu
+-pied by open aper-ture) is $\OML/cmm/m/it/10.95 f \OT1/cmr/m/n/10.95 = \OML/cm
+m/m/it/10.95 N^^Y\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 a[]=\OT1/cmr/m/n/10.95
+ 2)[]\OML/cmm/m/it/10.95 =A[]$\OT1/cmr/m/n/10.95 ,
+ []
+
+[28
+
+]
+Overfull \hbox (11.94432pt too wide) detected at line 110
+[][][][] \OML/cmm/m/it/10.95 N[] \OMS/cmtt/m/n/10.95 ^^T \OT1/cmr/m/n/10.95 1 [
+] [] [](\OML/cmm/m/it/10.95 f[]\OT1/cmr/m/n/10.95 ) \OML/cmm/m/it/10.95 < [][]\
+OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 f[]\OT1/cmr/m/n/10.95 ) []
+ []
+
+[29]
+<figures/ghost_formula_validation.png, id=1201, 939.51pt x 375.804pt>
+File: figures/ghost_formula_validation.png Graphic file (type png)
+<use figures/ghost_formula_validation.png>
+Package pdftex.def Info: figures/ghost_formula_validation.png  used on input li
+ne 123.
+(pdftex.def)             Requested size: 452.9679pt x 181.18668pt.
+
+Overfull \hbox (118.27855pt too wide) in paragraph at lines 147--160
+[]\OT1/cmr/m/n/10.95 A 36-point sweep (aper-tures $\OMS/cmtt/m/n/10.95 f\OT1/cm
+r/m/n/10.95 300\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 400\OML/cmm/m/it/10.95 
+; \OT1/cmr/m/n/10.95 700\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 1000\OMS/cmtt/
+m/n/10.95 g \OML/cmm/m/it/10.95 ^^V$\OT1/cmr/m/n/10.95 m $\OMS/cmtt/m/n/10.95 ^
+^B$ \OT1/cmr/m/n/10.95 pitches $\OMS/cmtt/m/n/10.95 f\OT1/cmr/m/n/10.95 700\OML
+/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 900\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.9
+5 1200\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 1500\OML/cmm/m/it/10.95 ; \OT1/c
+mr/m/n/10.95 2000\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 2500\OML/cmm/m/it/10.
+95 ; \OT1/cmr/m/n/10.95 3200\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 4000\OML/c
+mm/m/it/10.95 ; \OT1/cmr/m/n/10.95 4800\OMS/cmtt/m/n/10.95 g \OML/cmm/m/it/10.9
+5 ^^V$\OT1/cmr/m/n/10.95 m,
+ []
+
+[30 <./figures/ghost_formula_validation.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 160--161
+
+ []
+
+
+Overfull \hbox (53.59212pt too wide) in paragraph at lines 182--186
+\OT1/cmr/m/n/10.95 longer needs an un-re-solved gap to ex-plain that find-ing a
+way (source: \OT1/cmtt/m/n/10.95 Array[]Design/ghosting/RESULTS.md\OT1/cmr/m/n/
+10.95 ,
+ []
+
+[31]
+Underfull \hbox (badness 10000) in paragraph at lines 211--212
+
+ []
+
+
+Overfull \hbox (223.65854pt too wide) in paragraph at lines 220--228
+\OT1/cmr/m/n/10.95 any di-rec-tion the wearer hap-pens to look (source: \OT1/cm
+tt/m/n/10.95 Array[]Design/array[]geometry[]lab/array[]calculation/engine/vigne
+tting[]overlap.py\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (197.62404pt too wide) detected at line 239
+[][][]\OML/cmm/m/it/10.95 A[]\OT1/cmr/m/n/10.95 (^^A[]\OML/cmm/m/it/10.95 ; R[]
+; R[]\OT1/cmr/m/n/10.95 ) = []
+ []
+
+
+Overfull \hbox (1.55373pt too wide) in paragraph at lines 239--242
+\OT1/cmr/m/n/10.95 (Handbook 2, Sec. 13.2, im-ple-mented ver-ba-tim in \OT1/cmt
+t/m/n/10.95 vignetting[]overlap.py\OT1/cmr/m/n/10.95 's \OT1/cmtt/m/n/10.95 ove
+rlap[]area[]um2\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 252--253
+
+ []
+
+<figures/vignetting_validation.png, id=1219, 542.025pt x 375.804pt>
+File: figures/vignetting_validation.png Graphic file (type png)
+<use figures/vignetting_validation.png>
+Package pdftex.def Info: figures/vignetting_validation.png  used on input line 
+265.
+(pdftex.def)             Requested size: 339.72592pt x 235.55357pt.
+[32] [33 <./figures/vignetting_validation.png>])
+(./sections/05c_ghosting_literature_review.tex [34]
+Underfull \hbox (badness 10000) in paragraph at lines 39--40
+
+ []
+
+[35]) (./sections/05b_all_generators.tex
+Overfull \hbox (14.17183pt too wide) in paragraph at lines 120--1
+\OT1/cmr/m/n/10.95 mech-a-nism, and 2.4's frequency-domain vis-i-bil-ity method
+-ol-ogy, with this project's own convolution-
+ []
+
+[36] [37]
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
+
+ []
+
+[38]) (./sections/06_model_a.tex [39]
+Chapter 6.
+
+Overfull \hbox (4.89505pt too wide) in paragraph at lines 36--50
+\OT1/cmr/m/n/10.95 Model A's ghost and vi-gnetting mar-gins are com-puted via \
+OT1/cmtt/m/n/10.95 margins/vignetting[]robustness.py\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (178.12843pt too wide) in paragraph at lines 36--50
+\OT1/cmr/m/n/10.95 gaze range (source: \OT1/cmtt/m/n/10.95 Array[]Design/array[
+]geometry[]lab/array[]data/evaluation[]results/CENTERED[]CONCENTRIC[]COMPARISON
+.md\OT1/cmr/m/n/10.95 ,
+ []
+
+[40
+
+]
+Overfull \hbox (414.68234pt too wide) in paragraph at lines 53--57
+\OT1/cmr/m/n/10.95 Winner per my-opia power, ranked by pack-ing den-sity among 
+gate sur-vivors (source: \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab
+/array[]data/evaluation[]results/FINAL[]WINNER[]PER[]M.csv\OT1/cmr/m/n/10.95 ,
+ []
+
+<figures/family_ranking_margin_vs_N.png, id=1312, 910.602pt x 737.154pt>
+File: figures/family_ranking_margin_vs_N.png Graphic file (type png)
+<use figures/family_ranking_margin_vs_N.png>
+Package pdftex.def Info: figures/family_ranking_margin_vs_N.png  used on input 
+line 82.
+(pdftex.def)             Requested size: 452.9679pt x 366.68642pt.
+) (./sections/07_model_b.tex [41] [42 <./figures/family_ranking_margin_vs_N.png
+>]
+Chapter 7.
+
+Overfull \hbox (37.8139pt too wide) in paragraph at lines 5--15
+\OT1/cmr/m/n/10.95 tested-gaze-angle cri-te-rion (source: \OT1/cmtt/m/n/10.95 A
+rray[]Design/array[]geometry[]lab/GAZE[]WEIGHTED[]APPROACH.md\OT1/cmr/m/n/10.95
+ ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
+
+ []
+
+
+Overfull \hbox (9.14935pt too wide) in paragraph at lines 39--48
+\OT1/cmr/m/n/10.95 across ev-ery sam-pled $(\OML/cmm/m/it/10.95 '; ^^R\OT1/cmr/
+m/n/10.95 )$ pair, giv-ing \OT1/cmtt/m/n/10.95 time[]weighted[]blind[]pct \OT1/
+cmr/m/n/10.95 and \OT1/cmtt/m/n/10.95 time[]weighted[]ghost[]pct
+ []
+
+[43
+
+]
+Overfull \hbox (83.25969pt too wide) in paragraph at lines 51--54
+\OT1/cmr/m/n/10.95 gates any can-di-date with \OT1/cmtt/m/n/10.95 time[]weighte
+d[]blind[]pct \OT1/cmr/m/n/10.95 above a tol-er-ance, then min-i-mizes \OT1/cmt
+t/m/n/10.95 time[]weighted[]ghost[]pct
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--67
+
+ []
+
+<figures/blindness_frame_blind.png, id=1332, 1760.5775pt x 730.73pt>
+File: figures/blindness_frame_blind.png Graphic file (type png)
+<use figures/blindness_frame_blind.png>
+Package pdftex.def Info: figures/blindness_frame_blind.png  used on input line 
+70.
+(pdftex.def)             Requested size: 144.95303pt x 60.15439pt.
+<figures/blindness_frame_ghost.png, id=1333, 1760.5775pt x 730.73pt>
+File: figures/blindness_frame_ghost.png Graphic file (type png)
+<use figures/blindness_frame_ghost.png>
+Package pdftex.def Info: figures/blindness_frame_ghost.png  used on input line 
+71.
+(pdftex.def)             Requested size: 144.95303pt x 60.15439pt.
+<figures/blindness_frame_clean.png, id=1334, 1760.5775pt x 730.73pt>
+File: figures/blindness_frame_clean.png Graphic file (type png)
+<use figures/blindness_frame_clean.png>
+Package pdftex.def Info: figures/blindness_frame_clean.png  used on input line 
+72.
+(pdftex.def)             Requested size: 144.95303pt x 60.15439pt.
+
+Underfull \hbox (badness 7047) in paragraph at lines 87--87
+\OT1/cmr/m/n/10.95 via \OT1/cmtt/m/n/10.95 ffmpeg \OT1/cmr/m/n/10.95 from \OT1/
+cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab/blindness[]mechanism[]animati
+on/
+ []
+
+
+Underfull \hbox (badness 4024) in paragraph at lines 87--87
+\OT1/cmtt/m/n/10.95 blindness[]mechanism[]animation.mp4 \OT1/cmr/m/n/10.95 (mti
+me 2026-09-16 12:58); the un-der-ly-ing sim-
+ []
+
+
+Underfull \hbox (badness 7558) in paragraph at lines 87--87
+\OT1/cmr/m/n/10.95 u-la-tion reuses \OT1/cmtt/m/n/10.95 engine/vignetting[]over
+lap.py\OT1/cmr/m/n/10.95 's val-i-dated overlap-area for-mula and
+ []
+
+
+Overfull \hbox (70.54764pt too wide) in paragraph at lines 93--96
+\OT1/cmr/m/n/10.95 Source: \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]l
+ab/array[]data/evaluation[]results/PRIMARY[]WINNER[]PER[]M.csv\OT1/cmr/m/n/10.9
+5 ,
+ []
+
+[44 <./figures/blindness_frame_blind.png (PNG copy)> <./figures/blindness_frame
+_ghost.png (PNG copy)> <./figures/blindness_frame_clean.png (PNG copy)>]
+<figures/geometry_intuition_structure.png, id=1344, 1228.59pt x 375.804pt>
+File: figures/geometry_intuition_structure.png Graphic file (type png)
+<use figures/geometry_intuition_structure.png>
+Package pdftex.def Info: figures/geometry_intuition_structure.png  used on inpu
+t line 150.
+(pdftex.def)             Requested size: 430.31812pt x 131.62512pt.
+<figures/geometry_intuition_real_consequence.png, id=1347, 903.375pt x 397.485p
+t>
+File: figures/geometry_intuition_real_consequence.png Graphic file (type png)
+<use figures/geometry_intuition_real_consequence.png>
+Package pdftex.def Info: figures/geometry_intuition_real_consequence.png  used 
+on input line 165.
+(pdftex.def)             Requested size: 385.02547pt x 169.41106pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 172--172
+[]\OT1/cmr/m/n/10.95 Figure 7.3: []Real, already-computed gaze-weighted blind%/
+ghost% for the
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 172--172
+\OT1/cmr/m/n/10.95 same four matched-spacing de-signs as Fig-ure [][]7.2[][], r
+ead di-rectly from
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 172--172
+\OT1/cmtt/m/n/10.95 array[]data/theoretical[]data/gaze[]weighted[]metrics.csv \
+OT1/cmr/m/n/10.95 (not re-com-puted for this
+ []
+
+) (./sections/08_array_fabrication_experiments.tex
+Overfull \hbox (21.2782pt too wide) in paragraph at lines 178--1
+\OT1/cmr/m/n/10.95 project's own anal-y-sis (Model A / \OT1/cmtt/m/n/10.95 FINA
+L[]WINNER[]PER[]M.csv\OT1/cmr/m/n/10.95 ; Model B / \OT1/cmtt/m/n/10.95 PRIMARY
+[]WINNER[]PER[]M.csv\OT1/cmr/m/n/10.95 ;
+ []
+
+[45] [46 <./figures/geometry_intuition_structure.png> <./figures/geometry_intui
+tion_real_consequence.png>] [47]
+Chapter 8.
+
+Overfull \hbox (140.41238pt too wide) in paragraph at lines 6--15
+\OT1/cmr/m/n/10.95 di-rectly from \OT1/cmtt/m/n/10.95 PRIMARY[]WINNER[]PER[]M.c
+sv \OT1/cmr/m/n/10.95 (source: \OT1/cmtt/m/n/10.95 array[]geometry[]lab/fabrica
+tion[]package/fabrication[]summary.csv\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 39--40
+
+ []
+
+[48
+
+]
+Overfull \hbox (50.75496pt too wide) in paragraph at lines 46--55
+\OT1/cmr/m/n/10.95 matching \OT1/cmtt/m/n/10.95 fabrication[]summary.csv\OT1/cm
+r/m/n/10.95 's own $\OML/cmm/m/it/10.95 M \OT1/cmr/m/n/10.95 = 8$D row ex-actly
+ (\OT1/cmtt/m/n/10.95 mask[]aperture[]diameter[]um[]nominal$\OT1/cmr/m/n/10.95 
+=
+ []
+
+
+Overfull \hbox (185.60402pt too wide) in paragraph at lines 56--59
+[]\OT1/cmr/m/n/10.95 Mask reg-is-tra-tion and post-etch ver-i-fi-ca-tion pro-ce
+-dure are spec-i-fied in full in \OT1/cmtt/m/n/10.95 Physics[]Guide/PHYSICS[]AN
+D[]FABRICATION[]GUIDE.tex
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--69
+
+ []
+
+<figures/GazeWeighted_M0_square_pitch4000_N20_a2000um.png, id=1384, 332.442pt x
+ 332.442pt>
+File: figures/GazeWeighted_M0_square_pitch4000_N20_a2000um.png Graphic file (ty
+pe png)
+<use figures/GazeWeighted_M0_square_pitch4000_N20_a2000um.png>
+Package pdftex.def Info: figures/GazeWeighted_M0_square_pitch4000_N20_a2000um.p
+ng  used on input line 80.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_M1_hexagonal_pitch4000_N20_a1250um.png, id=1385, 332.442p
+t x 332.442pt>
+File: figures/GazeWeighted_M1_hexagonal_pitch4000_N20_a1250um.png Graphic file 
+(type png)
+<use figures/GazeWeighted_M1_hexagonal_pitch4000_N20_a1250um.png>
+Package pdftex.def Info: figures/GazeWeighted_M1_hexagonal_pitch4000_N20_a1250u
+m.png  used on input line 81.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_M2-3_hexagonal_pitch4000_N20_a750um.png, id=1386, 332.442
+pt x 332.442pt>
+File: figures/GazeWeighted_M2-3_hexagonal_pitch4000_N20_a750um.png Graphic file
+ (type png)
+<use figures/GazeWeighted_M2-3_hexagonal_pitch4000_N20_a750um.png>
+Package pdftex.def Info: figures/GazeWeighted_M2-3_hexagonal_pitch4000_N20_a750
+um.png  used on input line 82.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_M4-5_hexagonal_pitch4000_N20_a600um.png, id=1387, 332.442
+pt x 332.442pt>
+File: figures/GazeWeighted_M4-5_hexagonal_pitch4000_N20_a600um.png Graphic file
+ (type png)
+<use figures/GazeWeighted_M4-5_hexagonal_pitch4000_N20_a600um.png>
+Package pdftex.def Info: figures/GazeWeighted_M4-5_hexagonal_pitch4000_N20_a600
+um.png  used on input line 85.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_M6_hexagonal_pitch4000_N100_a500um.png, id=1388, 332.442p
+t x 332.442pt>
+File: figures/GazeWeighted_M6_hexagonal_pitch4000_N100_a500um.png Graphic file 
+(type png)
+<use figures/GazeWeighted_M6_hexagonal_pitch4000_N100_a500um.png>
+Package pdftex.def Info: figures/GazeWeighted_M6_hexagonal_pitch4000_N100_a500u
+m.png  used on input line 86.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_M8_hexagonal_pitch4000_N50_a400um.png, id=1389, 332.442pt
+ x 332.442pt>
+File: figures/GazeWeighted_M8_hexagonal_pitch4000_N50_a400um.png Graphic file (
+type png)
+<use figures/GazeWeighted_M8_hexagonal_pitch4000_N50_a400um.png>
+Package pdftex.def Info: figures/GazeWeighted_M8_hexagonal_pitch4000_N50_a400um
+.png  used on input line 87.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/GazeWeighted_Global_square_pitch4000_N20_a2000um.png, id=1390, 332.442
+pt x 332.442pt>
+File: figures/GazeWeighted_Global_square_pitch4000_N20_a2000um.png Graphic file
+ (type png)
+<use figures/GazeWeighted_Global_square_pitch4000_N20_a2000um.png>
+Package pdftex.def Info: figures/GazeWeighted_Global_square_pitch4000_N20_a2000
+um.png  used on input line 90.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 96--96
+\OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]lab/Design Visualisation/png
+s[]for[]presentation/
+ []
+
+<figures/WorstCase_M0_ringOffsetConcentric_rs1000_N11_a2000um.png, id=1391, 332
+.442pt x 332.442pt>
+File: figures/WorstCase_M0_ringOffsetConcentric_rs1000_N11_a2000um.png Graphic 
+file (type png)
+<use figures/WorstCase_M0_ringOffsetConcentric_rs1000_N11_a2000um.png>
+Package pdftex.def Info: figures/WorstCase_M0_ringOffsetConcentric_rs1000_N11_a
+2000um.png  used on input line 102.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_M1_square_pitch2000_N20_a1250um.png, id=1392, 332.442pt x 33
+2.442pt>
+File: figures/WorstCase_M1_square_pitch2000_N20_a1250um.png Graphic file (type 
+png)
+<use figures/WorstCase_M1_square_pitch2000_N20_a1250um.png>
+Package pdftex.def Info: figures/WorstCase_M1_square_pitch2000_N20_a1250um.png 
+ used on input line 103.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_M2-3_ringOffsetConcentric_rs4000_N20_a750um.png, id=1393, 33
+2.442pt x 332.442pt>
+File: figures/WorstCase_M2-3_ringOffsetConcentric_rs4000_N20_a750um.png Graphic
+ file (type png)
+<use figures/WorstCase_M2-3_ringOffsetConcentric_rs4000_N20_a750um.png>
+Package pdftex.def Info: figures/WorstCase_M2-3_ringOffsetConcentric_rs4000_N20
+_a750um.png  used on input line 104.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_M4-5_ringOffsetConcentric_rs4000_N20_a600um.png, id=1394, 33
+2.442pt x 332.442pt>
+File: figures/WorstCase_M4-5_ringOffsetConcentric_rs4000_N20_a600um.png Graphic
+ file (type png)
+<use figures/WorstCase_M4-5_ringOffsetConcentric_rs4000_N20_a600um.png>
+Package pdftex.def Info: figures/WorstCase_M4-5_ringOffsetConcentric_rs4000_N20
+_a600um.png  used on input line 107.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_M6_ringOffsetConcentric_rs4000_N20_a500um.png, id=1395, 332.
+442pt x 332.442pt>
+File: figures/WorstCase_M6_ringOffsetConcentric_rs4000_N20_a500um.png Graphic f
+ile (type png)
+<use figures/WorstCase_M6_ringOffsetConcentric_rs4000_N20_a500um.png>
+Package pdftex.def Info: figures/WorstCase_M6_ringOffsetConcentric_rs4000_N20_a
+500um.png  used on input line 108.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_M8_ringOffsetConcentric_rs4000_N20_a400um.png, id=1396, 332.
+442pt x 332.442pt>
+File: figures/WorstCase_M8_ringOffsetConcentric_rs4000_N20_a400um.png Graphic f
+ile (type png)
+<use figures/WorstCase_M8_ringOffsetConcentric_rs4000_N20_a400um.png>
+Package pdftex.def Info: figures/WorstCase_M8_ringOffsetConcentric_rs4000_N20_a
+400um.png  used on input line 109.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+<figures/WorstCase_Global_hexagonal_pitch2000_rot30_N7_a2000um.png, id=1397, 33
+2.442pt x 332.442pt>
+File: figures/WorstCase_Global_hexagonal_pitch2000_rot30_N7_a2000um.png Graphic
+ file (type png)
+<use figures/WorstCase_Global_hexagonal_pitch2000_rot30_N7_a2000um.png>
+Package pdftex.def Info: figures/WorstCase_Global_hexagonal_pitch2000_rot30_N7_
+a2000um.png  used on input line 112.
+(pdftex.def)             Requested size: 144.95303pt x 144.95096pt.
+
+Overfull \hbox (3.62013pt too wide) in paragraph at lines 124--131
+\OT1/cmr/m/n/10.95 pro-duce, at straight-ahead gaze, was com-puted di-rectly fr
+om \OT1/cmtt/m/n/10.95 stage2[]fixed/phase2[]retina.py\OT1/cmr/m/n/10.95 's
+ []
+
+File: figures/realistic_heatmap_M0.png Graphic file (type png)
+<use figures/realistic_heatmap_M0.png>
+Package pdftex.def Info: figures/realistic_heatmap_M0.png  used on input line 1
+34.
+(pdftex.def)             Requested size: 135.89174pt x 127.4007pt.
+File: figures/realistic_heatmap_M4.png Graphic file (type png)
+<use figures/realistic_heatmap_M4.png>
+Package pdftex.def Info: figures/realistic_heatmap_M4.png  used on input line 1
+35.
+(pdftex.def)             Requested size: 135.89174pt x 127.4007pt.
+File: figures/realistic_heatmap_M8.png Graphic file (type png)
+<use figures/realistic_heatmap_M8.png>
+Package pdftex.def Info: figures/realistic_heatmap_M8.png  used on input line 1
+36.
+(pdftex.def)             Requested size: 135.89174pt x 127.4007pt.
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 164.
+[49] [50 <./figures/GazeWeighted_M0_square_pitch4000_N20_a2000um.png> <./figure
+s/GazeWeighted_M1_hexagonal_pitch4000_N20_a1250um.png> <./figures/GazeWeighted_
+M2-3_hexagonal_pitch4000_N20_a750um.png> <./figures/GazeWeighted_M4-5_hexagonal
+_pitch4000_N20_a600um.png> <./figures/GazeWeighted_M6_hexagonal_pitch4000_N100_
+a500um.png> <./figures/GazeWeighted_M8_hexagonal_pitch4000_N50_a400um.png> <./f
+igures/GazeWeighted_Global_square_pitch4000_N20_a2000um.png>] [51 <./figures/Wo
+rstCase_M0_ringOffsetConcentric_rs1000_N11_a2000um.png> <./figures/WorstCase_M1
+_square_pitch2000_N20_a1250um.png> <./figures/WorstCase_M2-3_ringOffsetConcentr
+ic_rs4000_N20_a750um.png> <./figures/WorstCase_M4-5_ringOffsetConcentric_rs4000
+_N20_a600um.png> <./figures/WorstCase_M6_ringOffsetConcentric_rs4000_N20_a500um
+.png> <./figures/WorstCase_M8_ringOffsetConcentric_rs4000_N20_a400um.png> <./fi
+gures/WorstCase_Global_hexagonal_pitch2000_rot30_N7_a2000um.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 182--183
+
+ []
+
+) (./sections/08b_model_comparison.tex [52]
+Chapter 9.
+
+Overfull \hbox (103.43013pt too wide) in paragraph at lines 6--8
+\OT1/cmr/m/n/10.95 Source: \OT1/cmtt/m/n/10.95 Array[]Design/array[]geometry[]l
+ab/predicted[]logmar[]analysis/predicted[]logmar[]wide[]by[]model.csv\OT1/cmr/m
+/n/10.95 ,
+ []
+
+<figures/flatness_prediction.png, id=1453, 505.89pt x 332.442pt>
+File: figures/flatness_prediction.png Graphic file (type png)
+<use figures/flatness_prediction.png>
+Package pdftex.def Info: figures/flatness_prediction.png  used on input line 36
+.
+(pdftex.def)             Requested size: 339.72592pt x 223.25238pt.
+[53
+
+]
+Overfull \hbox (14.39455pt too wide) in paragraph at lines 72--84
+\OT1/cmr/m/n/10.95 own anal-y-sis (\OT1/cmtt/m/n/10.95 predicted[]logmar[]analy
+sis/wang2009[]calibration[]pooled[]stats[]postfix.csv\OT1/cmr/m/n/10.95 ,
+ []
+
+
+Overfull \hbox (13.53166pt too wide) in paragraph at lines 87--103
+ [][] 
+ []
+
+[54 <./figures/flatness_prediction.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 117--118
+
+ []
+
+<figures/wang2009_deviation.png, id=1471, 505.89pt x 332.442pt>
+File: figures/wang2009_deviation.png Graphic file (type png)
+<use figures/wang2009_deviation.png>
+Package pdftex.def Info: figures/wang2009_deviation.png  used on input line 121
+.
+(pdftex.def)             Requested size: 339.72592pt x 223.25238pt.
+[55 <./figures/wang2009_deviation.png>]
+Overfull \hbox (45.41238pt too wide) in paragraph at lines 143--152
+\OT1/cmr/m/n/10.95 an-chor was al-ready present in this project's own vet-ted l
+it-er-a-ture (\OT1/cmtt/m/n/10.95 stage4[]human[]vision/literature.py\OT1/cmr/m
+/n/10.95 ,
+ []
+
+) (./sections/09_errors.tex [56]
+Chapter 10.
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+[57
+
+]
+Overfull \hbox (103.0264pt too wide) in paragraph at lines 60--65
+[]\OT1/cmr/bx/n/10.95 The fix. \OT1/cmtt/m/n/10.95 pipeline.py\OT1/cmr/m/n/10.9
+5 's \OT1/cmtt/m/n/10.95 sys.path \OT1/cmr/m/n/10.95 in-ser-tion was re-pointed
+ at \OT1/cmtt/m/n/10.95 stage2[]fixed/\OT1/cmr/m/n/10.95 ; \OT1/cmtt/m/n/10.95 
+stage3[]human[]vision/metrics.py
+ []
+
+
+Overfull \hbox (105.20854pt too wide) in paragraph at lines 60--65
+\OT1/cmr/m/n/10.95 had the iden-ti-cal de-fect and was fixed the same way. Ver-
+i-fied be-fore fix-ing (\OT1/cmtt/m/n/10.95 sys.modules['phase2[]retina'].[][]f
+ile[][]\OT1/cmr/m/n/10.95 )
+ []
+
+
+Overfull \hbox (21.93105pt too wide) in paragraph at lines 60--65
+\OT1/cmr/m/n/10.95 that the shad-ow-ing re-pro-duced, and af-ter fix-ing that i
+t re-solves to \OT1/cmtt/m/n/10.95 stage2[]fixed/phase2[]retina.py\OT1/cmr/m/n/
+10.95 . 
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 110.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 110.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 110.
+
+
+Overfull \hbox (19.95833pt too wide) in paragraph at lines 112--120
+\OT1/cmr/m/n/10.95 resolution ar-ti-fact (Sec-tion [][]2.7[][]). \OT1/cmtt/m/n/
+10.95 run[]blur[]sweep.py \OT1/cmr/m/n/10.95 was fixed on 2026-08-16; \OT1/cmtt
+/m/n/10.95 run[]acuity[]sweep.py
+ []
+
+[58]) (./sections/10_discussion.tex [59]
+Chapter 11.
+) (./sections/11_limitations.tex [60
+
+]
+Chapter 12.
+
+Overfull \hbox (9.18706pt too wide) in paragraph at lines 43--54
+\OT1/cmr/m/n/10.95 overlap cri-te-rion (Sec-tion [][]5.5[][]), not the Barten-C
+SF three-regime cri-te-rion di-rectly. []\OT1/cmr/bx/n/10.95 [NEEDS
+ []
+
+[61
+
+]
+Overfull \hbox (84.52881pt too wide) in paragraph at lines 54--65
+\OT1/cmr/m/n/10.95 cal-cu-la-tion (though a sep-a-rate Stiles--Crawford term is
+ ap-plied else-where, in \OT1/cmtt/m/n/10.95 stage4[]human[]vision/csf.py\OT1/c
+mr/m/n/10.95 's
+ []
+
+
+Overfull \hbox (0.15991pt too wide) in paragraph at lines 54--65
+\OT1/cmr/m/n/10.95 own retinal-illuminance cal-cu-la-tion); no lon-gi-tu-di-nal
+ chro-matic aber-ra-tion (one fixed wave-
+ []
+
+
+Overfull \hbox (97.54694pt too wide) in paragraph at lines 54--65
+\OT1/cmr/m/n/10.95 membrane-thickness diffrac-tion or oblique-angle vi-gnetting
+ ef-fects (source: \OT1/cmtt/m/n/10.95 stage2[]fixed/phase2[]retina.py\OT1/cmr/
+m/n/10.95 's
+ []
+
+) (./sections/12_future_work.tex [62]
+Chapter 13.
+
+Overfull \hbox (199.93681pt too wide) in paragraph at lines 7--13
+[]\OT1/cmr/bx/n/10.95 Execute the single-pinhole Log-MAR acu-ity pro-to-col \OT
+1/cmr/m/n/10.95 al-ready spec-i-fied in full (\OT1/cmtt/m/n/10.95 Physics[]Guid
+e/LOGMAR[]ACUITY[]PROTOCOL.tex\OT1/cmr/m/n/10.95 ,
+ []
+
+) (./sections/13_provenance.tex [63
+
+]
+Chapter 14.
+
+Overfull \hbox (16.13252pt too wide) in alignment at lines 10--14
+ [] [] [] [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--15
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 18--18
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--21
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Overfull \hbox (154.38016pt too wide) in paragraph at lines 22--22
+[]|\OT1/cmtt/m/n/9 stage4[]human[]vision/outputs/wang2009[]validation[]postfix[
+]predicted.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 22--22
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Overfull \hbox (135.48038pt too wide) in paragraph at lines 23--23
+[]|\OT1/cmtt/m/n/9 stage4[]human[]vision/outputs/wang2009[]validation[]postfix[
+]stats.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--23
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Overfull \hbox (130.75543pt too wide) in paragraph at lines 24--24
+[]|\OT1/cmtt/m/n/9 stage4[]human[]vision/outputs/validation[]predicted[]vs[]obs
+erved.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 24--24
+[]|\OT1/cmr/m/n/9 Jul 29, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--25
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 26--26
+[]|\OT1/cmr/m/n/9 Aug 16, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--27
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (5.82791pt too wide) in paragraph at lines 28--28
+[]|\OT1/cmtt/m/n/9 new[]sweeps/table1[]optimum[]summary.csv| 
+ []
+
+
+Overfull \hbox (102.40576pt too wide) in paragraph at lines 29--29
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/FINAL[]WINNER[]PER[]M.
+csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--29
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (111.85565pt too wide) in paragraph at lines 30--30
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/PRIMARY[]WINNER[]PER[]
+M.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--30
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (138.88232pt too wide) in paragraph at lines 31--31
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/gaze[]weighted[]winner
+[]per[]M.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 31--31
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (134.15738pt too wide) in paragraph at lines 32--32
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/metric1[]max[]density[
+]per[]M.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 32--32
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (86.15198pt too wide) in paragraph at lines 33--33
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/family[]ranking.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--33
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (59.1253pt too wide) in paragraph at lines 34--34
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/TIMELINE.txt| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 34--34
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (29.45264pt too wide) in paragraph at lines 35--35
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../GAZE[]WEIGHTED[]APPROACH.md| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--35
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (108.4537pt too wide) in paragraph at lines 36--36
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../theoretical[]data/gaze[]weighted[]metrics.
+csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--36
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+[]|\OT1/cmr/m/n/9 Full per-candidate gaze-weighted
+ []
+
+
+Overfull \hbox (155.70316pt too wide) in paragraph at lines 37--37
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../evaluation[]results/CENTERED[]CONCENTRIC[]
+COMPARISON.md| 
+ []
+
+
+Overfull \hbox (114.50165pt too wide) in paragraph at lines 38--38
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../fabrication[]package/fabrication[]summary.
+csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (128.67648pt too wide) in paragraph at lines 39--39
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]calculation/engine/vignetting[]over
+lap.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 39--40
+[]|\OT1/cmr/m/n/9 Overlap-area for-mula, boundary-
+ []
+
+
+Overfull \hbox (105.05176pt too wide) in paragraph at lines 40--40
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]calculation/engine/ghost[]formula.p
+y| 
+ []
+
+
+Overfull \hbox (114.50165pt too wide) in paragraph at lines 42--42
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]evaluation/comparison[]metric/gates
+.py| 
+ []
+
+
+Overfull \hbox (105.05176pt too wide) in paragraph at lines 43--43
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]calculation/margins/active[]pairs.p
+y| 
+ []
+
+
+Overfull \hbox (147.57626pt too wide) in paragraph at lines 44--44
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]calculation/margins/vignetting[]rob
+ustness.py| 
+ []
+
+
+Overfull \hbox (144.93027pt too wide) in paragraph at lines 45--45
+[]|\OT1/cmtt/m/n/9 Array[]Design/.../array[]calculation/compute[]gaze[]weighted
+[]metrics.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--47
+[]|\OT1/cmr/m/n/9 Aug 14, 2026
+ []
+
+
+Overfull \hbox (62.52725pt too wide) in paragraph at lines 48--48
+[]|\OT1/cmtt/m/n/9 Array[]Design/ghosting/ghosting[]sweep[]harmonic.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 48--48
+[]|\OT1/cmr/m/n/9 Jul 29, 2026
+ []
+
+
+Overfull \hbox (51.75436pt too wide) in paragraph at lines 49--49
+[]|\OT1/cmtt/m/n/9 Physics[]Guide/PHYSICS[]AND[]FABRICATION[]GUIDE.tex| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 50--50
+[]|\OT1/cmr/m/n/9 Sep 11, 2026
+ []
+
+
+Overfull \hbox (20.00275pt too wide) in paragraph at lines 51--51
+[]|\OT1/cmtt/m/n/9 Physics[]Guide/LOGMAR[]ACUITY[]PROTOCOL.tex| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 51--51
+[]|\OT1/cmr/m/n/9 Sep 11, 2026
+ []
+
+
+Overfull \hbox (190.10077pt too wide) in paragraph at lines 52--52
+[]|\OT1/cmtt/m/n/9 ExperimentalComparison/ExP1[]clarity[]analysis/measurements/
+brisque[]scores.csv| 
+ []
+
+
+Overfull \hbox (212.4025pt too wide) in paragraph at lines 53--53
+[]|\OT1/cmtt/m/n/9 ExperimentalComparison/ExP3[]frosted[]screen/measurements/al
+l[]spot[]measurements.csv| 
+ []
+
+
+Overfull \hbox (102.40576pt too wide) in paragraph at lines 54--54
+[]|\OT1/cmtt/m/n/9 Array[]Design/array[]geometry[]lab/predicted[]logmar[]analys
+is/
+ []
+
+
+Overfull \hbox (7.15091pt too wide) in paragraph at lines 55--55
+[]|\OT1/cmtt/m/n/9 Array[]Design/legacy[]archive/README.md| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--55
+[]|\OT1/cmr/m/n/9 Sep 17, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--55
+[]|\OT1/cmr/m/n/9 Ground
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+[]|\OT1/cmr/m/n/9 Aug 16, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--59
+[]|\OT1/cmr/m/n/9 Aug 16, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--60
+[]|\OT1/cmr/m/n/9 Aug 16, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--61
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Overfull \hbox (8.4739pt too wide) in paragraph at lines 62--62
+[]|\OT1/cmtt/m/n/9 .../generators/concentric[]centered.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--62
+[]|\OT1/cmr/m/n/9 Aug 17, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--63
+[]|\OT1/cmr/m/n/9 Source of the $1704\OML/cmm/m/it/9 :\OT1/cmr/m/n/9 8 \OML/cmm
+/m/it/9 ^^V$\OT1/cmr/m/n/9 m /
+ []
+
+
+Overfull \hbox (21.32574pt too wide) in paragraph at lines 63--63
+[]|\OT1/cmtt/m/n/9 .../generators/ring[]offset[]concentric.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 63--63
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Overfull \hbox (3.74896pt too wide) in paragraph at lines 64--64
+[]|\OT1/cmtt/m/n/9 .../generators/archimedean[]spiral.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 64--64
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 65--65
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 67--67
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
+[]|\OT1/cmr/m/n/9 Aug 15, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--69
+[]|\OT1/cmr/m/n/9 Aug 16, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]|\OT1/cmtt/m/n/9 new[]sweeps/acuity[]sweep[]stage4.csv
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (53.07736pt too wide) in paragraph at lines 73--73
+[]|\OT1/cmtt/m/n/9 Array[]Design/ghosting/ghosting[]sweep[]barten.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 73--73
+[]|\OT1/cmr/m/n/9 Jul 29, 2026
+ []
+
+
+Underfull \hbox (badness 1521) in paragraph at lines 73--74
+[]|\OT1/cmr/m/n/9 Full Pass-2 Barten-CSF sweep, 36
+ []
+
+
+Overfull \hbox (26.05069pt too wide) in paragraph at lines 74--74
+[]|\OT1/cmtt/m/n/9 .../evaluation[]results/family[]ranking.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 74--74
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (124.70749pt too wide) in paragraph at lines 75--75
+[]|\OT1/cmtt/m/n/9 .../evaluation[]results/effective[]density[]winner[]per[]M[]
+cmin0.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 75--75
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (129.43243pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmtt/m/n/9 .../evaluation[]results/effective[]density[]winner[]per[]M[]
+cmin55.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 76--76
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (78.78104pt too wide) in paragraph at lines 77--77
+[]|\OT1/cmtt/m/n/9 .../evaluation[]results/metric2[]pareto[]front[]per[]M.csv| 
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 77--77
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Overfull \hbox (44.95047pt too wide) in paragraph at lines 78--78
+[]|\OT1/cmtt/m/n/9 array[]evaluation/comparison[]metric/metrics.py| 
+ []
+
+
+Overfull \hbox (21.32574pt too wide) in paragraph at lines 79--79
+[]|\OT1/cmtt/m/n/9 Array[]Design/ghosting/ghosting[]sweep.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 79--79
+[]|\OT1/cmr/m/n/9 Jul 29, 2026
+ []
+
+
+Overfull \hbox (62.52725pt too wide) in paragraph at lines 80--80
+[]|\OT1/cmtt/m/n/9 Array[]Design/ghosting/ghosting[]sweep[]harmonic.csv| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 80--80
+[]|\OT1/cmr/m/n/9 Jul 29, 2026
+ []
+
+
+Overfull \hbox (147.37631pt too wide) in paragraph at lines 83--83
+[]|\OT1/cmtt/m/n/9 .../hole[]coordinates/hole[]coordinates[]M\OMS/cmtt/m/n/9 f\
+OT1/cmtt/m/n/9 0,1,2,3,4,5,6,8,global\OMS/cmtt/m/n/9 g\OT1/cmtt/m/n/9 .csv
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 83--83
+[]|\OT1/cmr/m/n/9 Sep 13, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 84--84
+[]|\OT1/cmtt/m/n/9 Array[]Design/ghosting/THEORY.md
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 84--84
+[]|\OT1/cmr/m/n/9 Aug 14, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--85
+[]|\OT1/cmr/m/n/9 Aug 6, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--85
+[]|\OT1/cmr/m/n/9 Code
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--85
+\OT1/cmr/m/n/9 App.,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 85--86
+[]|\OT1/cmtt/m/n/9 asm[]transfer[]function\OT1/cmr/m/n/9 ,
+ []
+
+
+Underfull \hbox (badness 4429) in paragraph at lines 85--86
+\OT1/cmtt/m/n/9 asm[]propagate \OT1/cmr/m/n/9 -- the lit-eral code
+ []
+
+
+Overfull \hbox (1.10297pt too wide) in paragraph at lines 86--86
+[]|\OT1/cmtt/m/n/9 stage4[]human[]vision/visual[]strehl.py| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
+[]|\OT1/cmr/m/n/9 Jul 28, 2026
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 86--86
+[]|\OT1/cmr/m/n/9 Code
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
+[]\OT1/cmr/m/n/9 Table 14.1: Data prove-nance ta-ble.
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
+\OT1/cmr/m/n/9 Paths ab-bre-vi-ated \OT1/cmtt/m/n/9 Array[]Design/.../ \OT1/cmr
+/m/n/9 for
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--90
+\OT1/cmtt/m/n/9 Array[]Design/array[]geometry[]lab/array[]data/evaluation[]resu
+lts/
+ []
+
+
+Overfull \hbox (16.13252pt too wide) in alignment at lines 14--91
+ [] [] [] [] 
+ []
+
+
+ignored: Infinite glue shrinkage found in box being split [64
+
+]
+ignored: Infinite glue shrinkage found in box being split [65]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 96.
+
+Overfull \hbox (11.62726pt too wide) in paragraph at lines 105--109
+[]\OT1/cmtt/m/n/9 validation[]predicted[]vs[]observed.csv \OT1/cmr/bx/n/9 (Jul 
+29) vs. \OT1/cmtt/m/n/9 wang2009[]validation[]postfix[]predicted.csv \OT1/cmr/b
+x/n/9 (Aug
+ []
+
+) (./sections/14_code_appendix.tex [66]
+Chapter 15.
+[67
+
+] [68]
+Overfull \hbox (34.96619pt too wide) in paragraph at lines 140--143
+\OT1/cmr/m/n/9 This is the lit-eral code be-hind Equa-tion [][]2.7[][] and the 
+energy-accounting key-box of Sec-tion [][]2.6[][]: \OT1/cmtt/m/n/9 fraction[]en
+ergy[]suppressed
+ []
+
+[69]
+Overfull \hbox (9.07324pt too wide) in paragraph at lines 193--193
+[]\OT1/cmr/bx/n/14.4 Concentric-centered: the recenter-before-prepend fix (Sec-
+
+ []
+
+[70]) (./sections/15_quick_reference.tex [71]
+Chapter 16.
+
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
+[]|\OT1/cmr/m/n/9 deprecated
+ []
+
+
+Underfull \hbox (badness 3240) in paragraph at lines 32--33
+[]|\OT1/cmr/m/n/9 deprecated, 64.8%
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+[]|\OT1/cmr/m/n/9 live, harmonic-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
+\OT1/cmr/m/n/9 extended
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 49--49
+[]|\OT1/cmr/m/n/9 13--14mm
+ []
+
+
+Overfull \hbox (17.75426pt too wide) in paragraph at lines 56--56
+[]|\OT1/cmr/m/n/9 0.060LogMAR/decade| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 58--58
+[]|\OT1/cmr/m/n/9 Active-hole frac-tion
+ []
+
+
+ignored: Infinite glue shrinkage found in box being split [72
+
+]) (./sections/16_full_acuity_table.tex [73]
+Chapter 17.
+
+ignored: Infinite glue shrinkage found in box being split [74
+
+]
+ignored: Infinite glue shrinkage found in box being split [75]) (./sections/17_full_bar
+ten_table.tex [76]
+Chapter 18.
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--6
+[]\OT1/cmr/m/n/9 Table 18.1: Full 36-point Barten-CSF ghosting-regime
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--6
+\OT1/cmr/m/n/9 sweep (4 aper-tures x 9 pitches, M=4D, ver-ba-tim from
+ []
+
+
+ignored: Infinite glue shrinkage found in box being split [77
+
+]) (./sections/18_additional_full_tables.tex [78]
+Chapter 19.
+
+Overfull \hbox (4.23326pt too wide) in paragraph at lines 40--48
+\OT1/cmr/m/n/9 Source: \OT1/cmtt/m/n/9 effective[]density[]winner[]per[]M[]cmin
+0.csv \OT1/cmr/m/n/9 and \OT1/cmtt/m/n/9 ...[]cmin55.csv \OT1/cmr/m/n/9 (mtime 
+2026-09-13 01:01, both). Ranks
+ []
+
+[79
+
+]) (./sections/19_ghosting_passes_1_3.tex
+Overfull \hbox (34.7124pt too wide) in paragraph at lines 104--1
+[]\OT1/cmtt/m/n/9 binding[]margin \OT1/cmr/m/n/9 is de-fined as $[]([]\OML/cmm/
+m/it/9 ; []\OT1/cmr/m/n/9 )$ per can-di-date (\OT1/cmtt/m/n/9 metrics.py\OT1/cm
+r/m/n/9 ,
+ []
+
+[80]
+Chapter 20.
+
+ignored: Infinite glue shrinkage found in box being split [81
+
+]
+Underfull \hbox (badness 1460) in paragraph at lines 53--53
+\OT1/cmr/m/n/9 from \OT1/cmtt/m/n/9 Array[]Design/ghosting/ghosting[]sweep[]har
+monic.csv \OT1/cmr/m/n/9 (mtime
+ []
+
+) (./sections/20_full_hole_coordinates.tex [82]
+Chapter 21.
+
+Overfull \hbox (198.7131pt too wide) in paragraph at lines 3--5
+\OT1/cmr/m/n/9 Every hole cen-ter co-or-di-nate ac-tu-ally cut into ev-ery fab-
+ri-cated mask, ver-ba-tim from \OT1/cmtt/m/n/9 Array[]Design/array[]geometry[]l
+ab/fabrication[]package/hole[]coordinates/
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 6.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 6.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--8
+[]\OT1/cmr/m/n/9 Table 21.1: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 0$D, from
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 36.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 36.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+[]\OT1/cmr/m/n/9 Table 21.2: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 1$D, from
+ []
+
+[83
+
+]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 66.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 66.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 68--68
+[]\OT1/cmr/m/n/9 Table 21.3: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 2$D, from
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 96.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 96.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 98--98
+[]\OT1/cmr/m/n/9 Table 21.4: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 3$D, from
+ []
+
+[84]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 126.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 126.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--128
+[]\OT1/cmr/m/n/9 Table 21.5: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 4$D, from
+ []
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 156.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 156.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 158--158
+[]\OT1/cmr/m/n/9 Table 21.6: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 5$D, from
+ []
+
+[85]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 186.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 186.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 188--188
+[]\OT1/cmr/m/n/9 Table 21.7: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 6$D, from
+ []
+
+
+ignored: Infinite glue shrinkage found in box being split [86]
+ignored: Infinite glue shrinkage fo
+und in box being split [87]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 296.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 296.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 298--298
+[]\OT1/cmr/m/n/9 Table 21.8: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = 8$D, from
+ []
+
+
+ignored: Infinite glue shrinkage found in box being split [88]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 356.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 356.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 358--358
+[]\OT1/cmr/m/n/9 Table 21.9: Hole co-or-di-nates, $\OML/cmm/m/it/9 M \OT1/cmr/m
+/n/9 = \OML/cmm/m/it/9 global$\OT1/cmr/m/n/9 D, from
+ []
+
+) (./main.bbl [89]) [90
+
+] (./main.aux)
+ ***********
+LaTeX2e <2025-11-01>
+L3 programming layer <2026-01-19>
+ ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 7304B97C58E529055FB7872F7D8CD6C5;34000.
+ ) 
+Here is how much of TeX's memory you used:
+ 14468 strings out of 469006
+ 227440 string characters out of 5454813
+ 964646 words of memory out of 5000000
+ 42421 multiletter control sequences out of 15000+600000
+ 646371 words of font info for 112 fonts, out of 8000000 for 9000
+ 319 hyphenation exceptions out of 8191
+ 75i,16n,79p,1677b,1975s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </Users/parikshitnarang/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/
+jknappen/ec/tcrm0900.600pk> </Users/parikshitnarang/Library/texlive/2026basic/t
+exmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></usr/local/texlive/2026bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/202
+6basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive
+/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texl
+ive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/t
+exlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/l
+ocal/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></u
+sr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex9
+.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmmi12.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmi5.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmmi6.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2026basic/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2026basic/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026basic/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026basic/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026basic/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2026basic/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026basic/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2026bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/202
+6basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/
+2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texl
+ive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/t
+exlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></us
+r/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10
+.pfb>
+Output written on main.pdf (92 pages, 3388896 bytes).
+PDF statistics:
+ 2256 PDF objects out of 2487 (max. 8388607)
+ 1995 compressed objects within 20 object streams
+ 503 named destinations out of 1000 (max. 500000)
+ 1261 words of extra memory for PDF output out of 10000 (max. 10000000)
+

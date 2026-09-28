@@ -1,0 +1,88 @@
+CORRECTIONS AND NEW DATA -- predicted_logmar_analysis/
+=========================================================
+Filed 2026-09-28. This file exists so the error made in this analysis, and the
+new dataset added to it, stay permanently marked and are not silently
+re-absorbed into "just the numbers" later.
+
+-----------------------------------------------------------------------------
+[WARNING] ERROR MADE AND CORRECTED IN THIS ANALYSIS
+-----------------------------------------------------------------------------
+An earlier pass of this analysis reported R^2/deviation numbers for the Wang
+(2009) real-clinical-data validation by reading
+stage4_human_vision/outputs/validation_predicted_vs_observed.csv,
+validation_regression_stats.csv, and calibration_pooled_stats.csv directly.
+
+THOSE FILES WERE STALE. They predate (2026-07-29) a real optics fix
+(2026-08-06, stage2/ -> stage2_fixed/ import-shadowing bug, documented in
+stage4_human_vision/RESULTS.md) by 8 days. Confirmed by direct re-run: same
+inputs, current code, gave a materially different result (aperture=750um,
+M=2D: 0.076 logMAR now vs. 1.010 logMAR in the stale file -- a ~0.93 logMAR
+difference, far beyond rounding).
+
+Numbers that were WRONG in the first version delivered to the user:
+    R^2 (raw model):        reported -6.68 to -3.38   -> CORRECT value: -4.80 to -0.68
+    R^2 (calibrated, in-sample):  reported +0.124 to +0.148 -> CORRECT value: ~+0.0003 (pooled)
+    R^2 (calibrated, leave-one-out): reported -0.566   -> CORRECT value: -0.307
+
+What was NOT wrong: the array-relevant 3-point deviation claims (aperture
+500/750um, model optimistic by 0.02-0.23 logMAR) -- those were computed from
+new_sweeps/acuity_sweep_stage4.csv, which was already current (built
+2026-09-13, after the optics fix). Only the R^2/calibration figures, sourced
+from the older stage4_human_vision/outputs/ files, were stale.
+
+See stage4_human_vision/outputs/STALE_DATA_WARNING.txt for the full root-cause
+writeup. A corrected re-run already existed
+(wang2009_validation_postfix_predicted.csv/_stats.csv, dated 2026-08-06) but
+its calibration step had never been re-applied -- that gap is closed by
+wang2009_calibration_pooled_stats_postfix.csv in this folder, computed
+2026-09-28 using calibration.py's own unmodified fitting code.
+
+Corrected files delivered to replace the wrong ones:
+    predicted_logmar_per_array_model.csv / .xlsx   (R^2 sheet now sources
+                                                     the postfix files)
+    Model_vs_Reality_Deviation_Report.pdf          (built entirely from
+                                                     corrected data, Section 2
+                                                     of that PDF documents this
+                                                     same correction)
+
+-----------------------------------------------------------------------------
+[NEW DATASET] Kim et al. (2017) -- added to this analysis for the first time
+-----------------------------------------------------------------------------
+Kim WS, Park IK, Park YK, Chun YS (2017). "Comparison of Objective and
+Subjective Changes Induced by Multiple-Pinhole Glasses and Single-Pinhole
+Glasses." J Korean Med Sci 32(5):850-857. DOI: 10.3346/jkms.2017.32.5.850.
+
+Already existed, already vetted, in stage4_human_vision/literature.py under
+the key 'single_pinhole_kim_2017', flagged "USABLE as one additional real
+(aperture, approx-M, acuity) data point" -- but had never actually been run
+through the model before 2026-09-28.
+
+Data used: single-pinhole spectacles, 0.9mm (900um) aperture, N=36 subjects,
+mean spherical equivalent -2.7+/-2.3D (range -6.0 to +0.75D, group mean/SD,
+NOT per-subject), mean uncorrected LogMAR with pinhole = 0.20 +/- 0.21.
+
+Model prediction at a=900um, M=2.7D: LogMAR = 0.2770.
+Deviation from observed: +0.077 logMAR (model PESSIMISTIC here -- the
+OPPOSITE direction from the 500/750um array-relevant points, and within 1 SD
+of the real data's own spread). This is the key honest finding this anchor
+adds: the model's error is not a single universal offset: it flips sign
+across the aperture/M range tested.
+
+Literature.py's own fidelity note for this entry should be read alongside
+this file -- it already documents the correct caveats (group-mean M and
+acuity, not per-subject; single aperture only, no sweep).
+
+-----------------------------------------------------------------------------
+[SEARCHED, NOT USABLE] For completeness
+-----------------------------------------------------------------------------
+A live web search for additional real pinhole-aperture-vs-acuity datasets
+reproduced the exact fabricated claim ("0.17 LogMAR at 5.5D, 1.16 LogMAR at
+7-11D") already investigated and marked REJECTED in this project's own
+literature.py (key 'pinhole_neuroquantology_2022_REJECTED') -- confirms that
+claim is not real and that AI search summaries on this specific topic are not
+reliable without independently reading the primary source.
+
+Also found: Kim WS et al. (2014), IOVS 55:6679-6685 (verified via PubMed
+abstract) -- real, N=48, but the exact pinhole aperture diameter used could
+not be verified (full text paywalled) -- EXCLUDED from any aperture-indexed
+chart for that reason, not guessed at.

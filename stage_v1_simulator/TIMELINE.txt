@@ -1,0 +1,50 @@
+TIMELINE -- stage_v1_simulator/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01; no
+commits touch this folder specifically beyond the initial commit).
+
+NOTE ON CONFLICTING DOCUMENTATION, flagged rather than silently resolved:
+this repo's own root-level PROJECT_STATUS.md describes this folder as
+"LISTED... built across sessions, not fully re-verified" and does not
+place it in the stage1->4 pipeline lineage. Direct inspection of this
+folder's own code (below) shows that characterization is out of date --
+this folder is explicitly "Phase B" of the same lineage stage3_integrated/
+calls "Phase A", and directly imports stage2_fixed, stage3_human_vision,
+and stage4_human_vision. Trust this folder's own README/code over the
+older PROJECT_STATUS.md summary.
+
+- 2026-07-27 to 2026-07-29 -- built as "Interactive Wrapper (Phase B)"
+  (its own README's words): a 4-tab Streamlit app wrapping
+  stage3_integrated/'s precomputed theory dataset with live single-point
+  exploration and a qualitative blur-demonstration animation. Explicitly
+  does not modify stage1_v2/, stage2/, stage2_fixed/, stage3a/,
+  stage3_human_vision/, or stage3_integrated/ -- only imports from
+  stage2_fixed and stage3_human_vision (live_compute.py) and reads
+  stage3_integrated/outputs/ (theory_browser.py).
+  Explicitly states: "No 'recommended aperture' output anywhere in this
+  app" -- every tab is exploration/demonstration/precomputed-comparison
+  display, never a recommendation.
+  STATUS: adopted.
+
+- 2026-07-29 (light_acuity.py, latest mtime in this folder) -- added a
+  Light & Acuity tab wiring in stage4_human_vision's pupil/illuminance/
+  CSF/VSOTF/acuity pipeline directly (imports run_stage4_point,
+  load_default_config; reads stage4_human_vision/outputs/
+  stage4_full_sweep.csv, never recomputed live). Surfaces
+  stage4_human_vision's own validation caveat text directly in the UI
+  (sourced from stage4_human_vision/RESULTS.md) rather than restating it
+  separately, "so this caveat can't drift out of sync."
+
+- (companion-app note, added to this folder's README, code untouched) --
+  flags that Tab 1's illuminance readout recomputes stage3a's
+  (a_hole/D_pupil)^2 formula directly instead of calling
+  singleilluminate/illumination_model.py::percent_illumination() --
+  explicitly logged as a known duplication to fix in a future session,
+  not silently left undocumented and not fixed here.
+
+STATUS (current): active, adopted -- not superseded, not abandoned. No
+evidence found of any part of this folder being abandoned; its own
+"Phase B" framing and direct dependence on stage2_fixed/stage3_human_vision/
+stage4_human_vision (via light_acuity.py) place it as the most recently
+built, currently-live front end for the rest of the pipeline's precomputed
+and live results.

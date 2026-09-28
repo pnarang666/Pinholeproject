@@ -1,0 +1,61 @@
+STALE DATA WARNING -- filed 2026-09-28
+=======================================
+
+THE FOLLOWING FILES IN THIS DIRECTORY ARE STALE. DO NOT USE THEM AS CURRENT.
+
+    validation_predicted_vs_observed.csv       (mtime 2026-07-29 16:35)
+    validation_regression_stats.csv            (mtime 2026-07-29 16:35)
+    calibration_source_points.csv              (mtime 2026-07-29 16:23)
+    calibration_per_M_stats.csv                (mtime 2026-07-29 16:23)
+    calibration_pooled_stats.csv                (mtime 2026-07-29 16:23)
+    stage4_full_sweep.csv                       (mtime 2026-07-29 16:32)
+
+WHY THEY ARE STALE
+-------------------
+All six files predate the 2026-08-06 fix to stage4_human_vision/pipeline.py
+(the stage2/ -> stage2_fixed/ import-shadowing bug -- see RESULTS.md's own
+"Re-run against corrected optics" section for the full root-cause writeup).
+Before that fix, pipeline.py silently imported the deprecated, physically
+wrong stage2/phase2_retina.py instead of the corrected stage2_fixed/ version
+-- meaning every number in the six files above was computed against the
+WRONG eye optics.
+
+HOW THIS WAS FOUND (2026-09-28)
+---------------------------------
+While preparing a deviation/R^2 report for the array-design project
+(Array_Design/array_geometry_lab/predicted_logmar_analysis/), the same
+(a_hole_um=750, M=2D) input was independently re-run with CURRENT code and
+gave 0.076 logMAR -- not the 1.010 logMAR recorded in the stale
+validation_predicted_vs_observed.csv. File mtimes confirmed the stale files
+predate the fix by 8 days. This is the SAME category of defect as the
+grid_N=2048 staleness bug already found and fixed elsewhere in this project
+(new_sweeps/run_acuity_sweep.py, 2026-09-12/13) -- a real upstream fix that
+was never propagated to every file that depended on the old behavior.
+
+WHAT TO USE INSTEAD
+---------------------
+    wang2009_validation_postfix_predicted.csv   (correct, dated 2026-08-06)
+    wang2009_validation_postfix_stats.csv       (correct, dated 2026-08-06)
+
+These ARE the corrected post-fix re-run (already existed, already correctly
+dated -- the mistake was a later reader, not the original re-run). Their own
+R^2 values (M=0: -4.80, M=2: -1.41, M=5: -0.68) are the current, correct
+figures -- a real, substantial improvement over the stale files' numbers
+(-6.39, -4.98, -2.84 respectively) but still fails the R^2>0 bar.
+
+ONE GAP THE POSTFIX RE-RUN DID NOT COVER: the affine calibration step
+(fit_linear_calibration / leave_one_out_predictions in calibration.py) was
+never re-applied to the corrected postfix predictions -- RESULTS.md says so
+explicitly ("Section 4c's calibration fit is reported separately below, also
+not re-touched here"). This was done on 2026-09-28 in
+Array_Design/array_geometry_lab/predicted_logmar_analysis/
+wang2009_calibration_pooled_stats_postfix.csv -- pooled in-sample R^2=+0.0003
+(down from the stale file's +0.132 -- that earlier apparent benefit was
+itself partly an artifact of the buggy optics), leave-one-out R^2=-0.307.
+
+DO NOT DELETE THE STALE FILES. They are kept, exactly as this project's own
+RESULTS.md already does, as the documented "before" half of a real, honest
+before/after comparison -- just do not read them as if they were current.
+
+See also: Array_Design/array_geometry_lab/predicted_logmar_analysis/
+CORRECTIONS_AND_NEW_DATA.txt for the full narrative of this finding.

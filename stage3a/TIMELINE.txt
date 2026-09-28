@@ -1,0 +1,59 @@
+TIMELINE -- stage3a/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01; no
+commits touch this folder specifically beyond the initial commit).
+
+- 2026-07-27 -- built as "a quick test, not full Phase 3" (its own
+  README's words): tests ONE cheap hypothesis before building the full
+  stage3_human_vision framework -- does a brightness floor explain the
+  gap between Stage 2's blur-only optimum (300-400um) and the real
+  clinical/commercial range (searched and verified as 0.94-1.75mm,
+  ~1.2mm typical, 0.8-2.0mm broader commercial range)?
+  Key finding: a 6.25-9% brightness floor moves the optimum into the
+  real clinical bracket (900-1250um), confirmed robust across all four
+  tested r_EE percentiles (50/70/80/90%) once the floor binds.
+  Explicitly flagged as an open item, not resolved here: the 6.25-9%
+  figure was reverse-engineered to match the known clinical range, not
+  independently derived from any absolute-brightness literature
+  threshold (that absolute-troland threshold was found later, in a
+  separate Illumination literature review at the repo root, and the two
+  were never reconciled).
+  STATUS: adopted as a first pass; superseded in scope (not deleted) by
+  stage3_integrated/, see below.
+
+- 2026-08-01 (commit 60406cd, "initial commit") -- first git-tracked
+  snapshot.
+
+- date unknown, during stage3_integrated/'s build (see that folder's
+  TIMELINE.txt) -- transmission.py::relative_illuminance() was cross-
+  checked numerically against stage3_human_vision's equivalent function
+  at four test points and found to agree exactly. STANDARDIZED on the
+  stage3_human_vision version going forward.
+  STATUS: transmission.py specifically is RETIRED in favor of
+  stage3_human_vision's version -- "retired... not deleted" (explicit
+  wording in stage3_integrated/README.md). The rest of this folder
+  (combine_and_select.py, its own CSV outputs) is not retired; its
+  optimum-selection LOGIC was instead extended (not replaced) from 4
+  metrics to 10 by stage3_integrated.
+
+- 2026-08-06 (dated via stage2_fixed's own physics audit, see
+  stage2_fixed/TIMELINE.txt item F.3) -- FLAGGED AS STALE: stage2_fixed's
+  post-fix R1 sweep found the underlying blur-only optimum this folder's
+  own 900-1250um clinical-match finding was built on top of had shifted
+  (300-400um -> 500-750um) due to a wavelength-consistency fix upstream.
+  PHYSICS_AUDIT.md explicitly calls out this folder's own "6.25-9%
+  brightness floor" and "900-1250um" numbers as needing re-derivation
+  against the corrected optics -- not yet done as of that audit.
+  STATUS: this folder's headline numeric result is OPEN/UNVERIFIED
+  against corrected optics, not confirmed abandoned, not confirmed still
+  valid.
+
+- multi_EE_sweep.csv.bak sits alongside multi_EE_sweep.csv in this
+  folder -- an in-place backup-before-regeneration, kept rather than
+  deleted; no other information found about exactly when/why it was
+  taken.
+
+STATUS (current): partially superseded (transmission.py only) by
+stage3_human_vision/stage3_integrated; core numeric finding
+(brightness-floor-explains-the-gap) flagged stale, not yet re-verified
+against stage2_fixed's corrected optics.

@@ -1,0 +1,35 @@
+TIMELINE -- Array_Design/ghosting/
+Simple dated log. Full detail in this folder's own RESULTS.md ("Pass 1"-"Pass 4"
+sections). Dates below cross-checked against each pass's own file mtimes.
+
+2026-07-29 -- Pass 1 (heuristic CSF, fundamental frequency only) -- ABANDONED,
+  superseded by Pass 2 -- found no Regime C, for a reason later shown incomplete.
+
+2026-07-29 (same day, later) -- Pass 2 (real Barten 1999 contrast-sensitivity model)
+  -- reason for change: the real CSF model REVERSED Pass 1's result.
+
+2026-07-29 (same day, later still) -- Pass 3 (harmonic series, not just fundamental
+  frequency) -- ABANDONED at the headline-finding level by Pass 4 -- reason: found
+  the fundamental frequency isn't even the most dangerous one, the harmonic series
+  matters more; this pass's own strongest/most-generalizable finding is flagged in
+  RESULTS.md as not yet surviving further scrutiny.
+
+2026-08-13/14 -- ghost_separation.py, corrected_regime.py written -- the
+  ghost-SEPARATION FORMULA ITSELF (not the CSF model) was found wrong underneath all
+  three prior passes.
+
+2026-08-14 -- Pass 4 ("Array_Design consolidation") -- reason stated directly in
+  RESULTS.md's own header: "the separation formula was wrong, and Pass 3's headline
+  finding does not survive it." Re-run via rerun_corrected_sweep.py ->
+  ghosting_sweep_corrected_formula.csv. Per RESULTS.md's own Pass 4 breakdown:
+  the A/B/C regime tallies do NOT move at M=4D, but Pass 3's headline finding does
+  NOT survive the corrected geometry, Regime B turns out to be real after all (at
+  low myopia), and a second, independent problem with Regime A was found in the
+  same pass. This corrected formula ("delta_r=s*M/(P0-M)") is the one later
+  independently validated at R²=0.995 in Array_Design/array_optimization/ (2026-08-14,
+  see that folder's own TIMELINE.txt) and reused throughout the rest of the project.
+
+Pre-fix files (ghosting_sweep.csv, ghosting_sweep_barten.csv,
+ghosting_sweep_harmonic.csv, noghost_constraint.csv from photometry/) were moved to
+Array_Design/legacy_archive/02_legacy_ghost_formula/ on 2026-08-16 -- see that
+archive's own TIMELINE.txt/README.md.

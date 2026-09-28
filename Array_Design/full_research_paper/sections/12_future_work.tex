@@ -1,0 +1,40 @@
+\chapter{Future Work}
+\label{ch:future}
+
+In priority order, following directly from the limitations of Chapter~\ref{ch:limitations}:
+
+\begin{enumerate}
+\item \textbf{Execute the single-pinhole LogMAR acuity protocol} already specified in
+full (\texttt{Physics\_Guide/LOGMAR\_ACUITY\_PROTOCOL.tex}, Section~\ref{sec:logmar-protocol}),
+recruiting subjects across a range of native myopia severity, recording every
+per-subject raw measurement (not only group means) and any excluded subject with a
+pre-registered reason -- specifically designed to test the flatness prediction
+(Section~\ref{sec:flatness-prediction}), this project's strongest falsifiable claim.
+\item \textbf{Build and run the proposed array-level validation rig}
+(Section~\ref{sec:proposed-rig}): rotating pinhole-array insert, fixed $+20$D lens,
+RPi-driven linear-rail bare-sensor mock retina. This would directly test the real,
+simulated retinal-intensity predictions of Section~\ref{sec:array-exp1} and Model~B's
+own gaze-weighted ghost/blind predictions (Chapter~\ref{ch:model-b}) against a real
+optical measurement for the first time.
+\item \textbf{Design and execute a genuine array-level, multi-subject clinical trial}
+(the gap documented in Section~\ref{sec:array-exp2}), with per-subject refractive error
+recorded (a limitation shared by every external dataset used in this paper's own
+validation, Chapter~\ref{ch:limitations} items 3--4), specifically targeting the
+deviation-vs-aperture and deviation-vs-$M$ questions Chapter~\ref{ch:model-comparison}
+could only address with $n=16$ points borrowed from two unrelated published studies.
+\item \textbf{Integrate the Barten-CSF three-regime ghosting criterion}
+(Section~\ref{sec:barten}) directly into the live \texttt{gates.py} evaluation pipeline
+used by Models A and B, resolving the open question flagged in Chapter~\ref{ch:limitations}
+item 8, and re-run Chapters~\ref{ch:model-a}--\ref{ch:model-b}'s results under that
+corrected criterion to check whether any current winner's classification changes.
+\item \textbf{Extend Model~B's validated gaze range.} Either obtain or derive a
+pupil-shift formula validated beyond $25^\circ$, or explicitly bound the influence of
+the $27^\circ$ extrapolated bin (currently 0.58\% of total gaze-time weight) on every
+reported result, so its contribution can be reported as a tested sensitivity rather
+than a flagged-but-unquantified caveat.
+\item \textbf{A source-power radiometric calibration} for the ASM retinal-intensity
+simulation (Section~\ref{sec:array-exp1}), so that absolute brightness -- not only
+normalized spatial pattern -- becomes comparable across myopia powers and apertures, a
+capability explicitly absent from the current figures
+(Figure~\ref{fig:realistic-heatmaps}'s own caption).
+\end{enumerate}

@@ -1,0 +1,109 @@
+\chapter{Data Provenance Appendix}
+\label{ch:provenance}
+
+Every data-bearing claim in this paper traces to one of the files below, each checked
+directly (via \texttt{stat}/\texttt{get\_file\_info}) at the time this paper was
+prepared (2026-09-28). Where two files in the same topic area disagreed, the conflict is
+noted explicitly in the ``Note'' column rather than silently resolved.
+
+\footnotesize
+\begin{longtable}{p{5.8cm}p{2.4cm}p{1.2cm}p{5.4cm}}
+\toprule
+File & Mtime & Sec.\ & Note \\
+\midrule
+\endhead
+\texttt{stage2\_fixed/phase2\_retina.py} & Aug 6, 2026 14:43 & \ref{ch:single} & Post-shadowing-fix; current \\
+\texttt{stage2\_fixed/myopia\_axial.py} & (verified present, current) & \ref{sec:reduced-eye} & Axial myopia model constants \\
+\texttt{stage2\_fixed/pipeline\_junction.py} & (verified present, current) & \ref{ch:single} & ASM propagation chain \\
+\texttt{stage4\_human\_vision/pipeline.py} & Aug 6, 2026 14:43 & \ref{sec:gridN},\ref{sec:bug-shadowing} & Both the shadowing fix and the $N_{\mathrm{grid}}$ default live here \\
+\texttt{stage4\_human\_vision/acuity.py} & (verified present, current) & \ref{ch:acuity} & \texttt{predict\_acuity}, brightness correction \\
+\texttt{stage4\_human\_vision/config.py} & (verified present, current) & \ref{ch:acuity} & Default luminance/field/age \\
+\texttt{stage4\_human\_vision/RESULTS.md} & Aug 6, 2026 14:43 & \ref{sec:bug-shadowing} & Pre/post-fix $R^2$ table \\
+\texttt{stage4\_human\_vision/outputs/wang2009\_validation\_postfix\_predicted.csv} & Aug 6, 2026 14:43 & \ref{sec:external-validation} & CORRECT (postfix); used throughout \\
+\texttt{stage4\_human\_vision/outputs/wang2009\_validation\_postfix\_stats.csv} & Aug 6, 2026 14:43 & \ref{sec:external-validation} & CORRECT (postfix); used throughout \\
+\texttt{stage4\_human\_vision/outputs/validation\_predicted\_vs\_observed.csv} & Jul 29, 2026 16:35 & \ref{sec:stale-wang} & \textbf{STALE} -- predates the Aug 6 fix by 8 days; NOT used for any reported number, cited only as the worked example of Section~\ref{sec:stale-wang} \\
+\texttt{new\_sweeps/acuity\_sweep\_stage4.csv} & Sep 13, 2026 00:11 & \ref{sec:model-comparison-table},\ref{sec:flatness-prediction} & Post-$N_{\mathrm{grid}}$-fix; current \\
+\texttt{new\_sweeps/blur\_sweep.csv} & Aug 16, 2026 11:14 & \ref{sec:gridN} & Already fixed at this date (predates the acuity-sweep fix) \\
+\texttt{new\_sweeps/per\_M\_optimum\_map.csv} & Sep 13, 2026 00:11 & \ref{sec:model-comparison-full} & Current \\
+\texttt{new\_sweeps/table1\_optimum\_summary.csv} & -- & -- & File not found at time of writing; superseded by \texttt{per\_M\_optimum\_map.csv} \\
+\texttt{Array\_Design/.../evaluation\_results/FINAL\_WINNER\_PER\_M.csv} & Sep 13, 2026 00:42 & \ref{ch:model-a} & Model A current winners \\
+\texttt{Array\_Design/.../evaluation\_results/PRIMARY\_WINNER\_PER\_M.csv} & Sep 13, 2026 14:10 & \ref{ch:model-b} & Model B current winners -- newest evaluation-results file in its directory \\
+\texttt{Array\_Design/.../evaluation\_results/gaze\_weighted\_winner\_per\_M.csv} & Sep 13, 2026 00:41 & \ref{ch:model-b} & Ungated gaze-weighted ranking \\
+\texttt{Array\_Design/.../evaluation\_results/metric1\_max\_density\_per\_M.csv} & Sep 13, 2026 00:37 & \ref{sec:model-comparison-table} & Density-only ranking \\
+\texttt{Array\_Design/.../evaluation\_results/family\_ranking.csv} & Sep 13, 2026 00:37 & \ref{sec:array-repr} & \\
+\texttt{Array\_Design/.../evaluation\_results/TIMELINE.txt} & Sep 13, 2026 14:11 & \ref{ch:model-b} & Methodology-change record \\
+\texttt{Array\_Design/.../GAZE\_WEIGHTED\_APPROACH.md} & Sep 13, 2026 14:10 & \ref{ch:model-b} & ``UPDATE, 2026-09-13'' methodology-change section \\
+\texttt{Array\_Design/.../theoretical\_data/gaze\_weighted\_metrics.csv} & Sep 13, 2026 00:40 & \ref{sec:hex-intuition} & Full per-candidate gaze-weighted sweep; source of Fig.~\ref{fig:geom-consequence} \\
+\texttt{Array\_Design/.../evaluation\_results/CENTERED\_CONCENTRIC\_COMPARISON.md} & (verified present) & \ref{sec:model-a-limitation} & Real single-axis blackout case study \\
+\texttt{Array\_Design/.../fabrication\_package/fabrication\_summary.csv} & Sep 13, 2026 00:58 & \ref{sec:fabrication} & \\
+\texttt{Array\_Design/.../array\_calculation/engine/vignetting\_overlap.py} & (verified present, current) & \ref{sec:vignetting} & Overlap-area formula, boundary-clamp fix \\
+\texttt{Array\_Design/.../array\_calculation/engine/ghost\_formula.py} & (verified present, current) & \ref{sec:ghosting-theory} & Ghost-separation formula \\
+\texttt{Array\_Design/.../VALIDATION.md} & (verified present) & \ref{sec:vignetting} & Part 1 copy-validation gate \\
+\texttt{Array\_Design/.../array\_evaluation/comparison\_metric/gates.py} & (verified present, current) & \ref{sec:three-gates} & Model A gate thresholds \\
+\texttt{Array\_Design/.../array\_calculation/margins/active\_pairs.py} & (verified present, current) & \ref{sec:three-regime} & Active-hole threshold ($0.5$) \\
+\texttt{Array\_Design/.../array\_calculation/margins/vignetting\_robustness.py} & (verified present, current) & \ref{sec:model-a-limitation} & Single-axis sampling convention \\
+\texttt{Array\_Design/.../array\_calculation/compute\_gaze\_weighted\_metrics.py} & (verified present, current) & \ref{sec:model-b-method} & Full-azimuth sampling, weight verification \\
+\texttt{Array\_Design/ghosting/THEORY.md} & (verified present) & \ref{sec:ghosting-theory} & Dirac-comb/Fourier derivation \\
+\texttt{Array\_Design/ghosting/RESULTS.md} & Aug 14, 2026 00:26 & \ref{sec:barten} & Three-pass Barten-CSF finding \\
+\texttt{Array\_Design/ghosting/ghosting\_sweep\_harmonic.csv} & Jul 29, 2026 22:11 & \ref{sec:harmonic} & Harmonic-margin sweep data \\
+\texttt{Physics\_Guide/PHYSICS\_AND\_FABRICATION\_GUIDE.tex} & Sep 8, 2026 15:38 & \ref{sec:bug-fft} & Single-FFT bug narrative source \\
+\texttt{Physics\_Guide/MASTER\_HANDBOOK.tex} & Sep 11, 2026 17:55 & multiple & \textbf{PARTIALLY STALE}: predates the Sep 12--13 $N_{\mathrm{grid}}$ fix (Section~\ref{sec:bug-gridN}); its own $M{=}0$ result table entry ($-0.344$ LogMAR) is superseded by the current value ($-0.357$, Table~\ref{tab:predicted-acuity}) -- every other entry in that table was independently confirmed unaffected \\
+\texttt{Physics\_Guide/LOGMAR\_ACUITY\_PROTOCOL.tex} & Sep 11, 2026 17:33 & \ref{sec:logmar-protocol} & Protocol only, no executed-trial data \\
+\texttt{ExperimentalComparison/ExP1\_clarity\_analysis/measurements/brisque\_scores.csv} & Sep 9, 2026 21:51 & \ref{sec:brisque} & \\
+\texttt{ExperimentalComparison/ExP3\_frosted\_screen/measurements/all\_spot\_measurements.csv} & (verified present, current) & \ref{sec:exp3} & \\
+\texttt{Array\_Design/array\_geometry\_lab/predicted\_logmar\_analysis/} (all .csv) & Sep 28, 2026 & \ref{ch:model-comparison} & Built for this and a prior analysis this same session \\
+\texttt{Array\_Design/legacy\_archive/README.md} & Sep 17, 2026 23:09 & Ground rules & Confirms legacy\_archive/ deprecation policy; NOT cited as a current-results source anywhere in this paper \\
+\midrule
+\multicolumn{4}{l}{\textit{Added for the 11-family lattice derivations (Section~\ref{sec:all-generators}):}} \\
+\texttt{.../generators/square.py} & Aug 16, 2026 11:18 & \ref{sec:all-generators} & \\
+\texttt{.../generators/hexagonal.py} & Aug 16, 2026 11:18 & \ref{sec:all-generators} & \\
+\texttt{.../generators/rectangular.py} & Aug 16, 2026 11:19 & \ref{sec:all-generators} & \\
+\texttt{.../generators/concentric.py} & Aug 15, 2026 13:49 & \ref{sec:concentric-family} & \\
+\texttt{.../generators/concentric\_centered.py} & Aug 17, 2026 14:41 & \ref{sec:centered-bug} & Source of the $1704.8\,\mu$m / $1.6{\times}10^{-13}\,\mu$m before/after \\
+\texttt{.../generators/ring\_offset\_concentric.py} & Aug 15, 2026 14:16 & \ref{sec:ring-offset-family} & \\
+\texttt{.../generators/archimedean\_spiral.py} & Aug 15, 2026 14:16 & \ref{sec:all-generators} & \\
+\texttt{.../generators/fibonacci\_spiral.py} & Aug 15, 2026 13:49 & \ref{sec:all-generators} & \\
+\texttt{.../generators/golden\_angle.py} & Aug 15, 2026 13:49 & \ref{sec:all-generators} & \\
+\texttt{.../generators/poisson\_disk.py} & Aug 15, 2026 14:21 & \ref{sec:all-generators} & \\
+\texttt{.../generators/jittered\_lattice.py} & Aug 15, 2026 14:22 & \ref{sec:all-generators} & \\
+\texttt{.../generators/base\_generator.py} & Aug 16, 2026 11:18 & \ref{sec:all-generators} & Shared \texttt{finalize()} step \\
+\midrule
+\multicolumn{4}{l}{\textit{Added for the full data-table appendices (Ch.~\ref{ch:full-acuity-table}--\ref{ch:additional-tables}):}} \\
+\texttt{new\_sweeps/acuity\_sweep\_stage4.csv} (full 120 rows) & Sep 13, 2026 00:11 & \ref{ch:full-acuity-table} & Same file as Table~\ref{tab:predicted-acuity}; re-verified for full dump \\
+\texttt{Array\_Design/ghosting/ghosting\_sweep\_barten.csv} & Jul 29, 2026 22:04 & \ref{ch:full-barten-table} & Full Pass-2 Barten-CSF sweep, 36 rows \\
+\texttt{.../evaluation\_results/family\_ranking.csv} & Sep 13, 2026 00:37 & \ref{sec:family-ranking-full} & 1258 rows; rank-1-per-$M$ summarized, not dumped in full \\
+\texttt{.../evaluation\_results/effective\_density\_winner\_per\_M\_cmin0.csv} & Sep 13, 2026 01:01 & \ref{sec:eff-density-full} & \\
+\texttt{.../evaluation\_results/effective\_density\_winner\_per\_M\_cmin55.csv} & Sep 13, 2026 01:01 & \ref{sec:eff-density-full} & \\
+\texttt{.../evaluation\_results/metric2\_pareto\_front\_per\_M.csv} & Sep 13, 2026 00:37 & \ref{sec:metric2-full} & 18 rows; reproduced in full \\
+\texttt{array\_evaluation/comparison\_metric/metrics.py} & (verified present, current) & \ref{sec:metric2-full} & \texttt{\_binding\_margin\_with\_sentinel}, verified before citing (see text) \\
+\texttt{Array\_Design/ghosting/ghosting\_sweep.csv} & Jul 29, 2026 21:53 & \ref{ch:ghosting-passes-1-3} & Full Pass-1 (heuristic CSF) sweep, 36 rows \\
+\texttt{Array\_Design/ghosting/ghosting\_sweep\_harmonic.csv} & Jul 29, 2026 22:11 & \ref{ch:ghosting-passes-1-3} & Full Pass-3 (harmonic) sweep, 36 rows \\
+\midrule
+\multicolumn{4}{l}{\textit{Added for full hole-coordinate dump, literature review, and further code listings:}} \\
+\texttt{.../hole\_coordinates/hole\_coordinates\_M\{0,1,2,3,4,5,6,8,global\}.csv} (9 files) & Sep 13, 2026 00:58 (all) & \ref{ch:full-hole-coords} & 290 rows total, reproduced in full \\
+\texttt{Array\_Design/ghosting/THEORY.md} (Sections 1--2 full) & Aug 14, 2026 00:36 & \ref{sec:ghosting-lit-review} & Re-read in full for this expansion (was already cited in compressed form, Section~\ref{sec:ghosting-theory}) \\
+\texttt{stage1\_v2/physics.py} & Aug 6, 2026 14:43 & Code App., \ref{sec:asm} & \texttt{asm\_transfer\_function}, \texttt{asm\_propagate} -- the literal code behind Eq.~\ref{eq:asm} \\
+\texttt{stage4\_human\_vision/visual\_strehl.py} & Jul 28, 2026 17:40 & Code App., \ref{ch:acuity} & \texttt{compute\_vsotf} \\
+\bottomrule
+\caption{Data provenance table. Paths abbreviated \texttt{Array\_Design/.../} for
+\texttt{Array\_Design/array\_geometry\_lab/array\_data/evaluation\_results/} and
+\texttt{Array\_Design/array\_geometry\_lab/} respectively where unambiguous.}
+\end{longtable}
+
+\section{Conflicts found and how they were resolved}
+\begin{itemize}
+\item \textbf{\texttt{MASTER\_HANDBOOK.tex} (Sep 11) vs.\ \texttt{acuity\_sweep\_stage4.csv}
+(Sep 13).} The handbook's own results table (Model~B design table) reports $M{=}0$
+predicted LogMAR as $-0.344$; the current, post-$N_{\mathrm{grid}}$-fix sweep gives
+$-0.357$. Every other row in that same table ($M=1$ through $M=8$) was checked
+individually and found unaffected (identical to 3--4 decimal places), consistent with
+the $N_{\mathrm{grid}}$ artifact's own documented behaviour of primarily affecting
+\emph{large} apertures ($M{=}0$'s $2000\,\mu$m aperture is the largest in the design
+table). \textbf{Resolution: this paper uses the current, live sweep value ($-0.357$)
+throughout (Table~\ref{tab:predicted-acuity}), not the handbook's own now-stale entry.}
+\item \textbf{\texttt{validation\_predicted\_vs\_observed.csv} (Jul 29) vs.\
+\texttt{wang2009\_validation\_postfix\_predicted.csv} (Aug 6).} Full detail in
+Section~\ref{sec:stale-wang} and Section~\ref{sec:bug-shadowing}. \textbf{Resolution:
+the postfix file is used exclusively; the stale file is cited only as the worked
+example of the staleness pattern itself, never as a results source.}
+\end{itemize}

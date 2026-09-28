@@ -1,0 +1,39 @@
+master_dashboard -- dated timeline (dates from git log, this folder's own README.md)
+==========================================================================
+
+2026-08-08 -- BUILT: live-sweep interactive dashboard covering all 11 (later 12) stages,
+  via a registry pattern (registry.py maps each stage to its real entry point; app.py
+  has no stage-specific code). Adopted, still the current tool.
+
+2026-08-09 -- FIX: dashboard launch instructions + a foolproof run.sh, after a real
+  hang was found via live browser testing.
+
+2026-08-09 -- FIX: cost/runtime estimates corrected, same live-testing pass.
+
+2026-08-09 -- ADDED: a deliberate "stage2_deprecated" tab that runs the KNOWN-BUGGY
+  stage2/ pipeline ON PURPOSE, side-by-side against the corrected stage2_fixed/ tab.
+  This is the direct, explicit confirmation (in this project's own tooling) that
+  stage2/ is superseded by stage2_fixed/ -- not silently dropped, kept as a reference/
+  comparison tab, isolated via sys.modules swapping so it can never permanently shadow
+  the corrected optics for the rest of the running dashboard (see README.md's own
+  "The rule: stage2_fixed/, never stage2/" section for the full isolation mechanism,
+  including WHY a plain sys.path insert would have been unsafe here).
+
+2026-08-09 -- ADDED: free axis picker + heatmap/optimal-vs-M chart styles + cross-sweep
+  overlay (any two cached sweeps sharing X/Y columns can be compared on one chart).
+
+2026-08-15 -- folder swept into "array optimisation full compute 1st edition" commit
+  (batch commit covering multiple folders at once; not a change specific to this one).
+
+Deliberately routed around, not silently hidden (still true as of the dates above,
+exact status not re-checked since):
+  - model_comparison/stage2_runner.py imports the deprecated stage2/ directly (verified
+    by grep) -- the dashboard's own Model Comparison tab avoids this by reusing its own
+    stage2_fixed-based wrapper instead.
+  - stage3a/combine_and_select.py defaults to reading a STALE precomputed CSV computed
+    against the deprecated optics -- not used; the Stage 3a tab computes fresh blur data
+    via this dashboard's own wrapper instead.
+  - R7acuity's ideal-observer calibration crash against corrected optics (see
+    R7acuity/TIMELINE.txt, 2026-08-06) -- the R7acuity tab attempts it fresh every time
+    and displays the crash plainly; falls back to showing only the closed-form Strehl/
+    VSOTF cross-check, never a stale/faked number.

@@ -1,0 +1,893 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{calc}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\definecolor{warnred}{HTML}{9C2B2B}
+\definecolor{boxgrey}{HTML}{F4F4F6}
+
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape Pinhole Sunglasses --- Physics and Fabrication Guide}
+\fancyfoot[C]{\thepage}
+
+\newsavebox{\kbsave}
+\newsavebox{\wbsave}
+
+\newenvironment{keybox}[1]%
+{\par\vspace{8pt}\begin{lrbox}{\kbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{hbblue}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{8pt}%
+\fcolorbox{hbblue}{boxgrey}{\usebox{\kbsave}}\end{center}\vspace{8pt}\par}
+
+\newenvironment{warnbox}[1]%
+{\par\vspace{8pt}\begin{lrbox}{\wbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{warnred}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{8pt}%
+\fcolorbox{warnred}{white}{\usebox{\wbsave}}\end{center}\vspace{8pt}\par}
+
+\newcommand{\ahole}{a_{\text{hole}}}
+\newcommand{\dgap}{d_{\text{gap}}}
+\newcommand{\vr}{v_r}
+\newcommand{\vf}{v_f}
+\newcommand{\Dpupil}{D_{\text{pupil}}}
+
+\title{\textbf{\Huge Pinhole Sunglasses}\\[0.3cm]
+\textcolor{hbblue}{\huge Physics and Fabrication Guide}\\[0.5cm]
+\large\itshape From wave optics to a brass shim you can etch:\\
+every equation, why it is there, and what to do at the bench}
+\author{}
+\date{IYPT 2027 Problem 1 --- working reference}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter*{How to read this document}
+\addcontentsline{toc}{chapter}{How to read this document}
+
+Part~I builds the physics from the ground up: why a pinhole helps a myopic eye at all,
+why making it smaller eventually stops helping, and how those two competing effects are
+computed exactly rather than estimated. Part~II turns the resulting design numbers into
+a mask you can print and a shim you can etch, with the specific checks that catch the
+failure modes of photochemical etching before you waste material.
+
+Every number quoted here is read from this project's own output files, not invented for
+illustration. The two source files that matter are:
+
+\begin{itemize}[leftmargin=1.2cm]
+\item \texttt{array\_data/evaluation\_results/gaze\_weighted\_winner\_per\_M.csv} --- the final designs
+\item \texttt{fabrication\_package/fabrication\_summary.csv} --- the mask dimensions derived from them
+\end{itemize}
+
+These two files agree row-for-row. That is worth knowing before you start: the thing you
+are about to fabricate \emph{is} the thing the model selected, not an approximation to it.
+
+\part{The Physics}
+
+\chapter{Why a pinhole helps, and why smaller is not better}
+
+\section{The core tension in one paragraph}
+
+A myopic eye focuses light in front of the retina. Every point in the scene therefore lands
+on the retina as a disc rather than a point, and the disc's size is set by how wide a cone
+of light the eye accepts. Narrow that cone with a pinhole and the disc shrinks --- this is
+pure geometry and it is why squinting works. But light is a wave, and forcing it through a
+small hole makes it spread by diffraction. Below some aperture the diffraction spreading
+grows faster than the geometric blur shrinks, and the image gets worse again.
+
+\begin{keybox}{The governing trade-off}
+Geometric (defocus) blur $\propto$ aperture size. \\
+Diffraction blur $\propto$ 1 / aperture size. \\
+Somewhere between them is a minimum. Finding it, correctly, is the entire single-hole problem.
+\end{keybox}
+
+\section{Two ways to compute it, one of which is wrong}
+
+The tempting approach is to write down a formula for each blur and combine them:
+\begin{equation}
+r_{\text{geo}} = \frac{a_{\text{stop}}}{2}\cdot\frac{|\vr-\vf|}{\vf},
+\qquad
+r_{\text{diff}} = \frac{1.22\,\lambda\,\vr}{a_{\text{stop}}},
+\qquad
+r_{\text{total}} \overset{?}{=} \sqrt{r_{\text{geo}}^2+r_{\text{diff}}^2}
+\end{equation}
+
+That last step --- root-sum-square (RSS) --- is physically wrong. Two blur mechanisms combine
+by \emph{convolving their point-spread functions}, not by adding their radii in quadrature.
+RSS is a heuristic borrowed from independent Gaussian error terms, and neither blur here is
+Gaussian: defocus produces a roughly uniform disc, diffraction produces an Airy pattern with
+rings extending well beyond the central lobe.
+
+\begin{warnbox}{How wrong, measured}
+This project quantified the RSS error against the exact numerical result rather than asserting
+it: \textbf{64.8\% mean divergence, up to 192.8\% maximum}, at the retina plane, worst at mild
+myopia. That is a factor of two to three, not a rounding difference. Do not defend RSS; report
+that you measured its failure.
+\end{warnbox}
+
+The correct approach does not separate the two blurs at all. It propagates the actual light
+field through the actual geometry, and both effects emerge together because they were never
+distinct physical processes to begin with --- they are two descriptions of the same wave.
+
+\chapter{Modelling the myopic eye}
+
+\section{Axial myopia: the retina moves, the lens does not}
+
+Myopia can arise two ways: the eye's optical power is too strong (refractive myopia), or the
+eyeball is too long (axial myopia). Real short-sightedness is overwhelmingly the second. This
+project models it that way:
+\begin{equation}
+L_0 = \frac{n'}{P_0}, \qquad L_{\text{ax}} = \frac{n'}{P_0-M}
+\label{eq:axial}
+\end{equation}
+with $P_0 = 60$\,D the emmetropic eye power (held \emph{fixed} at every myopia level),
+$n' = 1.336$ the vitreous refractive index, and $M$ the myopia in dioptres.
+
+\textbf{Worked example, $M=4$\,D:}
+\begin{align}
+L_0 &= 1.336/60 = 22.267\ \text{mm} \quad\text{(where the light focuses)}\\
+L_{\text{ax}} &= 1.336/56 = 23.857\ \text{mm} \quad\text{(where the retina actually is)}\\
+\Delta L &= 1.59\ \text{mm}
+\end{align}
+
+So a $-4$\,D eye is a normal eye with its retina sitting 1.59\,mm too far back. The focal
+length is unchanged. That $\Delta L$ is the entire disease, and it is the reason the next
+chapter's propagation distance matters so much.
+
+\begin{keybox}{Why this convention was chosen}
+Holding $P_0$ fixed and growing the axial length is the standard clinical model of \emph{simple
+axial myopia}. It also means one number ($M$) fully specifies the geometry, so every result can
+be reported per-dioptre without ambiguity about which parameter was varied.
+\end{keybox}
+
+\section{The single most important architectural point}
+
+Once the light passes the eye's lens, you must propagate it to the retina. The obvious move ---
+multiply by the lens's quadratic phase, then take a Fourier transform --- is a trap.
+
+A single FFT after a lens phase gives you the field at \textbf{the lens's own back focal plane}.
+For a healthy eye that is the retina, and the answer is right. For a myopic eye the retina is
+\emph{not} at the focal plane --- that mismatch is the definition of myopia --- and the FFT
+silently computes the field at the wrong location.
+
+\begin{warnbox}{What the bug produces}
+A beautiful, sharp Airy pattern computed at the eye's true focal point: the one plane in the
+whole system where defocus blur is exactly zero. You would be modelling a perfectly corrected
+eye and calling it myopic. The plot looks plausible; the physics is inverted.
+\end{warnbox}
+
+\textbf{The fix:} replace the FFT with a second Angular Spectrum propagation over the actual
+physical lens-to-retina distance $\vr$. This is a one-line change with three consequences:
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item Geometric defocus blur is no longer computed separately --- it appears automatically,
+because you propagated a wavefront curved for the wrong focal length across the correct distance.
+\item The RSS combination is not merely inaccurate, it is \emph{structurally unnecessary}: the two
+blurs were never separated, so there is nothing to recombine.
+\item The earlier ``convolve an Airy PSF with a defocus disc'' step is superseded --- that was an
+approximation to exactly what this propagation now computes directly.
+\end{enumerate}
+
+\chapter{The wave-optics engine}
+
+\section{The Angular Spectrum Method, explained physically}
+
+Any field at a plane can be decomposed into plane waves travelling in different directions.
+Each plane wave, crossing a distance $z$, simply acquires a phase. Reassemble them and you have
+the field at the new plane. That is the whole idea:
+\begin{equation}
+U(x,y,z) = \mathcal{F}^{-1}\Big\{\mathcal{F}\{U_0(x,y)\}\cdot H(f_x,f_y;z)\Big\},
+\qquad
+H = \exp\!\Big(ikz\sqrt{1-\lambda^2(f_x^2+f_y^2)}\Big)
+\label{eq:asm}
+\end{equation}
+valid for propagating components $f_x^2+f_y^2 \le 1/\lambda^2$; beyond that the square root
+turns imaginary and those components decay exponentially (evanescent waves), so $H=0$.
+
+This is the \textbf{exact} solution of the scalar Helmholtz equation between parallel planes.
+It makes no near-field or far-field assumption, which is precisely why it is the right default
+engine for this problem: the pinhole-to-cornea gap and the lens-to-retina distance sit in
+different diffraction regimes, and switching between Fresnel and Fraunhofer closed forms at
+each stage would introduce approximation errors that ASM simply does not have.
+
+\section{Which regime you are in: the Fresnel number}
+\begin{equation}
+N_F = \frac{R_{\text{hole}}^2}{\lambda z}, \qquad R_{\text{hole}} = \ahole/2
+\label{eq:NF}
+\end{equation}
+$N_F \ll 1$: far field (Fraunhofer), a clean Airy pattern. $N_F \sim 1$--$10$: Fresnel transition,
+several comparably bright rings. $N_F \gg 10$: nearly geometric, the hole projects a sharp-edged
+patch.
+
+\textbf{Worked example.} $\ahole = 300\,\mu$m so $R = 150\,\mu$m, $\lambda = 550$\,nm,
+$\dgap = 12$\,mm:
+\begin{equation}
+N_F = \frac{(1.5\times10^{-4})^2}{(5.5\times10^{-7})(1.2\times10^{-2})}
+= \frac{2.25\times10^{-8}}{6.6\times10^{-9}} \approx 3.41
+\end{equation}
+Squarely in the transition regime. Expect multiple rings, not a textbook Airy disc.
+
+Because this project's sweeps span $N_F$ from well under 1 to over 20, no single closed form
+covers the range --- another reason ASM is used throughout rather than as a fallback.
+
+\section{Band-limiting: a numerical necessity, not physics}
+
+A finite simulation window with finite grid spacing cannot represent arbitrarily steep
+propagation angles. A plane wave steep enough to exit the window during propagation will,
+in a discrete FFT, wrap around and re-enter from the opposite side --- appearing as spurious
+fine ring structure that looks exactly like real diffraction.
+
+The Matsushima band-limit suppresses spectral content beyond the angle at which this happens.
+This is anti-aliasing, applied deliberately and with the suppressed energy fraction logged
+per run. It is not a physical loss mechanism, and you should say so if asked.
+
+\begin{keybox}{Why the energy-conservation check had to be rewritten}
+Since $H$ has unit modulus on every kept component and is exactly zero elsewhere, the apparent
+energy loss is \emph{identically} the band-limit-suppressed fraction:
+$\varepsilon_{\text{energy}} \equiv f_{\text{suppressed}}$ --- confirmed against real sweep data at
+correlation $1.000000$, standard deviation $6\times10^{-14}$. Testing $\varepsilon$ against a
+$0.1\%$ tolerance was therefore guaranteed to fail on every row, not from any defect but from
+re-flagging intentional, already-tolerated suppression. The fix tests the \emph{residual}
+$\varepsilon_{\text{energy}} - f_{\text{suppressed}}$, restoring the check's ability to detect a
+genuine bug.
+\end{keybox}
+
+\chapter{The full pipeline, stage by stage}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\centering
+plane wave $\rightarrow$ pinhole mask $U_0$ $\rightarrow$ \textbf{ASM}$(\dgap)$ $\rightarrow$
+pupil clip $\rightarrow$ lens phase $\rightarrow$ \textbf{ASM}$(\vr)$ $\rightarrow$
+$I_{\text{retina}} = |U|^2$}}
+\end{center}
+
+\begin{description}[leftmargin=0.8cm,style=nextline]
+\item[1. Source and mask.] A distant object gives a collimated (plane) wave. The pinhole is a
+binary amplitude mask: 1 inside the hole, 0 outside.
+
+\item[2. ASM across the gap $\dgap$.] Typically 12--15\,mm, the spectacle vertex distance. This is
+where the light diffracts \emph{before} it ever reaches the eye.
+
+\item[3. Pupil clipping.] Multiply by a disc of diameter $\Dpupil$ (default 4000\,$\mu$m). For gaze
+studies this disc is laterally offset --- see Chapter~6.
+
+\item[4. Lens phase.] Multiply by
+$\exp\!\big(-i\frac{k}{2f}(x^2+y^2)\big)$
+using the eye's \emph{actual} focal length. The eye is modelled as it is; the pinhole is the
+only correction present.
+
+\item[5. ASM across $\vr$.] The corrected stage. $\vr = L_{\text{ax}}$ from Eq.~\ref{eq:axial}.
+
+\item[6. Intensity.] $I(x,y) = |U(x,y,\vr)|^2$, then radial integration to get encircled energy.
+\end{description}
+
+\begin{warnbox}{A modelling subtlety that is easy to get backwards}
+The aperture that appears in any diffraction formula at the eye is \textbf{the propagated light
+spot at the cornea plane}, not the physical hole diameter. The hole diffracts across $\dgap$
+before the pupil sees it; by then the illuminated patch is generally wider than the hole. Using
+the physical hole diameter in a cornea-plane formula understates the spot and will bias any
+hand-check you run against the pipeline.
+\end{warnbox}
+
+\section{Validating the engine before trusting any output}
+
+Set $\dgap \to 0$ and $M = 0$. The whole chain must then reduce to the textbook Fraunhofer result:
+\begin{equation}
+I(r) = I_0\left(\frac{2J_1(x)}{x}\right)^2,\quad x = \frac{\pi a r}{\lambda \vr},
+\qquad
+EE(x) = 1 - J_0^2(x) - J_1^2(x)
+\label{eq:airy}
+\end{equation}
+
+It does, to 2\% on $r_{EE}(50\%)$ and $r_{EE}(90\%)$.
+
+$r_{EE}(80\%)$ needs an 8\% tolerance, and the reason is worth understanding rather than excusing:
+at the first null $x = 3.8317$, $EE \approx 0.838$. The 80\% radius therefore sits almost exactly
+on the first dark ring, where the encircled-energy curve is momentarily flat. On a flat curve, a
+tiny error in energy maps to a large error in radius. Confirmed empirically: grid sizes from
+1024 to 8192 --- an order of magnitude more compute --- never brought this percentile below
+2.3--4.6\% error. It is ill-conditioning, not a bug, and no amount of resolution fixes it.
+
+\begin{keybox}{Also note what Eq.~\ref{eq:airy} tells you about blur metrics}
+At the first null only 83.8\% of the energy is enclosed. Over 16\% of the light sits outside the
+``obvious'' central disc. Any description of blur by a null radius alone therefore misrepresents
+where the light actually is --- which is why this project reports $r_{EE}(P)$ at
+$P = 0.5, 0.7, 0.8, 0.9$ rather than a single number.
+\end{keybox}
+
+\chapter{Blur metrics and where they break}
+
+You will be asked which number measures ``blur.'' There is no single safe answer, and knowing
+the failure modes is more valuable than picking one.
+
+\begin{longtable}{p{3.0cm}p{5.5cm}p{5.5cm}}
+\caption{Blur metrics: what each measures and how it fails.}\\
+\toprule
+\textbf{Metric} & \textbf{Measures} & \textbf{Failure mode} \\
+\midrule
+\endhead
+$r_{EE}(50\%)$ & Radius enclosing half the energy & Stable and monotonic, but overestimates
+clinical acuity loss by roughly $7\times$ against a real clinical study \\
+FWHM & Width of the central core only & Tracks the same clinical study to $\sim1.6\times$, but
+\textbf{ring-hops}: jumped $4.7 \to 154.7\,\mu$m between apertures 250\,$\mu$m apart at $M=4$\,D \\
+Strehl ratio & Peak intensity vs.\ diffraction limit & Genuinely multi-peaked: 6--7 local maxima,
+swings up to $8.4\times$; finer sampling revealed \emph{more} structure, not less \\
+MTF50 & Spatial frequency at 50\% contrast & Most informative, but is a curve, not a scalar \\
+\bottomrule
+\end{longtable}
+
+\begin{keybox}{How to state this without contradicting yourself}
+Two sentences in this project's own record appear to conflict: ``FWHM is the more clinically
+accurate metric'' and ``FWHM is unreliable at the retina plane.'' Both are true at different
+scales. The resolution to state out loud:
+
+\emph{Per-aperture, FWHM is unusable --- it discontinuously jumps between diffraction rings.
+Across a coarse sweep its trend is closer to clinical reality than $r_{EE}(50\%)$, which is
+smooth and stable but biased pessimistic by about $7\times$. We therefore report $r_{EE}(50\%)$
+as the optimisation metric and state its bias explicitly, rather than optimising against a
+metric that is discontinuous in the design variable.}
+\end{keybox}
+
+\section{Why Strehl's oscillation is real physics, not numerical noise}
+
+On-axis intensity behind a circular aperture oscillates with Fresnel number:
+\begin{equation}
+I(0,z) = 4I_0\sin^2\!\left(\frac{\pi N_F}{2}\right)
+\label{eq:onaxis}
+\end{equation}
+swinging between 0 and $4I_0$ as successive Fresnel zones alternately reinforce and cancel on
+axis. This project's simulated data matches that closed form at correlation \textbf{0.997}. So
+when Strehl ratio oscillates non-monotonically with aperture, that is Fresnel-zone interference
+doing exactly what Eq.~\ref{eq:onaxis} says it must --- and it is also why the deprecated
+quadrature estimate $a_{\text{eff}} \approx \sqrt{\ahole^2 + (2.44\lambda\dgap/\ahole)^2}$, which
+is smooth and monotonic by construction, cannot represent this regime.
+
+\chapter{The three apertures, reconciled}
+
+Three different aperture numbers appear across this project. They are not three competing
+answers. They are the same blur-versus-aperture curve read under three different constraint sets.
+
+\begin{longtable}{p{4.2cm}p{3.0cm}p{6.5cm}}
+\caption{The same optimisation, three constraint sets.}\\
+\toprule
+\textbf{Question asked} & \textbf{Answer} & \textbf{What is binding} \\
+\midrule
+\endhead
+Minimise blur only & 300--400\,$\mu$m & Diffraction vs.\ defocus alone \\
+Minimise blur subject to a retinal brightness floor & 900--1250\,$\mu$m & Illuminance constraint;
+lands inside the clinical bracket 0.94--1.75\,mm \\
+Minimise blur subject to brightness \emph{and} array ghost fusion & 530\,$\mu$m
+(Shen's universal design) & Ghost-fusion criterion in a dense-array regime \\
+\bottomrule
+\end{longtable}
+
+\section{The brightness constraint, from energy conservation}
+\begin{equation}
+E_{\text{rel}} = \left(\frac{\min(\ahole,\Dpupil)}{\Dpupil}\right)^2
+\label{eq:erel}
+\end{equation}
+Note what this does \emph{not} use: any diffraction-broadened spot size. Diffraction redistributes
+power spatially; it does not create or destroy it. Retinal illuminance must therefore be computed
+from the raw physical aperture area. This is a first-principles result, not a model choice.
+
+\textbf{Worked example.} $\ahole = 1000\,\mu$m against a 4\,mm pupil:
+$E_{\text{rel}} = (1000/4000)^2 = 0.0625 = 6.25\%$. This is why $T_{\min}=6.25\%$ appears as a
+sweep value --- it is exactly the 1\,mm aperture's transmission, not an arbitrary round number.
+
+\begin{longtable}{ccc}
+\caption{Constrained optimum versus brightness floor.}\\
+\toprule
+$T_{\min}$ & Constrained optimum & vs.\ clinical bracket \\
+\midrule
+\endhead
+0\% & 300--400\,$\mu$m & below \\
+1\% & 400\,$\mu$m & below \\
+3\% & 700\,$\mu$m & below \\
+6.25\% & 1000\,$\mu$m & \textbf{inside} \\
+9\% & 1250\,$\mu$m & \textbf{inside} \\
+12.25\% & 1500\,$\mu$m & upper edge \\
+\bottomrule
+\end{longtable}
+
+\begin{keybox}{The finding, stated in one sentence}
+A brightness floor of 6--9\% of full natural-pupil illuminance --- physically modest, comparable
+to ordinary sunglass tinting --- moves the predicted optimum from 300--400\,$\mu$m into the
+verified clinical range of 0.94--1.75\,mm, uniformly across every myopia level tested. The
+diffraction physics was never wrong; blur-only optimisation was answering the wrong question.
+\end{keybox}
+
+\chapter{From one hole to an array}
+
+Three quantities govern array design. Keep them separate --- they fail independently, and
+collapsing them into one score hides which one broke.
+
+\section{Viability: does light get through at all}
+
+The pupil and a hole are both circles. Light passes if they overlap:
+\begin{equation}
+d - R_h < R_p
+\label{eq:viability}
+\end{equation}
+where $d$ is the hole-centre-to-pupil-centre distance, $R_h$ the hole radius, $R_p$ the pupil
+radius. If they do overlap, the illuminated area is the circle--circle intersection:
+\begin{equation}
+\begin{split}
+A = R_p^2\cos^{-1}\!\left(\frac{d^2+R_p^2-R_h^2}{2dR_p}\right)
+  &+ R_h^2\cos^{-1}\!\left(\frac{d^2+R_h^2-R_p^2}{2dR_h}\right)\\
+  &- \tfrac12\sqrt{(-d+R_p+R_h)(d+R_p-R_h)(d+R_h-R_p)(d+R_p+R_h)}
+\end{split}
+\label{eq:overlap}
+\end{equation}
+
+\textbf{At straight-ahead gaze} ($\varphi=0$) the pupil is centred on the optical axis, so
+$d = \sqrt{x^2+y^2}$ --- just the hole's distance from the origin.
+
+\textbf{At non-zero gaze} the eye rotates about a centre roughly $R_{\text{rot}} \approx 13$--14\,mm
+behind the pupil, so the pupil centre itself translates:
+\begin{equation}
+\Delta(\varphi) = R_{\text{rot}}\sin\varphi
+\label{eq:gazeshift}
+\end{equation}
+and $d$ becomes the hole-to-\emph{shifted}-pupil-centre distance. This is why a design can be
+perfectly viable looking straight ahead and go dark at $15^\circ$ --- and why the final model in
+this project is gaze-weighted rather than on-axis.
+
+\section{Ghosting: two lit holes, two images}
+
+If two holes are simultaneously inside the pupil, each sends its own beam through the lens at a
+different lateral position. In a defocused eye those beams land at different retinal points:
+\begin{equation}
+\Delta r = \frac{s\,M}{P_0-M}
+\label{eq:ghost}
+\end{equation}
+with $s$ the centre-to-centre hole separation. This project validated Eq.~\ref{eq:ghost} against
+the full model at $R^2 = 0.995$.
+
+\begin{keybox}{The sanity check that caught a $\sim100\times$ formula error}
+$\Delta r \to 0$ as $M \to 0$. An in-focus eye converges every beam to the same point regardless
+of where it entered the pupil --- so a healthy eye cannot ghost, by construction. Any candidate
+ghost formula that does not vanish at $M=0$ is wrong. An earlier version of this formula failed
+exactly that test.
+\end{keybox}
+
+A pair is tolerable if $\Delta r$ falls below the eye's fusion threshold $c_{\min}$ (or the
+measured total blur $c_{\text{tot}}$, whichever is larger) --- the two images blur into one.
+
+\section{Packing density}
+
+Geometry, not physics, and the place an earlier bug lived. Family-specific unit-cell formulas
+disagreed with hull-based ones by 1.5--2.25$\times$. The family-agnostic version:
+\begin{equation}
+A_{\text{array}} = A_{\text{hull}} + P_{\text{hull}}\cdot R_h + \pi R_h^2
+\label{eq:density}
+\end{equation}
+the convex hull of hole centres, buffered outward by one hole radius --- because a hole's
+physical extent sticks out past its own centre point.
+
+\chapter{The design this project actually selected}
+
+\section{Reading the final table}
+
+From \texttt{gaze\_weighted\_winner\_per\_M.csv}:
+
+\begin{longtable}{cccccc}
+\caption{Gaze-weighted winners. Pitch is 4000\,$\mu$m and rotation $0^\circ$ in every row.}\\
+\toprule
+$M$ (D) & Family & $N$ & $\ahole$ ($\mu$m) & Lit holes at $\varphi{=}0$ & Time-wtd.\ ghost \% \\
+\midrule
+\endhead
+0 & square & 20 & 2000 & 1 & 0.0 \\
+1 & hexagonal & 20 & 1250 & 1 & 0.0 \\
+2 & hexagonal & 20 & 750 & 1 & 0.0 \\
+3 & hexagonal & 20 & 750 & 1 & 0.0 \\
+4 & hexagonal & 20 & 600 & 1 & 0.0 \\
+5 & hexagonal & 20 & 600 & 1 & 0.0 \\
+6 & hexagonal & 100 & 500 & 1 & 0.0 \\
+8 & hexagonal & 50 & 400 & 1 & 0.0 \\
+global & square & 20 & 2000 & 1 & 0.0 \\
+\bottomrule
+\end{longtable}
+
+Two columns matter more than the rest. \textbf{Lit holes at $\varphi=0$ is 1 in every row}, and
+\textbf{worst-case ghost margin is \texttt{inf} in every row} --- infinite because there are no
+simultaneously-lit pairs to evaluate.
+
+\begin{keybox}{The design principle, named}
+Pitch (4000\,$\mu$m) equals the pupil diameter (4000\,$\mu$m). The array is deliberately sparse
+enough that \textbf{only one hole illuminates the pupil at a time}. Each hole acts as an
+independent single pinhole; the array exists to provide field of view as the eye rotates, not to
+put multiple apertures in front of the pupil at once.
+
+This is a fundamentally different architecture from a dense array (e.g.\ Shen's $s = 1.10$\,mm
+against a 2--4\,mm pupil, which puts several holes in the pupil simultaneously and must then rely
+on ghost \emph{fusion} to stay usable).
+\end{keybox}
+
+\section{Why \texorpdfstring{$c_{\min}$}{c\_min} does not bind your result}
+
+$c_{\min} = 55\,\mu$m is inherited from Shen and is that paper's weakest parameter --- its own
+authors describe it as a single-parameter qualitative calibration anchored to one clinical
+geometry, reproducing threshold behaviour only qualitatively (predicted ghost onset $\approx1.1$\,D
+against a clinical $\approx4$\,D), and they name direct two-pinhole calibration as the most
+valuable falsifiable test of their model. You do not have the resources for that experiment.
+You do not need it, and here is the arithmetic proving why.
+
+Take the $M=8$\,D design: hexagonal, 50 holes, $s = 4000\,\mu$m (verified by direct
+nearest-neighbour computation over the actual generated coordinates). If two of those holes were
+ever lit simultaneously, Eq.~\ref{eq:ghost} gives
+\begin{equation}
+\Delta r = \frac{4000 \times 8}{60-8} = 615.4\,\mu\text{m}
+\end{equation}
+against $c_{\min} = 55\,\mu$m. That is $11\times$ over threshold --- catastrophic ghosting, and it
+would be catastrophic at $c_{\min} = 210\,\mu$m too, or at any plausible value.
+
+\begin{keybox}{The defensible statement}
+This design does not survive ghosting by \emph{fusing} ghost images. It survives by \textbf{never
+producing a pair}: with pitch equal to pupil diameter, only one aperture illuminates the pupil at
+any gaze direction, so no ghost pair exists to evaluate. The ghost margin is reported as
+\texttt{inf} for exactly this reason.
+
+$c_{\min}$ is therefore \textbf{non-binding} on the selected design. Its uncertainty is real and
+inherited, but it can only affect designs in the dense-array regime ($s < \Dpupil$), which this
+one is not. That is a structural argument from geometry, not a calibration claim, and it does not
+require the two-pinhole experiment to make.
+\end{keybox}
+
+\begin{warnbox}{The one test that would make this airtight, and costs no lab time}
+Re-run the gaze-weighted evaluator at $c_{\min} = 55, 110, 210, 400\,\mu$m with everything else
+held fixed (lattice set, aperture range, pupil diameter, gaze weighting). If the winners are
+unchanged --- which the argument above predicts --- you can state \emph{``we tested how much this
+parameter matters and it does not change our result,''} which is strictly stronger than
+\emph{``we used the published value.''} Half a day of compute. Do it before the presentation.
+\end{warnbox}
+
+\section{Honest limits of this architecture}
+
+State these yourself rather than let them be extracted:
+
+\begin{itemize}[leftmargin=1.2cm]
+\item \textbf{Blind fraction.} Only the $M=6$ and $M=8$ designs show non-zero time-weighted blind
+fraction (0.12\% and 0.33\%). Small, but non-zero: at some gaze angles no hole is lit.
+\item \textbf{Light throughput is low by construction.} One hole per pupil means transmission is
+that hole's area over the pupil area --- for $M=8$ ($400\,\mu$m), $(400/4000)^2 = 1\%$. This is
+dark. It is a genuine trade-off against the dense-array approach, and you should present it as
+one rather than as a free win.
+\item \textbf{No measured acuity change yet.} The chain from ``array reduces simulated blur'' to
+``array measurably improves acuity in dioptres'' is not yet closed experimentally.
+\end{itemize}
+
+\part{Fabrication}
+
+\chapter{From design number to mask dimension}
+
+\section{The chain, and where each number comes from}
+
+\begin{center}
+\fbox{\parbox{0.92\textwidth}{\centering
+gaze-weighted winner ($\ahole$, pitch, $N$) $\rightarrow$ hole coordinates $\rightarrow$
+undercut compensation $\rightarrow$ mask aperture $\rightarrow$ printed transparency $\rightarrow$
+photoresist $\rightarrow$ etch $\rightarrow$ measured hole}}
+\end{center}
+
+\texttt{fabrication\_summary.csv} traces row-for-row to \texttt{gaze\_weighted\_winner\_per\_M.csv}.
+The fabricated article \emph{is} the selected design --- confirm this yourself before the
+presentation, because it is the question you will be asked.
+
+\section{Undercut: why the mask hole is smaller than the hole you want}
+
+Wet chemical etching is isotropic. Ferric chloride attacks the brass in every direction at the
+same rate, so it eats sideways under the resist edge as fast as it eats downward. The hole that
+emerges is therefore \emph{wider} than the resist opening that defined it.
+
+For a double-sided (simultaneous two-face) etch through a shim of thickness $t$, each face etches
+roughly halfway through, and the lateral undercut on each face scales with that depth. The design
+rule used here:
+\begin{equation}
+d_{\text{mask}} = d_{\text{target}} - C_{\text{undercut}},
+\qquad
+C_{\text{undercut}} \in \{0.5t,\ 1.0t,\ 1.5t\}
+\label{eq:undercut}
+\end{equation}
+with $t = 50\,\mu$m (0.05\,mm brass shim), giving a bracket of 25 / 50 / 75\,$\mu$m compensation.
+
+\begin{warnbox}{This is an uncalibrated design rule, not a measurement}
+There is \textbf{no empirical etch-rate or undercut calibration} for this specific brass alloy,
+thickness, etchant concentration, temperature, or agitation. The $0.5$--$1.5t$ bracket is a
+standard published starting rule. The bracket exists precisely because the true value is unknown
+--- which is why the test coupon in Chapter~11 is not optional.
+\end{warnbox}
+
+\textbf{Worked example, $M = 8$\,D design.} Target etched diameter $400\,\mu$m:
+\begin{align}
+d_{\text{mask,nominal}} &= 400 - 1.0(50) = 350\,\mu\text{m} \quad\text{(the active mask set)}\\
+d_{\text{mask,low}} &= 400 - 0.5(50) = 375\,\mu\text{m} \quad\text{(least aggressive)}\\
+d_{\text{mask,high}} &= 400 - 1.5(50) = 325\,\mu\text{m} \quad\text{(most aggressive)}
+\end{align}
+
+Note the naming: ``low'' and ``high'' refer to the assumed \emph{undercut}, so the low-undercut
+mask has the \emph{larger} aperture. Getting this backwards will cost you a shim.
+
+\section{The mask files, and what the four variants mean}
+
+Each design generates four SVGs:
+\begin{center}
+\texttt{M8.0\_positive\_top.svg} \quad \texttt{M8.0\_positive\_bottom\_mirrored.svg}\\
+\texttt{M8.0\_negative\_top.svg} \quad \texttt{M8.0\_negative\_bottom\_mirrored.svg}
+\end{center}
+
+\textbf{Polarity} (positive / negative) depends on your dry-film resist chemistry --- whether UV
+exposure hardens the film (negative resist: you want opaque \emph{dots} where holes go, so the
+resist there stays soft and washes out) or softens it (positive resist: the opposite). Check your
+film's datasheet. Getting this wrong etches everything except your holes.
+
+\textbf{Mirroring} is geometry, not chemistry. The two masks contact \emph{opposite faces} of the
+same shim. Viewed through the shim they must be mirror images, or the two etch fronts will not
+meet at the same $(x,y)$ and you get tapered, offset, or partially-blind holes. The bottom mask
+is pre-mirrored in the file for exactly this reason.
+
+\begin{warnbox}{Known gap in the generated files}
+Polarity and side are \textbf{not distinguishable after the transparency is cut out}. Once you
+have four unlabelled squares of film on the bench, you cannot tell which is which. Use
+\texttt{combine\_masks\_for\_printing.py}, or mark each film in the margin immediately after
+cutting and before it leaves the printer. A surgical fix to \texttt{generate\_masks.py} exists
+but has not been applied.
+\end{warnbox}
+
+\section{Registration features already in every mask}
+
+\begin{description}[leftmargin=0.8cm,style=nextline]
+\item[Fiducial dots, $r = 0.75$\,mm, at the corners.] Align top and bottom masks by
+superimposing these before clamping. If the fiducials do not coincide, the holes will not either.
+\item[Calibration square, exactly 10.0\,mm.] Measure it with callipers on the \emph{printed}
+transparency. If it is not 10.00\,mm, your printer has scaled the artwork and every hole diameter
+is wrong by that same factor. This is the single most common way a photochemical etch fails, and
+it fails silently.
+\item[Blank margin, 8\,mm] around the array's bounding circle, with the blank size rounded up to a
+clean 5\,mm increment. For $M=8$: $r_{\max} = 14.678$\,mm, giving a 50\,mm blank.
+\end{description}
+
+\begin{keybox}{Print discipline}
+Print at 100\%, ``actual size,'' no fit-to-page, no margins adjustment. Verify with the 10\,mm
+square \emph{every time}, including reprints --- driver settings do not always persist. A
+laser-printed transparency at high toner density is standard; if the holes look grey rather than
+solid black under a bright light, print again or double up two films in register.
+\end{keybox}
+
+\chapter{The test coupon: do this before the real shim}
+
+The undercut compensation is a guess. One coupon converts it into a measurement, and costs a
+scrap of the same shim stock.
+
+\section{Coupon design}
+
+On a small offcut of the \emph{same} 0.05\,mm brass, from the \emph{same} sheet, etch a row of
+holes spanning the three compensation brackets plus two extra points:
+\begin{center}
+mask apertures of 300, 325, 350, 375, 400\,$\mu$m --- at least three holes each
+\end{center}
+Use the same resist, same etchant batch, same temperature, same agitation, same duration you
+intend to use on the real part. Anything you vary later invalidates the calibration.
+
+\section{Measurement}
+
+Measure the resulting hole diameters. Options in rough order of preference:
+\begin{itemize}[leftmargin=1.2cm]
+\item USB microscope or phone macro with a stage micrometer / steel rule in the same frame
+\item Backlit transmission photograph, hole diameter in pixels scaled by a known reference
+\item Pin gauges, if you have them fine enough
+\end{itemize}
+
+For photographic measurement, apply the same discipline established in the earlier photography
+rounds: \textbf{lock autofocus and auto-exposure manually}, shoot raw (DNG), convert to TIFF.
+JPEG conversion --- including via \texttt{sips} --- bakes in a tone curve that shifts apparent
+edge position and corrupts the measurement.
+
+\section{Extracting the real undercut}
+\begin{equation}
+C_{\text{measured}} = \overline{d_{\text{etched}}} - d_{\text{mask}}
+\end{equation}
+Compute it at each of the five mask sizes. Two things to check:
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item \textbf{Is $C$ constant across mask size?} It should be, to first order --- undercut is set by
+etch depth and time, not by aperture width. If $C$ grows with aperture, your etch is running long
+and small holes are being reached later; shorten the time or improve agitation.
+\item \textbf{Where does $C$ sit in the $25$--$75\,\mu$m bracket?} Regenerate the masks with
+$C_{\text{measured}}$ substituted for \texttt{UNDERCUT\_NOMINAL\_UM} before committing the real shim.
+\end{enumerate}
+
+\begin{keybox}{Why this is worth a slide, not just a step}
+Reporting a measured undercut converts ``we used a published design rule'' into ``we calibrated
+our process.'' It is cheap, it is genuinely quantitative, and it directly parallels the
+calibration argument you are making about $c_{\min}$ --- showing you distinguish inherited
+parameters from measured ones. That distinction is the thing IYPT judges reward.
+\end{keybox}
+
+\chapter{The etch itself}
+
+\section{Process outline}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item \textbf{Clean.} Degrease the shim thoroughly --- isopropanol, then a fine abrasive scrub,
+then rinse and dry completely. Any fingerprint becomes a resist adhesion failure and then a
+random hole.
+\item \textbf{Laminate.} Apply dry-film photoresist to both faces. Heat-laminate slowly; trapped
+bubbles become pinholes in the resist, which become unwanted etched pits.
+\item \textbf{Register and expose.} Align top and bottom masks using the corner fiducials, clamp
+between glass, expose both faces. Exposure time comes from the film datasheet --- run a step
+wedge if you have never used this film before.
+\item \textbf{Develop.} Sodium carbonate solution, gentle agitation, until the pattern is crisp.
+Under-development leaves resist scum in the holes and they will not etch through.
+\item \textbf{Inspect before etching.} This is a free checkpoint. Hold to the light: every hole
+should be clear resist-free brass, all $N$ of them, in the right lattice.
+\item \textbf{Etch.} Ferric chloride, both faces, agitated. Warm etchant is faster but undercuts
+proportionally more --- keep temperature consistent with the coupon run or the calibration
+transfers badly.
+\item \textbf{Stop and strip.} Rinse immediately and thoroughly when holes break through; every
+extra second is extra undercut. Strip remaining resist.
+\end{enumerate}
+
+\begin{warnbox}{Safety --- not optional}
+Ferric chloride stains permanently, is corrosive to skin and eyes, and attacks most metals
+including sinks and drains. Nitrile gloves, eye protection, ventilation, plastic or glass vessels
+only. Do not pour spent etchant down a drain: it is a dissolved-copper waste stream. Neutralise
+and dispose according to local rules, or return it to a supplier that accepts it back.
+\end{warnbox}
+
+\section{Post-etch verification, in order}
+
+\begin{description}[leftmargin=0.8cm,style=nextline]
+\item[Hole count.] Count them. Compare against \texttt{N\_actual} in the coordinate CSV (50 for
+$M=8$). A missing hole is a resist defect; a hole that should not exist is a resist pinhole.
+
+\item[Diameter.] Measure a sample of holes, ideally including centre and edge of the array.
+Compare against the 400\,$\mu$m target. Edge-versus-centre differences reveal uneven agitation.
+
+\item[Pitch.] Measure the nearest-neighbour spacing directly. It must be 4000\,$\mu$m. If it is
+not, your print was scaled --- go back to the 10\,mm calibration square.
+
+\item[Blank size and $r_{\max}$.] For $M=8$: 50\,mm blank, $r_{\max} = 14.678$\,mm to the
+outermost hole centre.
+
+\item[Hole quality.] Inspect under magnification for taper (the two etch fronts missed each
+other), ragged edges (over-etch), or partial breakthrough. A tapered hole is not the circular
+aperture the model assumed and will not perform as predicted.
+\end{description}
+
+\chapter{What to measure with the finished array}
+
+Fabrication is not the deliverable. A measured optical result is. Scope this tightly.
+
+\section{Priority 1: acuity delta (highest value per hour)}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item Printed logMAR or Snellen chart at a fixed, \emph{measured} distance (2--3\,m).
+\item Three conditions: bare uncorrected eye; single 400\,$\mu$m pinhole; the fabricated array.
+\item Record the smallest resolvable line per condition. Three repeats, randomised order.
+\item Fix and record $\dgap$ with a spacer. Record the subject's refractive error in dioptres,
+and the ambient lighting.
+\end{enumerate}
+
+Report the \textbf{delta in logMAR}, not an absolute clinical claim. One honest sentence ---
+``the array improved uncorrected acuity by $X$ logMAR at $M = \_\_$\,D'' --- is what turns this
+from a simulation into an answer to the problem statement's actual verb, \emph{correct}.
+
+\section{Priority 2: the array-versus-single-hole comparison}
+
+This is the measurement that tests \emph{your} architecture specifically. If one hole illuminates
+the pupil at a time, then \textbf{on-axis acuity through the array should match the single
+pinhole}, while the array should provide usable vision across a much wider gaze range. Test both
+halves:
+\begin{itemize}[leftmargin=1.2cm]
+\item On-axis: array $\approx$ single hole? (predicted yes)
+\item Off-axis, eye rotated $10$--$20^\circ$: single hole goes dark, array does not. (predicted)
+\item Any doubled or ghosted image at any gaze angle? (predicted no --- and if you \emph{do} see
+one, that is a finding worth more than confirming the prediction)
+\end{itemize}
+
+\section{Priority 3: blur-versus-defocus, extending ExP3}
+
+The earlier frosted-screen series gave clean monotonic blur growth (+39\% over 20\,mm screen
+displacement) at 1000\,$\mu$m --- qualitatively consistent with the model but uncalibrated in
+dioptres. Repeating it through the fabricated array, with the screen displacement converted to an
+equivalent defocus in dioptres, upgrades that from qualitative to quantitative.
+
+\begin{keybox}{Rig discipline, carried over from the earlier rounds}
+Manual autofocus and auto-exposure lock on any camera --- the unlocked AF is the most likely
+cause of the earlier blur-plateau anomaly. Shoot DNG, convert to TIFF, never JPEG for anything
+you intend to measure.
+\end{keybox}
+
+\section{Report the negatives}
+
+If the array underperforms the single hole, if the blind fraction is visible in use, if
+transmission is uncomfortably dark at 1\% --- report it. This project's record already includes
+acuity-model failures, a luminance re-sweep that made things worse, and two formula errors, all
+documented rather than tuned away. That discipline is the most defensible thing you have. Do not
+abandon it at the last step.
+
+\appendix
+
+\chapter{Quick-reference formula card}
+
+\begin{longtable}{p{5.2cm}p{6.2cm}p{3.0cm}}
+\caption{Every working formula in one place.}\\
+\toprule
+\textbf{Quantity} & \textbf{Formula} & \textbf{Status} \\
+\midrule
+\endhead
+Myopic axial length & $L_{\text{ax}} = n'/(P_0-M)$ & live \\
+Emmetropic axial length & $L_0 = n'/P_0 = 22.267$\,mm & live \\
+ASM propagator & $H = \exp(ikz\sqrt{1-\lambda^2(f_x^2+f_y^2)})$ & live, used twice \\
+Fresnel number & $N_F = R_{\text{hole}}^2/(\lambda z)$ & live (gate) \\
+Lens phase & $\exp(-i\frac{k}{2f}(x^2+y^2))$ & live \\
+Airy intensity & $I = I_0(2J_1(x)/x)^2$ & validation only \\
+Encircled energy & $EE = 1-J_0^2(x)-J_1^2(x)$ & validation only \\
+On-axis Fresnel & $I(0,z)=4I_0\sin^2(\pi N_F/2)$ & live (cross-check) \\
+Relative illuminance & $E_{\text{rel}}=(\min(\ahole,\Dpupil)/\Dpupil)^2$ & live \\
+Hole--pupil overlap test & $d-R_h<R_p$ & live \\
+Overlap area & Eq.~\ref{eq:overlap} & live \\
+Gaze pupil shift & $\Delta=R_{\text{rot}}\sin\varphi$, $R_{\text{rot}}\approx13$--14\,mm & live \\
+Ghost separation & $\Delta r = sM/(P_0-M)$ & live, $R^2=0.995$ \\
+Packing density area & $A_{\text{hull}}+P_{\text{hull}}R_h+\pi R_h^2$ & live \\
+Undercut compensation & $d_{\text{mask}}=d_{\text{target}}-C$, $C\in[0.5t,1.5t]$ & live, uncalibrated \\
+Geometric blur & $r_{\text{geo}}=\frac{a_{\text{stop}}}{2}\frac{|\vr-\vf|}{\vf}$ & \textbf{deprecated} \\
+RSS combination & $\sqrt{r_{\text{geo}}^2+r_{\text{diff}}^2}$ & \textbf{deprecated} \\
+Quadrature $a_{\text{eff}}$ & $\sqrt{\ahole^2+(2.44\lambda\dgap/\ahole)^2}$ & \textbf{deprecated} \\
+\bottomrule
+\end{longtable}
+
+\chapter{Constants used throughout}
+
+\begin{longtable}{p{4.5cm}p{3.5cm}p{6.0cm}}
+\toprule
+\textbf{Symbol} & \textbf{Value} & \textbf{Meaning} \\
+\midrule
+\endhead
+$P_0$ & 60.0\,D & emmetropic eye power, held fixed \\
+$n'$ & 1.336 & vitreous refractive index \\
+$L_0 = f'$ & 22266.667\,$\mu$m & emmetropic axial length \\
+$\Dpupil$ & 4000\,$\mu$m & default pupil diameter \\
+$R_{\text{rot}}$ & 13--14\,mm & eye rotation radius \\
+$\lambda$ & 550\,nm & default design wavelength \\
+$\dgap$ & 12--15\,mm & spectacle vertex distance \\
+$c_{\min}$ & 55\,$\mu$m & Shen fusion floor --- inherited, non-binding here \\
+$t$ & 50\,$\mu$m & brass shim thickness \\
+$C_{\text{undercut}}$ & 25 / 50 / 75\,$\mu$m & low / nominal / high compensation \\
+Fiducial radius & 0.75\,mm & corner registration dots \\
+Calibration square & 10.0\,mm & print scale verification \\
+Blank margin & 8.0\,mm & around array bounding circle \\
+\bottomrule
+\end{longtable}
+
+\chapter{Pre-fabrication checklist}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item Confirm the target design row in \texttt{gaze\_weighted\_winner\_per\_M.csv} and that
+\texttt{fabrication\_summary.csv} matches it.
+\item Open the coordinate CSV; confirm $N$, and hand-compute the nearest-neighbour pitch on two
+holes as an independent check of the generator.
+\item Confirm resist polarity against the film datasheet. Choose positive or negative masks.
+\item Print all four masks; \textbf{measure the 10\,mm calibration square on each}.
+\item Label each film in the margin before cutting --- polarity and side.
+\item Run the test coupon. Measure $C_{\text{measured}}$.
+\item Regenerate masks with $C_{\text{measured}}$ if it differs materially from 50\,$\mu$m.
+\item Etch the real shim. Verify count, diameter, pitch, $r_{\max}$, hole quality.
+\item Photograph the finished array against a scale, DNG, for the presentation.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,43 @@
+TIMELINE -- stage3_human_vision/
+==========================================================================
+Dates from file mtimes and confirmed git commits (repo history starts
+2026-08-01).
+
+- 2026-07-27/28 -- Stage 3 built: MTF/OTF, two CSF models (4 cpd / 8 cpd
+  peaks, both explicitly flagged "heuristic," fit only to peak location),
+  photometry (Trolands), three acuity models (MTF-cutoff, VSX-approx,
+  Rose-DeVries), Strehl ratio, Pareto fronts.
+  Confirmed finding (not an artifact): Strehl ratio is genuinely
+  non-monotonic at these aperture scales -- a 10x finer sweep showed MORE
+  oscillation, not less (later independently reconfirmed by
+  stage3_integrated/, see that folder's TIMELINE.txt).
+  STATUS: adopted.
+
+- 2026-08-01 (commit 60406cd, "initial commit") -- first git-tracked
+  snapshot.
+
+- 2026-08-06 (commit 32c9fb9, "Fix import-shadowing bug: point
+  pipeline.py and metrics.py at stage2_fixed/") -- a real bug: this
+  folder's pipeline.py/metrics.py were silently importing from the
+  pre-wavelength-fix stage2/ instead of the corrected stage2_fixed/, due
+  to Python import shadowing. Fixed to point at the corrected optics
+  (same day as stage2_fixed's own physics audit, see
+  stage2_fixed/TIMELINE.txt).
+  STATUS: bug fixed, not abandoned -- this is the only code change on
+  record for this folder; the module itself was not superseded or
+  replaced.
+
+- (undated, separate analysis pass, see model_comparison/ at repo root) --
+  this project's OWN deprecated closed-form RSS formula was audited
+  against this stage's exact numerical pipeline: diverges by 64.8% mean
+  (192.8% max) at the retina plane. Separately, and more significantly:
+  using r_EE(50%) here to predict real clinical acuity (Wang 2009 dataset)
+  overestimates blur by ~7x; FWHM (core-width, not cumulative-energy)
+  tracks it to ~1.6x instead.
+  STATUS: this is a finding ABOUT which of this folder's own metrics to
+  trust for clinical-acuity prediction (r_EE(50%) downgraded in favor of
+  FWHM for that specific purpose) -- not an abandonment of the folder or
+  its pipeline as a whole.
+
+STATUS (current): active/adopted, running on corrected (stage2_fixed)
+optics since the 2026-08-06 import fix above.

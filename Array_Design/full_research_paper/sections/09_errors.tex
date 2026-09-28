@@ -1,0 +1,143 @@
+\chapter{Errors Identified and Corrected}
+\label{ch:errors}
+
+This chapter is a required, explicit part of this paper, not an appendix of
+afterthoughts: four real implementation defects were found and corrected during this
+project's own development, each with concrete before/after evidence. They are
+documented here as worked case studies because the corrections are themselves part of
+the project's contribution.
+
+\section{The single-FFT defocus-plane bug}
+\label{sec:bug-fft}
+\textbf{The trap.} A naive single-lens imaging simulation -- clip the field to the
+pupil, multiply by the lens's quadratic phase, take one Fourier transform -- computes
+the field at \emph{the lens's own back focal plane}. For a healthy (emmetropic) eye
+that plane coincides with the retina, and the naive approach is correct by coincidence.
+For a myopic eye the retina is, by definition, \emph{not} at that focal plane -- that
+mismatch is the definition of myopia -- and a single FFT silently computes the field at
+the wrong physical location (source:
+\texttt{Physics\_Guide/PHYSICS\_AND\_FABRICATION\_GUIDE.tex}, lines 160--165, verified
+read directly).
+
+\begin{warnbox}{What the bug would have produced, had it shipped}
+A beautiful, sharp Airy pattern computed at the eye's true focal point -- the one plane
+in the whole system where defocus blur is, by construction, exactly zero. The output
+would model a perfectly-corrected eye and report it as myopic. The plot looks entirely
+plausible; the physics is inverted.
+\end{warnbox}
+
+\textbf{The fix.} Full angular-spectrum propagation (Equation~\ref{eq:asm}) over the
+\emph{actual} myopic axial distance $v_r=L_{\mathrm{ax}}(M)\ne f_{\mathrm{eye}}$, not a
+single FFT assumed to land on the retina. This is the entire reason
+Chapter~\ref{ch:single}'s pipeline uses ASM for both propagation stages rather than a
+single closed-form transform, and is validated independently in
+Section~\ref{sec:asm-validation}.
+
+\section{The stage2/ vs.\ stage2\_fixed/ import-shadowing bug}
+\label{sec:bug-shadowing}
+\textbf{The bug.} \texttt{stage4\_human\_vision/pipeline.py} inserted the
+\emph{deprecated} \texttt{stage2/} directory into \texttt{sys.path} and imported
+\texttt{phase2\_retina} from there, not from \texttt{stage2\_fixed/}, despite living in
+this project's own ``Stage 4'' directory specifically to sit on top of the corrected
+Stage 2/3 pipeline. \texttt{stage2/phase2\_retina.py} independently carries the
+lens-phase/retina-propagation wavelength bug: the eye's lens phase was applied using
+the raw vacuum wavelength while the retina propagation used the vitreous's reduced
+wavelength ($\lambda/n'$), under-applying the lens's converging phase by a factor of
+$n'\approx1.336$ whenever \texttt{refractive\_index\_correction=True} (this project's
+own default) -- shifting the field's true geometric focus away from where the retina is
+actually evaluated, at \emph{every} myopia level and aperture \texttt{run\_stage4\_point}
+was ever called with (source: \texttt{stage4\_human\_vision/RESULTS.md}, ``Re-run against
+corrected optics,'' verified read directly, mtime 2026-08-06 14:43).
+
+A second-order consequence: because \texttt{pipeline.py}'s import runs first whenever
+anything under \texttt{stage4\_human\_vision} is imported (via its own
+\texttt{\_\_init\_\_.py}), it silently \emph{shadowed} an entirely separate module's
+(\texttt{R7acuity}'s) own, correctly-targeted \texttt{stage2\_fixed/} import too, via
+Python's bare-module-name caching in \texttt{sys.modules} -- one shared root cause
+independently corrupted two different downstream models' validation results, each
+reported independently in that model's own \texttt{RESULTS.md}.
+
+\textbf{The fix.} \texttt{pipeline.py}'s \texttt{sys.path} insertion was repointed at
+\texttt{stage2\_fixed/}; \texttt{stage3\_human\_vision/metrics.py} had the identical
+defect and was fixed the same way. Verified before fixing
+(\texttt{sys.modules['phase2\_retina'].\_\_file\_\_}) that the shadowing reproduced, and
+after fixing that it resolves to \texttt{stage2\_fixed/phase2\_retina.py}.
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$M$ (D) & $R^2$ (pre-fix) & $R^2$ (post-fix) & Improvement \\
+\midrule
+0 & $-6.39$ & $-4.80$ & $+1.6$ \\
+2 & $-4.98$ & $-1.41$ & $+3.6$ \\
+5 & $-2.84$ & $-0.68$ & $+2.2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Verdict: still fails the $R^2{>}0,\,p{<}0.05$ bar at every $M$ -- but a real,
+substantial, and consistent improvement in the right direction at every $M$ tested.}
+Pearson $r$ \emph{worsened} or flipped sign at $M=0$ and $M=2$ even as $R^2$ improved,
+because $R^2$ penalizes systematic bias/offset (every predicted point sitting above the
+diagonal, pre-fix) while Pearson $r$ measures only rank correlation -- the corrected
+optics reduced the bias enough to improve $R^2$ while disturbing whatever weak
+rank-ordering existed before. Reported as-is, not smoothed over by selecting whichever
+statistic looks more favourable (source:
+\texttt{stage4\_human\_vision/RESULTS.md}, verified read directly).
+
+\subsection{A follow-on staleness discovery}
+A specific downstream consequence of this fix was found only during this paper's own
+preparation: \texttt{validation\_predicted\_vs\_observed.csv} (dated 2026-07-29,
+8 days \emph{before} the 2026-08-06 fix above) was still being read by later analysis as
+if it were current, though a correctly-dated ``postfix'' re-run already existed
+alongside it. Full detail in Section~\ref{sec:stale-wang}; this is documented as its own
+sub-instance of the general staleness pattern this project has now encountered twice
+(the other being Section~\ref{sec:bug-gridN}).
+
+\section{Model A's single-axis gaze limitation}
+\label{sec:bug-single-axis}
+Not a coding defect in the sense of the other three entries in this chapter, but a
+genuine, acknowledged \emph{modelling} limitation with a real, concrete failure
+instance: Model~A's vignetting evaluation samples gaze along one fixed axis only. A
+specific \texttt{concentric\_centered} candidate that outperformed the then-current
+winner everywhere inside $15^\circ$ was found to fail catastrophically -- a complete
+blackout -- in the $20$--$25^\circ$ gaze range at an azimuth Model~A's single axis never
+tested (source: \texttt{CENTERED\_CONCENTRIC\_COMPARISON.md}, 2026-08-17, verified
+present). This is the concrete motivating case for building Model~B's full-azimuth
+sampling (Section~\ref{sec:model-b-method}); see Section~\ref{sec:model-a-limitation}
+for the mechanism and Section~\ref{sec:hex-intuition} for the geometric reason
+hexagonal packing is comparatively resistant to it.
+
+\section{The grid-resolution ($N_{\mathrm{grid}}$) staleness bug}
+\label{sec:bug-gridN}
+\textbf{The bug.} \texttt{stage4\_human\_vision/pipeline.py}'s \texttt{run\_stage4\_point}
+defaults to $N_{\mathrm{grid}}=2048$. At this resolution, computed blur radii for large
+apertures ($\gtrsim1500$--$2000\,\mu$m) come out approximately $2\times$ too large
+compared to the converged value at $N_{\mathrm{grid}}=4096$ -- a numerical
+under-resolution artifact (Section~\ref{sec:gridN}). \texttt{run\_blur\_sweep.py} was
+fixed on 2026-08-16; \texttt{run\_acuity\_sweep.py} called the same underlying function
+but was not updated to match until 2026-09-12/13, leaving nearly a month of
+acuity-model output computed at the stale resolution.
+
+\textbf{Blast-radius accounting.} Every file derived from the stale
+\texttt{acuity\_sweep\_stage4.csv} was identified and regenerated:
+\texttt{table1\_optimum\_summary.csv} (subsequently superseded entirely by
+\texttt{per\_M\_optimum\_map.csv}), \texttt{per\_M\_optimum\_map.csv} itself, and every
+figure derived from either. The entire downstream \texttt{array\_geometry\_lab}
+evaluation pipeline was re-run in full rather than assuming only the directly-affected
+files needed attention.
+
+\textbf{Fix verified, not merely applied.} Because array hole \emph{geometry} is
+generated deterministically from spacing parameters alone, independent of the acuity
+model entirely, fabrication package outputs (hole-coordinate CSVs, mask SVGs) were
+explicitly diffed pre- and post-fix and confirmed \textbf{byte-identical}
+(Section~\ref{sec:fabrication}) -- the fix changed predicted acuity numbers, not
+fabricated geometry, and this was checked rather than assumed.
+
+\section{A related, lower-priority finding, disclosed for completeness}
+\label{sec:bug-dashboard}
+\texttt{master\_dashboard/wrappers.py}'s \texttt{sweep\_stage4\_acuity} also omits
+$N_{\mathrm{grid}}$ (defaulting to $2048$) at its own call to
+\texttt{run\_stage4\_point}. Unlike the three entries above, this function is an
+interactive-dashboard-only code path: no committed, reported result file in this
+project currently depends on its output. Flagged here for completeness and future
+awareness, not treated as a fifth confirmed-impactful bug.

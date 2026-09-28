@@ -1,0 +1,388 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\definecolor{warnred}{HTML}{9C2B2B}
+\definecolor{boxgrey}{HTML}{F4F4F6}
+
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape What Feeds the Acuity Number, and How Much}
+\fancyfoot[C]{\thepage}
+
+\newsavebox{\kbsave}
+\newsavebox{\wbsave}
+\newenvironment{keybox}[1]%
+{\par\vspace{6pt}\begin{lrbox}{\kbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{hbblue}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{7pt}%
+\fcolorbox{hbblue}{boxgrey}{\usebox{\kbsave}}\end{center}\vspace{6pt}\par}
+\newenvironment{warnbox}[1]%
+{\par\vspace{6pt}\begin{lrbox}{\wbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{warnred}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{7pt}%
+\fcolorbox{warnred}{white}{\usebox{\wbsave}}\end{center}\vspace{6pt}\par}
+
+\title{\textbf{\Huge What Feeds the Acuity Number}\\[0.3cm]
+\textcolor{hbblue}{\huge Inputs, Weights, and Why Each One Is There}\\[0.5cm]
+\large\itshape Every characteristic used by \texttt{predict\_acuity()}, its numerical
+weight in the final result, and the source or reasoning behind it}
+\author{}
+\date{Traced against a live run: 400\,\textmu m, $M=8$\,D, verified 2026-09-09}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{The final equation, and what each piece contributes}
+
+\section{The formula}
+
+\begin{equation}
+\text{MAR}_{\text{arcmin}} = \underbrace{\frac{30}{f_{\text{MTF10}}}}_{\text{(1) optical cutoff}}
+\times \underbrace{\text{VSOTF}^{-0.1}}_{\text{(2) neural weighting}},
+\qquad
+\text{logMAR} = \log_{10}(\text{MAR}) + \underbrace{\Delta_{\text{bright}}}_{\text{(3) illuminance}}
+\end{equation}
+
+Three characteristics of the optical system feed this equation. Nothing else does. This chapter
+quantifies exactly how much each one moves the final number, using a live traced run at
+400\,\textmu m, $M=8$\,D as the worked example throughout --- every number below was read directly
+from a single call to \texttt{run\_stage4\_point()}, not estimated.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{p{3.7cm}p{4.2cm}p{2.0cm}p{4.0cm}}
+\toprule
+\textbf{Characteristic} & \textbf{What it measures} & \textbf{Weight in final logMAR} &
+\textbf{At this operating point} \\
+\midrule
+(1) MTF10 cutoff frequency & Optical resolving power of the pinhole+eye system & \textbf{dominant} &
+14.44 cpd $\to$ logMAR $+0.3175$ \\
+(2) VSOTF (neural-weighted Strehl) & How much of that optical signal survives visual processing &
+\textbf{small} & 0.739 $\to$ shifts logMAR by $+0.0131$ \\
+(3) Retinal illuminance & Whether the image is bright enough for full acuity & \textbf{usually zero}
+& 1257\,Td, above the 300\,Td knee $\to$ shifts logMAR by $0.0000$ \\
+\bottomrule
+\end{tabular}
+\caption{The three inputs, ranked by actual effect size at the design's own operating point.}
+\end{table}
+
+\begin{keybox}{The one-sentence summary}
+Acuity is set almost entirely by where the modulation transfer function crosses 10\% contrast. The
+neural weighting nudges it by about a hundredth of a logMAR unit. The brightness term is fully wired
+in, cited, and currently contributes nothing to any of the eight fabricated designs --- because
+every one of them, at the assumed scene luminance, sits above the threshold where it would matter.
+\end{keybox}
+
+\chapter{External validation status --- read this before quoting any predicted logMAR}
+
+\begin{warnbox}{The predictor has not been validated against real clinical data, and the one attempt failed}
+The full model (MTF10 + VSOTF + brightness correction, exactly as traced in this document) was run
+against Wang et al.\ (2009)'s real clinical pinhole-acuity measurements, in
+\texttt{stage4\_human\_vision/RESULTS.md}.
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$M$ (D) & $R^2$ & Pearson $r$ & $p$-value \\
+\midrule
+0 & $-6.39$ & 0.395 & 0.510 \\
+2 & $-4.98$ & 0.393 & 0.513 \\
+5 & $-2.84$ & 0.405 & 0.499 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Negative $R^2$ means the model predicts worse than simply guessing the mean every time. $p\approx0.50$
+means no statistically significant relationship was detected. This is not weak correlation --- every
+one of the 15 tested (aperture, $M$) points shows the \emph{same-direction} bias: the model
+over-predicts blur (worse logMAR than observed) at every point tested.
+\end{warnbox}
+
+\textbf{The luminance assumption was tested and ruled out as the cause.} Correcting the scene
+luminance from the 10\,000\,cd/m$^2$ default to Wang 2009's own reported illumination
+(15 footcandles $\to$ 43.7\,cd/m$^2$) made $R^2$ \emph{worse} ($-7.88$ vs.\ $-6.68$ at $M=0$), because
+it pushed apertures further below the 300\,Td knee and added predicted blur on top of a model that was
+already over-predicting it (\texttt{LUMINANCE\_RECONCILIATION.md}).
+
+\textbf{The project's own leading diagnosis, most likely cause first:} (1) the acuity formula has no
+fitted offset or scale against real data --- \texttt{DESIGN.md} flags this as a known
+``requires empirical calibration'' gap; (2) the Wang 2009 dataset is non-monotonic at $n=5$
+(observed logMAR 0.28, 0.31, \textbf{1.00}, 0.40, 0.50 at 500/750/1000/1200/1500\,\textmu m --- a spike
+at 1000\,\textmu m that reverses at 1200) and a single outlier at $n=5$ sinks any smooth model
+regardless of which optical metric underlies it; (3) the dataset records no per-subject refractive
+error, adding irreducible noise; (4) $n=5$ is too small for significance even with real signal
+present. \texttt{RESULTS.md}'s own conclusion: this ``cannot be properly validated with currently
+available public data.''
+
+\begin{keybox}{How to use every number in this document, given the above}
+Every logMAR value quoted here is a \textbf{self-consistent model output} --- traceable, cited term
+by term, internally coherent --- \emph{not} a validated clinical prediction. Say the validation status
+yourself if the acuity model comes up: internally consistent, externally unvalidated, the one
+validation attempt failed, luminance was tested and ruled out as the cause, the leading suspects are
+lack of calibration and a small non-monotonic clinical dataset rather than the underlying optics. This
+is also the reason the project's own logMAR measurement protocol matters more than a confirmatory
+afterthought --- it is calibration data this model currently has none of.
+\end{keybox}
+
+\chapter{Characteristic 1: MTF10 cutoff frequency --- the dominant term}
+
+\section{What it is}
+
+The spatial frequency, in cycles per degree, at which the eye's modulation transfer function falls to
+10\% contrast. Below that frequency, detail is still transmitted with enough contrast to see; above
+it, the eye cannot reliably tell light from dark at that fine a spacing.
+
+\section{Where it comes from}
+
+Computed in \texttt{optical\_quality.py} from the retinal point-spread function that Stage~2's wave
+propagation produces. The PSF is radially averaged into an MTF via
+\texttt{stage3\_metrics.mtf\_radial}, then the frequency at 10\% is read off by
+\texttt{mtf50\_mtf10}. This is a direct measurement of the simulated optical system --- not a fitted
+or assumed number.
+
+\section{How it enters the acuity formula}
+
+\begin{equation}
+\text{MAR}_{10} = \frac{30}{f_{\text{MTF10}}\,[\text{cpd}]}
+\end{equation}
+
+The constant 30 is \texttt{cycles\_per\_degree\_at\_20\_20} --- the standard clinical definition that
+20/20 (logMAR 0) acuity corresponds to resolving 30 cycles per degree. This is the entire
+definitional anchor of the whole model: everything downstream is expressed relative to this one
+reference number.
+
+\textbf{Worked example, 400\,\textmu m at $M=8$\,D:} MTF10 $= 14.4431$\,cpd, so
+$\text{MAR}_{10} = 30/14.4431 = 2.0771$ arcmin, giving $\log_{10}(2.0771) = +0.3175$ logMAR before any
+other correction is applied. This is 96\% of the final answer ($+0.3306$).
+
+\begin{keybox}{Why this is the dominant term by design, not by accident}
+The model's philosophy is: acuity is fundamentally an optical-resolution question, and everything
+else (neural weighting, illuminance) is a secondary correction on top of that resolution limit. That
+is a defensible simplification --- MTF10 alone is a standard, clinically-used proxy for acuity in its
+own right (it is how many autorefractors and wavefront-aberrometer-based acuity predictions work) ---
+but it does mean the model is only as good as the PSF that produced this one number. Every validation
+concern raised elsewhere in this project about the retinal PSF (the FWHM ring-hopping, the 8\% Airy
+tolerance at the first null) is inherited directly into this term, because it is computed from the
+same PSF.
+\end{keybox}
+
+\chapter{Characteristic 2: VSOTF --- neural-weighted optical quality}
+
+\section{What it is}
+
+Visual Strehl ratio computed from the OTF, or VSOTF: a single number summarising how much of the
+optical signal survives once the eye's own contrast sensitivity is factored in, normalised against
+the diffraction-limited case.
+
+\section{Where it comes from}
+
+\begin{equation}
+\text{VSOTF} = \frac{\int \text{OTF}_{\text{real}}(f)\,\text{CSF}(f)\,df}
+{\int \text{OTF}_{\text{real,diffraction-limited}}(f)\,\text{CSF}(f)\,df}
+\end{equation}
+
+computed in \texttt{visual\_strehl.py}. The numerator integrates the \emph{actual} optical transfer
+function --- weighted by the eye's contrast sensitivity function (CSF), so frequencies the eye barely
+perceives contribute little to the integral. The denominator is the same integral for a perfect,
+diffraction-limited system at the same aperture. VSOTF $=1$ means the system performs as well as
+physically possible; lower values mean real aberrations (here, defocus) are costing performance.
+
+The CSF weighting uses the \textbf{Barten model} by default (\texttt{csf.py},
+\texttt{barten\_simplified\_csf}), a luminance- and field-size-dependent closed form. Two alternative
+CSF models (Mannos--Sakrison, a normalised Watson template) are computed alongside it for
+comparison but are not used in the recommended acuity number.
+
+\section{How it enters the acuity formula}
+
+\begin{equation}
+\text{MAR}_{\text{adjusted}} = \frac{\text{MAR}_{10}}{\text{clamp}(\text{VSOTF},\,0.25,\,2.0)^{0.1}}
+\end{equation}
+
+\textbf{Worked example:} VSOTF $=0.7389$. $0.7389^{0.1} = 0.9700$. $\text{MAR}_{\text{adjusted}} =
+2.0771 / 0.9700 = 2.1409$ arcmin, moving logMAR from $+0.3175$ to $+0.3306$ --- a shift of
+\textbf{0.0131 logMAR}.
+
+\begin{keybox}{Why the exponent is 0.1, and why that makes this a deliberately weak correction}
+The clamp restricts VSOTF to $[0.25, 2.0]$ before the exponent is applied, and the exponent itself is
+small. Even at the clamp's lower bound, $0.25^{-0.1} = 1.149$, a MAR increase of only 15\%
+($\approx 0.06$ logMAR). This is a design choice: VSOTF is being used as a \emph{fine correction} to
+the MTF10-based estimate, not as an independent, comparably-weighted acuity predictor in its own
+right. The reasoning is that MTF10 already captures most of what the degraded optics do to acuity;
+VSOTF adds the additional information that some of the remaining contrast is more or less usable to
+the visual system depending on which spatial frequencies survived, without being allowed to swing the
+answer by more than a fraction of a line.
+\end{keybox}
+
+\section{What the Barten CSF weighting itself depends on}
+
+Two further characteristics enter here, both fixed defaults rather than swept design variables in
+your current results:
+
+\begin{longtable}{p{3.5cm}p{2.5cm}p{7.5cm}}
+\toprule
+\textbf{Input} & \textbf{Default} & \textbf{Effect} \\
+\midrule
+\endhead
+Scene luminance & 10\,000\,cd/m$^2$ & Higher luminance raises peak CSF sensitivity and shifts the
+CSF's high-frequency cutoff outward (via the $a$ and $b$ terms in \texttt{barten\_simplified\_csf}) ---
+brighter scenes let the eye use finer detail, so VSOTF's frequency weighting shifts toward higher
+spatial frequencies at high luminance. \\
+Field diameter & 20$^\circ$ & Enters the same $a$ term; a larger field lowers the $12/w$ term in the
+denominator, slightly raising sensitivity. This models spatial summation across a wider retinal area.
+\\
+\bottomrule
+\end{longtable}
+
+\chapter{Characteristic 3: retinal illuminance --- present, cited, usually zero}
+
+\section{What it is}
+
+The amount of light actually reaching the retina, in trolands (Td) --- a unit that already accounts
+for pupil area, so it is a direct measure of retinal light flux rather than scene brightness alone.
+
+\section{Where it comes from}
+
+Two steps, in \texttt{illuminance.py} and \texttt{pupil.py}:
+
+\textbf{Step A --- the natural pupil diameter.} The Watson--Yellott (2012) unified pupil model,
+solved iteratively because pupil size and retinal illuminance are mutually dependent (illuminance
+depends on the effective stop, which depends on pupil size, which depends on illuminance). Converges
+in a handful of iterations to 0.0001\,mm tolerance.
+
+\textbf{Step B --- the effective stop.} Whichever is smaller, the pinhole or the natural pupil:
+\begin{equation}
+d_{\text{stop}} = \min(d_{\text{pupil}},\,d_{\text{pinhole}})
+\end{equation}
+For every one of your fabricated designs the pinhole is smaller (e.g.\ 0.400\,mm vs.\ a natural pupil
+of 3.725\,mm at $M=8$), so \textbf{the pinhole is the effective aperture stop in every case} --- this
+is the whole physical point of the device.
+
+\begin{equation}
+\text{Td} = L_{\text{scene}}\,[\text{cd/m}^2] \times A_{\text{stop}}\,[\text{mm}^2]
+\end{equation}
+
+\section{How it enters the acuity formula}
+
+\begin{equation}
+\Delta_{\text{bright}} = \begin{cases} 0 & \text{Td} \geq 300 \\[4pt]
+0.060 \times \log_{10}(300/\text{Td}) & \text{Td} < 300 \end{cases}
+\end{equation}
+
+The 300\,Td knee is from Van Nes \& Bouman (1967): above it, contrast detection is governed by the
+Weber--Fechner law and is illuminance-independent; below it, the de~Vries--Rose regime applies and
+sensitivity falls off. The 0.060 logMAR-per-decade slope is from Tidbury, Czanner \& Newsham (2016),
+verified against their Table~3 ($p<0.001$); the code comments record that an independently-derived
+alternative slope from Sheedy, Bailey \& Raasch (1984), $\approx 0.0664$, could only be traced to a
+secondary summary and so was not used.
+
+\textbf{Worked example, 400\,\textmu m at $M=8$\,D:} $\text{Td} = 1256.6$, above the 300\,Td knee, so
+$\Delta_{\text{bright}} = 0$.
+
+\begin{warnbox}{The finding: this term is inert for every fabricated design, and you should say so first}
+\begin{longtable}{ccc}
+\textbf{Aperture (\textmu m)} & \textbf{Retinal illuminance (Td)} & \textbf{Brightness penalty
+(logMAR)} \\
+\midrule
+75 & 44.2 & $+0.0499$ \\
+100 & 78.5 & $+0.0349$ \\
+150 & 176.7 & $+0.0138$ \\
+\textbf{200} & \textbf{314.2} & \textbf{$+0.0000$} \\
+\multicolumn{3}{c}{\emph{every fabricated design (400--2000\,\textmu m) falls here}} \\
+2000 & 31\,415.9 & $+0.0000$ \\
+\end{longtable}
+
+The knee sits at 200\,\textmu m. Every one of your eight gaze-weighted winners is at 400\,\textmu m or
+larger. At the model's assumed 10\,000\,cd/m$^2$ scene luminance, \textbf{the brightness term
+contributes exactly zero logMAR to every design you have actually selected.} It is real physics,
+correctly cited, correctly implemented --- and currently silent. It would activate for an indoor
+measurement (typical luminance 100--300\,cd/m$^2$, roughly two decades below the assumption) or for
+any future aperture below 200\,\textmu m. State this yourself: it pre-empts the question of whether
+you actually tested the brightness term's effect on your headline result, and the honest answer is
+that you have not needed to, because it does not act on that result.
+\end{warnbox}
+
+\chapter{What is computed but does NOT enter the recommended number}
+
+Two further quantities are computed by the pipeline and reported alongside the recommended acuity
+value, but neither contributes to it. Listing them matters because they appear in the same output
+dictionary and could be mistaken for inputs if read from the code without care.
+
+\section{MTF50}
+
+The 50\%-contrast cutoff frequency, computed identically to MTF10 but at a higher contrast threshold.
+Used only to bound the reported \texttt{approximate\_ci\_95\_mar\_arcmin} interval --- which, despite
+the name, is \textbf{not a statistical confidence interval}. It is
+$[\min, \max]$ of three different model choices (MTF10-based, MTF50-based, and the recommended
+VSOTF-and-brightness-adjusted value), not a distribution with a defined confidence level.
+
+\begin{warnbox}{Do not present this interval as a confidence interval}
+At $M=8$\,D it spans logMAR $+0.318$ to $+0.795$ --- 4.8 chart lines. If shown, label it ``spread
+across model choices,'' not ``95\% CI.'' An examiner asking what distribution produced a 95\% figure
+has no defensible answer, because none was computed.
+\end{warnbox}
+
+\section{The legacy SNR term}
+
+An older acuity model, retained in the code as \texttt{vsotf\_snr\_legacy} for direct comparison
+rather than deleted. Uses an uncited $\text{SNR}^{0.05}$ exponent in place of the cited Tidbury
+brightness correction. The project's own change log records that this was superseded specifically
+because it lacked a literature source; it remains computable but is not the recommended value and
+should not appear as a headline number in the presentation.
+
+\chapter{Full input inventory}
+
+Every value that can change the output of \texttt{predict\_acuity()}, traced to its origin.
+
+\begin{longtable}{p{3.2cm}p{2.6cm}p{2.7cm}p{5.0cm}}
+\caption{Complete input inventory for the acuity prediction.}\\
+\toprule
+\textbf{Input} & \textbf{Source} & \textbf{Design variable?} & \textbf{Reasoning / citation} \\
+\midrule
+\endhead
+Aperture diameter $a_{\text{hole}}$ & user-set & \textbf{yes --- swept} & The physical design parameter
+under optimisation \\
+Wavelength & user-set, default 550\,nm & fixed & Photopic luminosity peak \\
+Gap distance $d_{\text{gap}}$ & user-set, default 12\,mm & fixed & Spectacle vertex distance \\
+Myopia $M$ & user-set & \textbf{yes --- swept} & The physiological variable under study \\
+$P_0$, $n'$ & 60\,D, 1.336 & fixed & Standard emmetropic eye power and vitreous index \\
+Scene luminance & 10\,000\,cd/m$^2$ & fixed default & Bright daylight reference; see
+Ch.~3 warning on indoor measurement \\
+Field diameter & 20$^\circ$ & fixed default & Typical CSF measurement field size \\
+Subject age & 28.58\,yr & fixed default & Watson--Yellott reference age \\
+Eyes (mono/bino) & 2 (binocular) & fixed default & Affects pupil-model flux density only \\
+CSF model & Barten & fixed default & Most widely validated luminance-dependent CSF; two
+alternatives computed but unused \\
+Cycles/deg at 20/20 & 30.0 & fixed constant & Clinical definition, the entire scale anchor \\
+VSOTF exponent & 0.1 & fixed constant & Deliberately weak; see Ch.~2 keybox \\
+VSOTF clamp & $[0.25, 2.0]$ & fixed constant & Bounds the correction's maximum possible swing \\
+Weber knee & 300\,Td & fixed constant, cited & Van Nes \& Bouman (1967), verified primary source \\
+Brightness slope & 0.060 logMAR/decade & fixed constant, cited & Tidbury et al.\ (2016), verified
+Table~3 \\
+\bottomrule
+\end{longtable}
+
+\begin{keybox}{The reasoning behind the split between swept and fixed}
+Only aperture and myopia vary across your actual results --- every other quantity in this table is a
+fixed default representing a specific, stated measurement scenario (bright outdoor use, average adult
+pupil dynamics, standard CSF assumptions). This is a reasonable scoping choice for a design
+optimisation, but it means the predicted numbers are conditional on that scenario holding. Chapter~3's
+finding --- that the brightness term is inert at this luminance --- is a direct consequence of that
+choice, and is the one fixed default most likely to matter if the testing conditions differ from the
+model's assumption.
+\end{keybox}
+
+\end{document}

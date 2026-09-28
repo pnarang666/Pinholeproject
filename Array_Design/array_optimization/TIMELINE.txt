@@ -1,0 +1,44 @@
+TIMELINE -- Array_Design/array_optimization/
+Simple dated log. Full detail in this folder's own README.md and GAPS_CLOSED.md.
+
+2026-08-14 -- ghost-separation formula validated independently -- stage0_ghost_validation/
+  built its own two-hole coherent wave-optics propagation (not reusing either formula's
+  code) and measured peak separation directly. Confirmed: legacy formula R²=-1701.7
+  (categorically wrong), corrected formula "delta_r=s*M/(P0-M)" R²=0.995. This is
+  Defect 2 that this whole pipeline exists to have fixed -- see
+  Array_Design/ghosting/TIMELINE.txt for where the corrected formula itself came from.
+
+2026-08-15 -- grid_N=2048 -- ABANDONED, superseded by grid_N=4096 in
+  array_psf_envelope.py -- reason (Defect 1): r_max_lens permanently excluded the
+  outer ~22% of the pupil at the old resolution, at every design point tested (not a
+  crop-window or units bug -- both ruled out directly). Re-verified zero exclusions
+  across a 48-point scan after the fix. Pre-fix files preserved as
+  Array_Design/*_legacy_gridN2048.csv (see array_optimization/README.md's own
+  "Defect audit trail" table).
+
+2026-08-15 -- full sweep + decision pipeline run AFTER both defects fixed -- result:
+  274 unique (aperture, pitch, packing) candidates, 90 pass the hard ghosting+margin
+  gates, 20 recommended for prototyping.
+
+2026-08-15/16 (GAPS_CLOSED.md verification pass, Part A) -- 5 targeted checks run
+  against the above 274->90->20 result, before touching vignetting.py:
+    - Gap 1: PASS -- the ~1.46um M=0 residual is the peak-detector's own measurement
+      floor (confirmed via the coherent-propagation column's pitch-dependence), not a
+      real physics asymmetry. No action needed.
+    - Gap 2: CONFIRMED -- re-derived R²=0.995 (corrected) vs R²=-1701.7 (legacy)
+      directly from ghost_formula_validation.csv, not from memory.
+    - Gap 3: NEW CHECK, PASS -- the M=4-8D weight-sensitivity result had never
+      actually been re-run against the real 20 recommended designs; run now,
+      confirmed robust for a structural reason (hard admission gates, not weighted
+      scoring).
+    - Gap 4: NEW CHECK, REAL GAP FOUND -- an OD 0.6-0.8 / 15-25% transmission target
+      is not enforced anywhere in this pipeline (no such number exists in any prior
+      project doc either); 17/20 recommended designs fall outside that band, some
+      as low as 0.57% transmission. Not a bug (nothing was ever built against this
+      target) but a real, previously-undocumented scope gap -- README.md's "does NOT
+      guarantee" list was updated to state it plainly.
+    - Gap 5: FLAGGED, NOT FIXED (out of scope) -- new_sweeps/'s single-aperture
+      pipeline (dated 2026-08-08/09) still runs at grid_N=2048 and was never touched
+      by the 2026-08-15 Defect-1 fix (which only touched the array pipeline). Does
+      not corrupt vignetting.py's own inputs (which come from the already-fixed array
+      pipeline), but is a real open item for anyone using new_sweeps/*.csv directly.

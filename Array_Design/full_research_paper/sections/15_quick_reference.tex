@@ -1,0 +1,63 @@
+\chapter{Formula and Constants Quick-Reference}
+\label{ch:quickref}
+
+Consolidated from the derivations of Chapters~\ref{ch:single}--\ref{ch:array-theory},
+cross-checked against \texttt{Physics\_Guide/MASTER\_HANDBOOK.tex}'s own equivalent
+tables (Chapters 9--10 of that document, verified present, mtime 2026-09-11) and
+against live code where a discrepancy would matter (Chapter~\ref{ch:provenance}).
+
+\begin{longtable}{p{4.6cm}p{5.6cm}p{2.8cm}}
+\caption{Every working formula referenced in this paper, with status.}\\
+\toprule
+Quantity & Formula & Status \\
+\midrule
+\endhead
+Myopic axial length & $L_{\mathrm{ax}}=n'/(P_0-M)$ & live \\
+Emmetropic axial length & $L_0=n'/P_0=22.267$\,mm & live \\
+ASM propagator (Eq.~\ref{eq:asm}) & $H=\exp(ikz\sqrt{1-\lambda^2(f_x^2+f_y^2)})$ & live,
+used for both propagation stages \\
+Fresnel number & $N_F=R_{\mathrm{hole}}^2/(\lambda z)$ & live (regime gate) \\
+Airy intensity & $I=I_0(2J_1(x)/x)^2$ & validation only \\
+Encircled energy & $EE=1-J_0^2(x)-J_1^2(x)$ & validation only \\
+On-axis Fresnel oscillation & $I(0,z)=4I_0\sin^2(\pi N_F/2)$ & live (cross-check) \\
+Circle--circle overlap (Eq.~\ref{eq:overlap}) & three-regime exact form & live \\
+Gaze pupil shift (Eq.~\ref{eq:pupil-shift}) & $\Delta=R_{\mathrm{rot}}\sin\varphi$ & live \\
+Ghost separation & $\Delta r=sM/(P_0-M)$ & live, $R^2=0.995$ \\
+Acuity (recommended, Ch.~\ref{ch:acuity}) & $\mathrm{MAR}=(f_{20/20}/f_{\mathrm{cutoff,10\%}})\,\mathrm{VSOTF}^{-0.1}$ & live \\
+Brightness correction (Eq.~\ref{eq:brightness}) & $0.060\log_{10}(300/E_{\mathrm{td}})$
+below knee & live, cited \\
+Geometric blur (old) & $r_{\mathrm{geo}}=\frac{a_{\mathrm{stop}}}{2}\frac{|v_r-v_f|}{v_f}$
+& deprecated (Sec.~\ref{sec:deprecated}) \\
+RSS combination (Sec.~\ref{sec:rss}) & $\sqrt{r_{\mathrm{geo}}^2+r_{\mathrm{diff}}^2}$ &
+deprecated, 64.8\% mean error \\
+Quadrature $a_{\mathrm{eff}}$ & $\sqrt{a_{\mathrm{hole}}^2+(2.44\lambda d_{\mathrm{gap}}/a_{\mathrm{hole}})^2}$
+& deprecated \\
+Ghosting three-regime (Eq.~\ref{eq:three-regime}) & $N_{\mathrm{eff}}\le1$ OR
+$\mathrm{MTF}(f_0)<\mathrm{CSF}^{-1}(f_0)$ & live, harmonic-extended (Sec.~\ref{sec:harmonic}) \\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{p{3.6cm}p{2.6cm}p{6.8cm}}
+\caption{Constants used throughout this paper.}\\
+\toprule
+Symbol & Value & Meaning \\
+\midrule
+\endhead
+$P_0$ & 60.0\,D & Emmetropic eye power, held fixed for every $M$ (axial myopia model) \\
+$n'$ & 1.336 & Vitreous refractive index \\
+$D_{\mathrm{pupil}}$ & $4000\,\mu$m & Default photopic pupil diameter \\
+$R_{\mathrm{rot}}$ & 13--14\,mm (13.5\,mm used) & Eye rotation radius \\
+$\lambda$ & 550\,nm & Default design wavelength (vacuum) \\
+$d_{\mathrm{gap}}$ & 12\,mm & Spectacle-plane vertex distance \\
+$c_{\min}$ & $55\,\mu$m & Shen (2026) fusion floor -- inherited as a non-binding
+sanity check, not used as a live design constraint in this paper's own results \\
+Scene luminance & $10{,}000\,\mathrm{cd/m^2}$ & Bright-daylight default \\
+Weber--Fechner knee & 300\,Td & Van Nes \& Bouman (1967) \\
+Brightness slope & 0.060\,LogMAR/decade & Tidbury et al.\ (2016) \\
+$N_{\mathrm{grid}}$ (corrected) & 4096 & Post-Section~\ref{sec:gridN}-fix ASM grid resolution \\
+Active-hole fraction threshold & 0.5 & \texttt{margins/active\_pairs.py} \\
+Ghost-margin safety multiple & 2.0 & \texttt{gates.py} (Section~\ref{sec:three-gates}) \\
+Viability floor & 20\% of one hole's own area & \texttt{gates.py} \\
+Blindness gate tolerance (Model B) & 1.0\% & Section~\ref{sec:blindness-gate} \\
+\bottomrule
+\end{longtable}

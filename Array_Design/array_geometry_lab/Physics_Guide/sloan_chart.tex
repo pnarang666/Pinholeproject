@@ -1,0 +1,35 @@
+% Standalone Sloan-letter logMAR chart, sized per LOGMAR_ACUITY_PROTOCOL.tex Ch.4 table.
+% Compile: pdflatex sloan_chart.tex  ->  sloan_chart.pdf
+% Then:    pdftoppm -png -r 300 sloan_chart.pdf sloan_chart   (Canva-ready PNG)
+%
+% NOTE: uses bold Computer Modern caps as a stand-in for the true Sloan optotype font
+% (Sloan is a specific glyph set -- C D H K N O R S V Z on a strict 5x5 grid, uniform
+% stroke width -- not just any font's letters). Fine for a presentation slide; NOT
+% clinically valid for an actual printed acuity test.
+%
+% Row scale factors are the letter-height ratios from the protocol table (mm at 4.0m),
+% normalised to the largest line = 1.0: 29.2/23.2/18.4/14.6/11.6/9.2/7.3/5.8/4.6/3.7 mm
+% -> logMAR +0.7 down to -0.2 in 0.1 steps (each row 1/1.259 of the one above it).
+
+\documentclass[12pt]{article}
+\usepackage[paperwidth=9in,paperheight=11in,margin=0.4in]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\pagestyle{empty}
+
+\newcommand{\optorow}[2]{\scalebox{#1}{\textbf{#2}}}
+
+\begin{document}
+\begin{tabular}{@{}l@{}}
+\optorow{8.00}{Z\ H\ V}          \\[14pt]
+\optorow{6.36}{N\ D\ C\ R\ O}     \\[12pt]
+\optorow{5.04}{S\ K\ H\ V\ N}     \\[10pt]
+\optorow{4.00}{O\ R\ D\ Z\ C}     \\[8pt]
+\optorow{3.18}{H\ N\ V\ K\ S}     \\[7pt]
+\optorow{2.52}{C\ O\ R\ D\ N}     \\[6pt]
+\optorow{2.00}{V\ Z\ K\ H\ R}     \\[5pt]
+\optorow{1.59}{S\ N\ C\ O\ V}     \\[4pt]
+\optorow{1.26}{D\ R\ Z\ K\ H}     \\[4pt]
+\optorow{1.02}{N\ C\ V\ S\ O}
+\end{tabular}
+\end{document}

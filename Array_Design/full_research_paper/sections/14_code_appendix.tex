@@ -1,0 +1,229 @@
+\chapter{Code Appendix}
+\label{ch:code}
+
+Key formula implementations, reproduced verbatim from source with file path and line
+context, per this paper's own provenance discipline (Chapter~\ref{ch:provenance}).
+
+\section{Circle--circle overlap area (Equation~\ref{eq:overlap})}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/engine/vignetting_overlap.py
+def overlap_area_um2(delta_um, R_p_um, R_h_um):
+    d = np.atleast_1d(np.asarray(delta_um, dtype=float))
+    out = np.empty_like(d)
+    full_area = np.pi * min(R_p_um, R_h_um) ** 2
+    lo = abs(R_p_um - R_h_um)
+    hi = R_p_um + R_h_um
+    m_full = d <= lo
+    m_zero = d >= hi
+    m_part = ~m_full & ~m_zero
+    out[m_full] = full_area
+    out[m_zero] = 0.0
+    if np.any(m_part):
+        dp = d[m_part]
+        a1 = np.arccos(np.clip((dp**2+R_p_um**2-R_h_um**2)/(2*dp*R_p_um), -1.0, 1.0))
+        a2 = np.arccos(np.clip((dp**2+R_h_um**2-R_p_um**2)/(2*dp*R_h_um), -1.0, 1.0))
+        radicand = (-dp+R_p_um+R_h_um)*(dp+R_p_um-R_h_um)*(dp+R_h_um-R_p_um)*(dp+R_p_um+R_h_um)
+        term3 = 0.5 * np.sqrt(np.clip(radicand, 0.0, None))
+        out[m_part] = np.clip(R_p_um**2*a1 + R_h_um**2*a2 - term3, 0.0, None)
+    return out[0] if out.size == 1 and np.isscalar(delta_um) else out
+\end{lstlisting}
+
+\section{Pupil radial shift (Equation~\ref{eq:pupil-shift})}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/engine/vignetting_overlap.py
+DEFAULT_R_ROT_MM = 13.5
+DEFAULT_PHI_VALID_DEG = 25.0
+
+def pupil_shift_um(phi_deg, R_rot_mm=DEFAULT_R_ROT_MM):
+    phi_rad = np.radians(phi_deg)
+    return R_rot_mm * 1000.0 * np.sin(phi_rad)
+\end{lstlisting}
+
+\section{Ghost-separation formula}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/engine/ghost_formula.py
+def delta_r_corrected_from_M_um(pitch_um, M_diopters, P0=60.0):
+    return pitch_um * M_diopters / (P0 - M_diopters)
+\end{lstlisting}
+Validated to $R^2=0.995135$ against an independent two-hole coherent wave-optics
+propagation (32 measured points), against $R^2=-1701.71$ for the disproven legacy
+formula (source: \texttt{ghost\_formula.py} module docstring; see Chapter~\ref{ch:provenance}).
+
+\section{Axial myopia model}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# stage2_fixed/myopia_axial.py
+def axial_length_for_myopia(M_diopters, P0=60.0, n_prime=1.336):
+    if M_diopters >= P0:
+        raise ValueError(...)
+    L0 = n_prime / P0
+    L_ax = n_prime / (P0 - M_diopters)
+    f_eye = L0
+    return {"L_ax": L_ax, "f_eye": f_eye, ...}
+\end{lstlisting}
+
+\section{The lens-phase / effective-wavelength pairing (root of Sections~\ref{sec:bug-fft}, \ref{sec:bug-shadowing})}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# stage2_fixed/phase2_retina.py
+def lens_phase(field, dx, wavelength, f_eye):
+    """Thin-lens phase transmittance exp(-i k (x^2+y^2) / (2 f_eye)).
+    `wavelength` here MUST be the image-space effective wavelength
+    (wavelength/n_prime), never the raw vacuum wavelength. f_eye = n_prime/P0
+    is already a vergence-equation distance measured through the vitreous --
+    pairing it with the vacuum k under-applies the lens's converging phase by
+    a factor of n_prime, shifting the true geometric focus to f_eye*n_prime
+    instead of f_eye -- while propagate_to_retina still only propagates to
+    f_eye at zero defocus, so the retina plane is evaluated short of the
+    (wrongly shifted) focus. See PHYSICS_AUDIT.md item A for the full
+    derivation and why the zero-defocus Airy validation gate, run at exact
+    focus, did not surface it (item D)."""
+    N = field.shape[0]
+    L = N * dx
+    X, Y, _, _ = junction.make_grid(N, L)
+    k = 2 * np.pi / wavelength
+    phase = np.exp(-1j * k * (X**2 + Y**2) / (2.0 * f_eye))
+    return field * phase
+\end{lstlisting}
+This single docstring is the precise mechanism behind both Section~\ref{sec:bug-fft}
+(a naive single-FFT implementation, evaluated at the wrong wavelength/plane pairing,
+would silently land exactly on the unshifted focus) and part of why
+Section~\ref{sec:bug-shadowing}'s shadowing defect went undetected by this project's
+own zero-defocus ($M=0$) Fraunhofer validation gate (Section~\ref{sec:asm-validation}):
+that gate is run \emph{at} exact focus, where a wavelength-pairing error of this exact
+form produces no visible discrepancy -- it only manifests at nonzero $M$, precisely the
+condition the validation gate does not test.
+
+\section{The ASM propagator itself (Equation~\ref{eq:asm}), verbatim}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# stage1_v2/physics.py
+def asm_transfer_function(N, dx, wavelength, z, L, band_limit=True):
+    """H(fx,fy) = exp(i k z sqrt(1 - (lambda fx)^2 - (lambda fy)^2)) on
+    propagating orders, zero elsewhere (evanescent cutoff) -- the exact
+    scalar ASM kernel, no paraxial term. When band_limit is True, also
+    zeros propagating orders beyond the Matsushima & Shimobaba (2009)
+    elliptical band limit f_limit = 1/(lambda*sqrt((2z/L)^2+1))."""
+    FX, FY = _frequency_grid(N, dx)
+    freq_sq = FX**2 + FY**2
+    propagating = freq_sq <= (1.0 / wavelength**2)
+    kz = np.zeros_like(freq_sq)
+    kz[propagating] = np.sqrt(1.0 - (wavelength**2) * freq_sq[propagating])
+    k = 2 * np.pi / wavelength
+    kept = propagating
+    band_suppressed = np.zeros_like(propagating)
+    if band_limit:
+        du = 1.0 / L
+        fx_limit = 1.0 / (wavelength * np.sqrt((2*du*z)**2 + 1.0))
+        within_band = (FX/fx_limit)**2 + (FY/fx_limit)**2 <= 1.0
+        kept = propagating & within_band
+        band_suppressed = propagating & ~within_band
+    ...
+
+def asm_propagate(U0, dx, wavelength, z, L=None, band_limit=True, precomputed=None):
+    """Returns (U(x,y,z), band_info). band_info reports energy-weighted
+    band-limit impact -- the residual check of Section~2.6's keybox."""
+    N = U0.shape[0]
+    if L is None:
+        L = N * dx
+    H, propagating, band_suppressed, fx_limit = asm_transfer_function(
+        N, dx, wavelength, z, L, band_limit)
+    U0_hat = np.fft.fft2(U0)
+    propagating_power = np.sum(np.abs(U0_hat[propagating])**2)
+    suppressed_power = np.sum(np.abs(U0_hat[band_suppressed])**2) if band_limit else 0.0
+    band_info = {
+        "band_limit_applied": band_limit,
+        "fx_limit": fx_limit,
+        "fraction_energy_suppressed": (suppressed_power/propagating_power)
+                                       if propagating_power > 0 else 0.0,
+    }
+    Uz = np.fft.ifft2(U0_hat * H)
+    return Uz, band_info
+\end{lstlisting}
+This is the literal code behind Equation~\ref{eq:asm} and the energy-accounting keybox
+of Section~\ref{sec:numerics}: \texttt{fraction\_energy\_suppressed} is exactly the
+$f_{\mathrm{suppressed}}$ that section's residual check compares against.
+
+\section{Visual Strehl (VSOTF), the CSF-weighted OTF-similarity integral}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# stage4_human_vision/visual_strehl.py
+def compute_vsotf(freq_cpd, otf_real, ref_freq_cpd, ref_otf_real, neural_weights):
+    common_freq = freq_cpd
+    ref_interp = np.interp(common_freq, ref_freq_cpd, ref_otf_real)
+    num = np.trapz(otf_real * neural_weights, common_freq)
+    den = np.trapz(ref_interp * neural_weights, common_freq)
+    return {"vsotf": float(num / den) if abs(den) > 1e-12 else 0.0, ...}
+\end{lstlisting}
+The CSF-weighted ratio of the actual (aberrated/diffracted) OTF to the diffraction-
+limited reference OTF, both integrated against the same neural (CSF) weighting -- the
+quantity entering Chapter~\ref{ch:acuity}'s $\mathrm{VSOTF}^{-0.1}$ term.
+
+\section{Model A gate thresholds}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_evaluation/comparison_metric/gates.py
+GHOST_FORMULA_GRID_DX_UM = 1.46484375  # confirmed: 6mm window / 4096 grid
+GHOST_DELTA_R_UNCERTAINTY_UM = 2.0 * GHOST_FORMULA_GRID_DX_UM
+MARGIN_SAFETY_MULTIPLE = 2.0
+VIABILITY_MIN_FRACTION_OF_HOLE_AREA = 0.20
+
+def ghost_margin_threshold(df):
+    return MARGIN_SAFETY_MULTIPLE * GHOST_DELTA_R_UNCERTAINTY_UM / df.resolvable_blur_um
+
+def gate_ghost_safety(df):
+    return df.worst_case_ghost_margin >= ghost_margin_threshold(df)
+
+def gate_viability(df):
+    return df.min_illuminated_area_um2_across_phi >= viability_area_threshold(df)
+\end{lstlisting}
+
+\section{Ring-offset concentric: the alternating angular-offset construction}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/generators/ring_offset_concentric.py
+def generate(N, a_hole_um, ring_spacing_um, holes_per_ring0):
+    pts = [np.array([0.0, 0.0])]
+    k = 1
+    while len(pts) < N:
+        n_k = max(1, int(round(holes_per_ring0 * k)))
+        r_k = k * ring_spacing_um
+        angular_step = 2 * np.pi / n_k
+        offset = (angular_step / 2.0) if (k % 2 == 1) else 0.0
+        thetas = np.linspace(0.0, 2 * np.pi, n_k, endpoint=False) + offset
+        pts.extend([np.array([r_k*np.cos(t), r_k*np.sin(t)]) for t in thetas])
+        k += 1
+    ...
+\end{lstlisting}
+
+\section{Concentric-centered: the recenter-before-prepend fix (Section~\ref{sec:centered-bug})}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/generators/concentric_centered.py
+# Ring points recentered on THEIR OWN centroid first, THEN the (0,0) centre hole is
+# prepended, THEN finalize() runs once more on the combined set -- so the combined
+# set's mean is exactly (0,0) by construction, and the final recenter step is a
+# provable no-op. (Full ring-count/radius formula identical to ring_offset_concentric
+# above; only the ordering of recenter-vs-prepend differs.)
+\end{lstlisting}
+
+\section{Effective-density / Pareto binding-margin sentinel}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_evaluation/comparison_metric/metrics.py
+def _binding_margin_with_sentinel(survivors):
+    ghost = survivors.worst_case_ghost_margin.to_numpy(dtype=float)
+    vign = survivors.worst_case_vignetting_margin.to_numpy(dtype=float)
+    finite_vals = np.concatenate([ghost[np.isfinite(ghost)], vign[np.isfinite(vign)]])
+    if len(finite_vals) == 0:
+        sentinel = 1.0   # degenerate: every margin in the survivor set is +inf
+    else:
+        sentinel = 10.0 * finite_vals.max()
+    ...
+\end{lstlisting}
+
+\section{Model B: active-hole and blindness classification}
+\begin{lstlisting}[basicstyle=\ttfamily\small,breaklines=true]
+# Array_Design/array_geometry_lab/array_calculation/compute_gaze_weighted_metrics.py
+areas = vo.overlap_area_um2(delta, R_p, R_h)      # (n_samples, N_holes)
+total_area = areas.sum(axis=1)
+fractions = areas / hole_area
+n_active = (fractions >= active_frac_threshold).sum(axis=1)
+
+is_blind = (total_area == 0.0)
+is_ghost = (n_active >= 2)
+time_weighted_blind_pct = float(np.dot(BIN_WEIGHTS, frac_blind_per_bin))
+time_weighted_ghost_pct = float(np.dot(BIN_WEIGHTS, frac_ghost_per_bin))
+\end{lstlisting}

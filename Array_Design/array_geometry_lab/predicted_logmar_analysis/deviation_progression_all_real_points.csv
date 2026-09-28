@@ -1,0 +1,17 @@
+M_diopters,a_hole_um,observed_logmar,logmar_recommended,source,deviation_pred_minus_obs,array_relevant
+0.0,500,0.28,0.8414982959262346,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.5614982959262346,False
+0.0,750,0.31,1.0862669583845872,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.7762669583845871,False
+0.0,1000,1.0,1.229752144102061,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.2297521441020609,False
+0.0,1200,0.4,1.3149197489990376,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.9149197489990376,False
+0.0,1500,0.5,1.4152129143278769,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.9152129143278769,False
+2.0,500,0.28,0.7450559527249517,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.4650559527249517,False
+2.0,750,0.31,1.009705658591706,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.6997056585917059,True
+2.0,1000,1.0,1.1521737281890143,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.1521737281890143,False
+2.0,1200,0.4,1.2402621497873734,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.8402621497873733,False
+2.0,1500,0.5,1.3446060574845573,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.8446060574845573,False
+5.0,500,0.28,0.5420326444892435,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.26203264448924346,False
+5.0,750,0.31,0.8721988602017765,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.5621988602017765,False
+5.0,1000,1.0,1.019630673343895,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.0196306733438949,False
+5.0,1200,0.4,1.1077423361000072,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.7077423361000071,False
+5.0,1500,0.5,1.2105771791621172,"Wang 2009 (5 apertures x M=0,2,5 full grid)",0.7105771791621172,False
+2.7,900,0.2,0.2769636678060971,"Kim 2017 (single anchor, group-mean M and acuity, N=36)",0.07696366780609709,False

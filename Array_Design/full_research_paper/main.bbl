@@ -1,0 +1,82 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Barten(1999)]{barten1999}
+Peter G.~J. Barten.
+\newblock \emph{Contrast Sensitivity of the Human Eye and Its Effects on Image
+  Quality}.
+\newblock SPIE Press, 1999.
+
+\bibitem[Barten(2003)]{barten2003}
+Peter G.~J. Barten.
+\newblock Formula for the contrast sensitivity of the human eye.
+\newblock \emph{Proc.\ SPIE}, 5294:\penalty0 231--238, 2003.
+
+\bibitem[Kim et~al.(2017)Kim, Park, Park, and Chun]{kim2017}
+W.~S. Kim, I.~K. Park, Y.~K. Park, and Y.~S. Chun.
+\newblock Comparison of objective and subjective changes induced by
+  multiple-pinhole glasses and single-pinhole glasses.
+\newblock \emph{Journal of Korean Medical Science}, 32\penalty0 (5):\penalty0
+  850--857, 2017.
+\newblock \doi{10.3346/jkms.2017.32.5.850}.
+\newblock N=36, single-pinhole 0.9\,mm aperture, mean spherical equivalent
+  $-2.7\pm2.3$\,D, mean uncorrected LogMAR $0.20\pm0.21$. Verified directly
+  (full text, PMC5383620); see stage4\_human\_vision/literature.py key
+  \texttt{single\_pinhole\_kim\_2017}.
+
+\bibitem[Matsushima and Shimobaba(2009)]{matsushima2009}
+Kyoji Matsushima and Tomoyoshi Shimobaba.
+\newblock [needs verification: exact title/journal not recorded in the citing
+  source -- found only as an inline code-comment attribution ``matsushima and
+  shimobaba (2009)'' in stage1\_v2/physics.py's asm\_transfer\_function(),
+  describing the elliptical band-limit formula used for anti-aliasing in this
+  project's asm propagation (section~2.6). likely refers to their band-limited
+  asm work published in optics express (2009), not independently re-verified
+  against the primary source for this paper.], 2009.
+\newblock Source of the Matsushima band-limit formula, Section~2.6 of this
+  paper.
+
+\bibitem[Samee et~al.(2022)]{neuroquantology2022rejected}
+N.~Samee et~al.
+\newblock Assessment of pinhole for visual acuity recoverment in patients with
+  myopia, 2022.
+\newblock REJECTED as a data source after reading the primary text directly: a
+  widely-repeated web-search-summary claim attributed to this paper (``0.17
+  LogMAR at up to 5.5D, 1.16 LogMAR at 7-11D, 1.2mm aperture'') does NOT appear
+  anywhere in the actual paper, which tests no aperture sweep and reports no
+  LogMAR values at all. Documented here, and in
+  stage4\_human\_vision/literature.py, specifically so this fabricated claim is
+  not silently re-discovered and re-trusted.
+
+\bibitem[Shen(2026)]{shen2026}
+[initial NEEDS~VERIFICATION] Shen.
+\newblock [needs verification: exact paper title not found in repository --
+  only author surname ``shen'', affiliation ``hangzhou normal university'', and
+  date ``aug.\ 2026'' are recorded, in
+  array\_design/array\_geometry\_lab/shen\_model/shen\_evaluator.py line 3].
+\newblock ResearchGate preprint (exact URL/DOI [NEEDS VERIFICATION]), 2026.
+\newblock Source of the RSS aperture-optimization approximation and the fusion
+  threshold $c_{\min}=55\,\mu$m used as a non-binding sanity check in this
+  project (Section~7).
+
+\bibitem[Van~Nes and Bouman(1967)]{vannes1967}
+F.~L. Van~Nes and M.~A. Bouman.
+\newblock Spatial modulation transfer in the human eye.
+\newblock \emph{Journal of the Optical Society of America}, 57\penalty0
+  (3):\penalty0 401--406, 1967.
+
+\bibitem[Wang(2009)]{wang2009}
+[initials NEEDS~VERIFICATION] Wang.
+\newblock The ideal pinhole.
+\newblock \emph{Investigative Ophthalmology \& Visual Science (IOVS), ARVO
+  Journals}, 2009.
+\newblock 5 apertures (500/750/1000/1200/1500\,$\mu$m), observed LogMAR
+  0.28/0.31/1.00/0.40/0.50. Source paper's own summary table reports acuity
+  vs.\ aperture only, with NO per-myopia-power breakdown -- see this paper's
+  Section~4 and Section~13 for how that limitation is handled.
+
+\end{thebibliography}

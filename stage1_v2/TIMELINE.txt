@@ -1,0 +1,28 @@
+TIMELINE -- stage1_v2/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01) unless a
+commit hash is shown.
+
+- 2026-07-27 -- forked from stage1/ (see stage1/TIMELINE.txt) specifically
+  to fix a real bug: FWHM/1/e^2/custom-threshold radius jumping tens of
+  microns between apertures 1um apart, traced to the original
+  fwhm_radius() reporting the FIRST radial sample below half-max, which
+  flips between Fresnel rings once N_F = O(1)-O(10) (exactly the
+  pinhole-sunglasses regime). Reproduced concretely: FWHM jumped
+  ~35um -> ~64um between 190um and 193um apertures at lambda=550nm,
+  z=12mm.
+  Fix: locate_threshold_crossing() replaces the first-crossing search,
+  adds sub-bin parabolic interpolation (removing a staircase artifact),
+  and corrects the reference "peak" measurement, which had been ~2.5x low
+  from averaging over the first annulus instead of resolving the on-axis
+  spike.
+  STATUS: adopted -- everything else (ASM propagator, Streamlit UI,
+  encircled energy, sweeps, exports) unchanged from stage1/.
+
+- 2026-08-06 (commit bc32f7d, "Item E: document E1-E4 design choices; add
+  E2's integrated escape estimate") -- design-choice documentation added,
+  same day as the stage2_fixed physics audit (see stage2_fixed/TIMELINE.txt)
+  but not part of that audit's own item list.
+
+STATUS (current): active/adopted corneal-stage tool -- stage1/ is kept
+only as a frozen reference build, not used going forward.

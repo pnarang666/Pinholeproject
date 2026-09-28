@@ -1,0 +1,64 @@
+ExperimentalComparison/ -- TIMELINE
+===================================
+Dates from git log (git history starts 2026-09-02 for this folder) and this
+session's own record of what was built/fixed and why.
+
+2026-08-27/28 -- ExP2 photo shoot taken (see ExP2/, superseding the
+  abandoned ExP1/ shoot -- see ExP1/TIMELINE.txt) and analyze.py/
+  run_pipeline.py built to measure r_EE_50 from the DNGs and compare
+  against new_sweeps/blur_sweep.csv theory.
+  IN-PROCESS FIX, same build: first attempt read the sips-converted 16-bit
+  TIFFs via Pillow (PIL.Image + np.array) -- Pillow 9.5.0 on this Python
+  3.7 environment was found to silently DOWNCAST true 16-bit TIFF data to
+  8-bit on array read, with no warning. Caught by direct TIFF tag
+  inspection before any measurement was finalized. STATUS: fixed in place
+  before first real measurement -- all TIFF I/O switched to OpenCV
+  (cv2.imread(..., IMREAD_UNCHANGED)), verified via lossless round-trip.
+  IN-PROCESS FIX, same build: an initial fixed 5%-of-peak blob threshold
+  let a thin diffraction spike connect the true point-source blob to the
+  frame edge or a secondary ghost blob, corrupting the measured radius.
+  STATUS: fixed by an auto-raising adaptive threshold (see analyze.py's
+  measure_blob() docstring) before this pipeline's numbers were ever
+  reported.
+  INFRASTRUCTURE DECISION, same build: mid-run, the real disk (/Users) was
+  found at ~99% full (pre-existing, unrelated to this task). Resolved via
+  explicit user choice (not guessed): measure at full resolution in
+  memory, persist only a 50%-downsized lossless copy in tiff_converted/.
+  Does not affect any reported number.
+
+2026-08-28 -- rss_comparison.py added: a second, simpler theoretical model
+  (RSS, geometric+diffraction in quadrature) compared against the same
+  measured data ASM (blur_sweep.csv) was compared against.
+  IN-PROCESS FIX, same build: the first version of the ASM-vs-RSS "closer
+  model" tally included M=0 rows, where every model equals the measured
+  ratio by construction (the normalization point itself) -- this
+  tautologically inflated RSS's apparent win count by 3 meaningless ties.
+  STATUS: fixed before reporting -- M=0 excluded from the tally (see
+  rss_comparison.py's own "M != 0.0" guard); final, reported tally is
+  18 comparable rows, ASM closer in 18/18, RSS in 0/18.
+
+2026-08-28 -- clinical_and_two_pinhole_check.py added: clinical-literature
+  anchor check (Miller & Johnson 1977, via Shen 2026) against 1000b's
+  measured/ASM data, plus a two-pinhole ghost-separation shot list (design
+  computation only, nothing fabricated/shot). Additive, no prior file
+  changed.
+
+2026-09-02 -- ExP3_frosted_screen/ added as an independent second
+  experiment (fixed-lens/moving-screen sweep) -- see its own TIMELINE.txt
+  for its in-process grayscale-channel bug fix.
+
+2026-09-03/07 -- final_report/ added: a consolidated IYPT-style PDF
+  pulling together every result above (theory, method, results per
+  approach) into one document.
+  IN-PROCESS FIX, same build: while cross-checking the consolidated
+  report's numbers against the ExP3 no-pinhole-control comparison, found
+  that the earlier ExP3_frosted_screen/report/exp3_summary.txt and
+  ExP3_Frosted_Screen_Report.pdf's stated "12.1x faster" control-vs-largest-
+  aperture ratio did not match its own stated inputs: 12.1x is
+  control_slope(10.707) / 1000um's slope(0.882), but the text explicitly
+  named the 1400um aperture (slope 0.676) as the comparator, which actually
+  gives 15.8x. STATUS: the earlier exp3_summary.txt/PDF files were left
+  UNCHANGED (this project's own "never modify existing outputs" rule) --
+  the corrected 15.8x figure is used in final_report/IYPT_Final_Report.pdf
+  instead, with the discrepancy stated explicitly in that report's Section
+  6.3 as a correction, not silently substituted.

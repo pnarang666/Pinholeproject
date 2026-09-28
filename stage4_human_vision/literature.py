@@ -43,6 +43,12 @@ CITATIONS = {
                     "Vertex/pinhole-to-eye distance for spectacle-mounted pinholes is not "
                     "stated exactly but is consistent with this project's existing "
                     "d_gap_mm=12mm assumption (typical spectacle vertex distance).",
+        "used_in": "2026-09-28: actually run through run_stage4_point() for the first time, "
+                  "in Array_Design/array_geometry_lab/predicted_logmar_analysis/ "
+                  "(build_deviation_report.py, Section 4). Predicted LogMAR=0.277 vs. "
+                  "observed 0.20+/-0.21 -- deviation +0.077 (model PESSIMISTIC here, opposite "
+                  "sign from the array project's own 500/750um comparison points). See that "
+                  "folder's CORRECTIONS_AND_NEW_DATA.txt for the full writeup.",
         "data": {
             "aperture_um": [900],
             "M_diopters_mean": -2.7,

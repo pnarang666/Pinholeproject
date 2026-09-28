@@ -1,0 +1,181 @@
+\section{Full generator equations for all eleven families}
+\label{sec:all-generators}
+Section~\ref{sec:array-repr} gave the two most-used families (square, hexagonal) in
+full. This section derives all eleven implemented families
+(\texttt{array\_calculation/generators/}, verified read directly file-by-file; mtimes
+in Chapter~\ref{ch:provenance}), since Chapters~\ref{ch:model-a}--\ref{ch:model-b}
+evaluate every one of them and Section~\ref{sec:hex-intuition}'s symmetry argument only
+has force once the alternatives are actually written down.
+
+Every generator shares one post-processing step, \texttt{base\_generator.finalize()}
+(verified read directly): greedy overlap rejection (points are kept in generation
+order, any later point closer than $a_{\mathrm{hole}}$ to an already-kept point is
+discarded), then recentering on the surviving set's own centroid. This shared step is
+the reason a truncated (non-lattice-complete) candidate set can end up off-centre --
+the mechanism behind Section~\ref{sec:centered-bug} below -- and is stated once here
+rather than repeated in every family's own derivation.
+
+\subsection{Square}
+\begin{equation}
+(x_{m,n}) = R(\theta_0)\cdot p\,(m,n), \qquad (m,n)\in\mathbb{Z}^2
+\end{equation}
+Free parameter: pitch $p$ (nearest-neighbor spacing), plus optional rotation
+$\theta_0$. Construction: a square meshgrid large enough to contain $N$ points,
+radially sorted by distance from the origin, the closest $N$ kept, then rotated by
+$\theta_0$ (rotation is applied \emph{after} the radial sort, so it changes only each
+point's $(x,y)$, never which points are selected -- rotation preserves every pairwise
+and every origin distance exactly).
+
+\subsection{Hexagonal}
+\begin{align}
+y_r &= r\,p\,\frac{\sqrt3}{2}, \qquad r\in\mathbb{Z} \\
+x_{r,m} &= mp + \begin{cases}p/2 & r\text{ odd}\\0&r\text{ even}\end{cases}, \qquad m\in\mathbb{Z}
+\end{align}
+Row height $p\sqrt3/2$ and alternate-row half-pitch offset are the standard hexagonal
+close-packing construction; identical radial-sort-then-keep-closest-$N$ selection as
+square.
+
+\subsection{Rectangular}
+\begin{equation}
+(x_{m,n}) = R(\theta_0)\cdot(mp_x, np_y), \qquad (m,n)\in\mathbb{Z}^2
+\end{equation}
+Independent $x$- and $y$-pitches $p_x,p_y$. At $p_x=p_y$ this reduces to \emph{exactly}
+the same lattice as square's own construction -- the two generators use deliberately
+structurally identical code (same meshgrid-then-radial-sort approach) specifically so
+this equivalence holds exactly, not approximately, and is checked directly in
+\texttt{spot\_check\_generators.py}.
+
+\subsection{Concentric}
+\label{sec:concentric-family}
+Ring $k=0$ is a single hole at the origin. Ring $k\ge1$ sits at radius $r_k=k\,s$ (ring
+spacing $s$) with
+\begin{equation}
+n_k = \mathrm{round}(n_0\,k), \qquad
+\theta_{k,j} = \frac{2\pi j}{n_k},\ j=0,\dots,n_k-1
+\end{equation}
+hole count \emph{scaling with ring circumference} (constant angular spacing between
+adjacent holes on every ring, equal to ring 1's own spacing $2\pi/n_0$) rather than a
+fixed count per ring -- a fixed count would make outer rings implausibly sparse or
+force inner-ring holes closer than $a_{\mathrm{hole}}$ (which \texttt{finalize()}'s
+overlap rejection would then discard anyway), so the constant-angular-spacing rule is
+the more physically sensible default for a fabricatable pattern (source: module
+docstring, this exact reasoning, verified read directly).
+
+\subsection{Ring-offset concentric}
+\label{sec:ring-offset-family}
+Identical ring radius/count formula to Section~\ref{sec:concentric-family}, with one
+addition: odd-indexed rings ($k$ odd) receive a fixed half-angular-step rotation
+$\pi/n_k$ relative to their unrotated position; even rings receive none --
+\begin{equation}
+\theta_{k,j} = \frac{2\pi j}{n_k} + \begin{cases}\pi/n_k & k\text{ odd}\\0&k\text{ even}\end{cases}
+\end{equation}
+the ``brick-course'' pattern: adjacent rings' holes sit staggered rather than radially
+aligned. An \emph{alternating} offset (not a progressively-accumulating one) was
+chosen as the more literal reading of a brick pattern -- real brick courses alternate,
+they do not progressively drift -- and because it is the simpler, unambiguous
+construction; a progressive variant was considered and explicitly not implemented,
+per the module's own stated reasoning against shipping an unused second flag.
+
+\subsection{Concentric-centered, and a real, documented bug it exists to fix}
+\label{sec:centered-bug}
+Investigating this family's own motivation directly (rather than assuming it), its
+author found that \texttt{concentric.py} and \texttt{ring\_offset\_concentric.py}
+\emph{already} start their own point list with a literal centre hole at $(0,0)$ -- so
+the reason neither family's \emph{final}, post-\texttt{finalize()} output has a hole at
+the origin is not a missing centre point, but \texttt{base\_generator}'s own shared
+recentering step: a \emph{complete} ring sums to exactly $(0,0)$ by rotational
+symmetry and never disturbs this, but a \emph{truncated} final ring (the common case,
+whenever the requested $N$ does not exactly fill an integer number of complete rings)
+does not sum to zero, and the shared recenter-on-centroid step then shifts the nominal
+centre hole away from the true origin by exactly that leftover imbalance.
+
+\begin{warnbox}{Confirmed against a real, already-fabrication-relevant case}
+\texttt{ring\_offset\_concentric}'s own $N=20$, ring spacing $4000\,\mu$m, $n_0=8$
+candidate -- its real $M=2$--$3$D winner in an earlier evaluation pass -- has its
+nominal centre hole recentred to \textbf{$1704.8\,\mu$m} from the true origin.
+Reproduced bit-for-bit by a naive ``prepend then recenter together'' re-implementation,
+confirming this mechanism directly, not by inference.
+\end{warnbox}
+
+\textbf{Fix, and the one substantive difference this generator adds}: recenter the
+ring points on their \emph{own} centroid first, \emph{then} prepend the $(0,0)$ centre
+hole, \emph{then} run \texttt{finalize()} once more on the combined set. Since the ring
+points are already exactly zero-mean before the centre hole is added, and the centre
+hole itself contributes $(0,0)$ to any mean, the combined set's mean is exactly
+$(0,0)$ by construction -- the final recentering step becomes provably a no-op. Checked
+directly on the identical displaced case above: centre-hole displacement drops to
+$1.6\times10^{-13}\,\mu$m (floating-point noise), confirming the fix, not merely
+asserting it.
+
+\subsection{Archimedean spiral}
+$r=c\theta$ (unwrapped, not reduced mod $2\pi$) -- the curve where each full
+revolution increases $r$ by the constant amount $2\pi c$. Points are placed along the
+curve at approximately constant arc-length spacing: since $ds/d\theta=\sqrt{r^2+c^2}$
+for this curve, a first-order (Euler) angular step
+\begin{equation}
+d\theta = \frac{a_{\mathrm{hole}}\cdot f_{\mathrm{spacing}}}{\sqrt{r^2+c^2}}
+\end{equation}
+(evaluated at the current $r$ before each step, $f_{\mathrm{spacing}}=1.5$ by default)
+keeps successive points near-evenly spaced along the arc. Explicitly \emph{not} the
+same construction as the Fibonacci/golden-angle family below -- this generator advances
+along one continuous outward-spiralling arm; the golden-angle family jumps by a fixed
+large irrational angle each step and never traces a continuous curve at all. Confirmed
+different point clouds directly, not merely by differing formulas
+(\texttt{spot\_check\_generators.py}'s archimedean-vs-fibonacci difference check).
+
+\subsection{Fibonacci (Vogel) spiral and golden-angle phyllotaxis}
+\begin{equation}
+r_n = c\sqrt n, \qquad \theta_n = n\,\alpha_g, \qquad \alpha_g = \pi(3-\sqrt5)\approx137.50776^\circ,
+\qquad n=1,\dots,N
+\end{equation}
+$\alpha_g=2\pi(1-1/\varphi)$, $\varphi$ the golden ratio -- the irrational angle that
+maximizes packing uniformity for this family (Vogel, 1979). ``Golden-angle
+phyllotaxis'' and the ``Fibonacci/Vogel spiral'' are, mathematically, the
+\emph{identical} formula -- there is no separate standard point-packing construction in
+the literature distinct from this one (the visually different ``nested-squares
+Fibonacci spiral'' is an unrelated aesthetic curve, not a packing formula, and is not
+what either generator name refers to here). Rather than risk two copies silently
+drifting apart under future edits, \texttt{golden\_angle.py} re-exports
+\texttt{fibonacci\_spiral.generate()} directly under its own family label; for the same
+$(N,a_{\mathrm{hole}},c)$ the two generators' output coordinates are, by construction,
+identical.
+
+\subsection{Poisson-disk (blue-noise)}
+Stochastic; minimum pairwise distance $r=a_{\mathrm{hole}}f_{\mathrm{spacing}}$
+enforced via Bridson's algorithm (Bridson, SIGGRAPH 2007 sketches) rather than naive
+dart-throwing-with-rejection, whose rejection rate is unbounded as the domain fills
+(each new random dart becomes increasingly likely to land too close to an existing
+point). Bridson's method instead grows the set from an active frontier -- only ever
+proposing new candidates in the annulus $[r,2r]$ around an existing active point,
+checked against neighbours via a background grid of cell size $r/\sqrt2$ (small enough
+that each cell holds at most one sample) -- and terminates deterministically once no
+active point can produce a valid candidate after $k=30$ tries, giving $O(1)$ amortized
+work per accepted or retired point rather than the unbounded degradation of naive
+rejection sampling. The domain is filled to near-maximal packing, then the $N$ points
+closest to the origin are kept (same selection convention as square/hexagonal). Because
+the algorithm is stochastic, \texttt{seed} is a required, not optional, parameter for
+every call to be reproducible.
+
+\subsection{Jittered lattice}
+Starts from \texttt{hexagonal.generate()}'s own lattice, then perturbs every hole by a
+random offset sampled \emph{uniformly by area} within a disk of radius
+$f_{\mathrm{jitter}}\,p$:
+\begin{equation}
+\rho = f_{\mathrm{jitter}}\,p\,\sqrt{u}, \qquad u\sim\mathrm{Uniform}(0,1), \qquad
+\phi\sim\mathrm{Uniform}(0,2\pi)
+\end{equation}
+The $\sqrt{u}$ is load-bearing, not optional: sampling the offset magnitude directly as
+$f_{\mathrm{jitter}}\,p\,u$ would over-concentrate perturbed points near zero offset,
+since area scales as $r^2$, not $r$ -- the same disk-sampling construction already used
+elsewhere in this project's own Monte Carlo validation work
+(\texttt{array\_optimization/vignetting.py}). A \emph{uniform}, not Gaussian, offset
+distribution was chosen specifically because the parameter's own contract is ``offset
+up to $f_{\mathrm{jitter}}\,p$'' -- a hard, stated bound; a Gaussian has unbounded
+support, which would make that ``up to'' contract false in the tail, however unlikely.
+The jittered set is then re-run through \texttt{finalize()}'s own overlap rejection
+(jitter can push two holes that were exactly at the lattice's own valid spacing closer
+than $a_{\mathrm{hole}}$ -- these must be rejected exactly as any other overlapping
+candidate would be, not silently kept because they originated from a valid lattice).
+At $f_{\mathrm{jitter}}=0$ every offset is identically zero, so this reduces exactly to
+\texttt{hexagonal.generate()}'s own output -- checked directly, not merely argued, in
+\texttt{spot\_check\_generators.py}.

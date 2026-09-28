@@ -1,0 +1,48 @@
+\chapter{Discussion}
+\label{ch:discussion}
+
+Returning to the problem statement (Chapter~\ref{ch:intro}): this project set out to
+determine whether an array of small apertures can substitute for a corrective lens over
+a useful field of view, and to characterize the trade-offs involved. The evidence
+assembled here supports a qualified yes, with the trade-offs now quantified rather than
+asserted.
+
+\textbf{Single-aperture optics} (Chapter~\ref{ch:single}) establish that the stenopeic
+effect is real and substantial (Section~\ref{sec:exp3}: a $15$--$18\times$ reduction in
+defocus-growth rate, measured photographically, not merely predicted), and that an
+exact wave-optics treatment is necessary, not a convenience: the closed-form RSS
+approximation this project also implements diverges from the exact result by 64.8\% on
+average, and a specific naive-FFT implementation trap (Section~\ref{sec:bug-fft}) would
+have silently inverted the physics of myopic defocus entirely had it shipped
+uncorrected.
+
+\textbf{Array-level optics} (Chapter~\ref{ch:array-theory}) show that extending a single
+aperture to an array introduces two new failure modes -- ghosting and blinding -- with
+no single-aperture analogue, and that a naive per-aperture margin criterion for
+ghosting is not merely imprecise but was shown, via the Barten CSF correction
+(Section~\ref{sec:barten}), to reclassify the \emph{entire} tested dense-pitch range
+from ``safe'' to ``danger zone.'' The harmonic-series extension
+(Section~\ref{sec:harmonic}) further shows that even a corrected fundamental-frequency
+analysis can underestimate real risk by over $4\times$ by missing the worst-case
+harmonic.
+
+\textbf{The two evaluation models} (Chapters~\ref{ch:model-a}--\ref{ch:model-b}) are not
+in conflict: Model~B generalizes Model~A by removing its single-axis assumption, and
+the fact that removing that assumption changed the outcome -- surfacing a real
+blackout failure mode Model~A's own structural-safety guarantee had missed
+(Section~\ref{sec:bug-single-axis}) -- is direct evidence the generalization mattered,
+not merely a theoretical nicety. That hexagonal packing wins under the more rigorous
+model is explained, not merely observed, by a first-principles symmetry argument
+(Section~\ref{sec:hex-intuition}) grounded in the crystallographic restriction theorem,
+and demonstrated with real, matched-spacing geometry and real, already-computed safety
+data (Figures~\ref{fig:geom-structure}--\ref{fig:geom-consequence}).
+
+\textbf{External validation} (Chapter~\ref{ch:model-comparison}) is this project's most
+honestly limited result: the acuity model, in its raw form, fails a formal $R^2>0$
+significance bar against every real clinical comparison available, both before and
+after a genuine, verified optics fix that measurably narrowed (but did not close) the
+gap. This paper does not claim the model is externally validated; it claims the model
+is \emph{physically grounded}, internally self-consistent (Section~\ref{sec:asm-validation}),
+improved measurably when a real defect was corrected (Section~\ref{sec:bug-shadowing}),
+and its remaining discrepancy against real data is reported with the exact statistics,
+not glossed over.

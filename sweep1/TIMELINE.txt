@@ -1,0 +1,28 @@
+sweep1/ -- dated timeline (dates from filenames/mtimes; git only shows "initial commit"
+2026-08-01, confirming existence by then, not the exact authored date)
+==========================================================================
+
+2026-07-26 (~18:12-18:53, per the export filenames themselves) -- raw CSV/PNG exports
+  from an early stage1/ Streamlit sweep session ("Parameter Sweep" export button, per
+  the finding below).
+
+2026-08-XX (date not pinned down) -- MISATTRIBUTED, THEN CORRECTED: a later task
+  (documented in stage2/README.md's "Step 0 finding") assumed this folder (found at
+  ~/Downloads/sweep1/ at investigation time, matching filenames to what now lives here)
+  represented a discarded "v1" system, distinct from a separately-validated "v2". Direct
+  inspection found this was WRONG: every CSV in this folder has the identical column
+  schema and was produced by the IDENTICAL code (stage1/sweep.py's build_csv_row(), fed
+  by stage1/physics.py) as the files in "High q closeup sweep /hq1/" (see that folder's
+  own TIMELINE.txt) -- neither contains the diagnostic columns (fwhm_mode,
+  radial_bins_used, etc.) that only exist in stage1_v2/. The real distinction is not
+  "two codebases" but two different EXPORT BUTTONS in one Streamlit session
+  (window_L_mm=6 here, from "Parameter Sweep"; window_L_mm=1 in the other folder, from
+  "Compare Runs"). This was reported to and confirmed with the user before any Stage 2
+  code was written.
+
+STATUS: superseded. The user chose to build Stage 2 against stage1_v2/ (the FWHM-fixed
+build) rather than reproduce this folder's exact prior numbers -- a fresh convergence
+scan was run against stage1_v2/ itself instead of trusting the "v2 converged 100-200um"
+figure the original brief assumed came from files like these (that range does not
+actually appear in either CSV source). This folder is kept as historical raw export
+data only; not read by any current pipeline. Full account: stage2/README.md.

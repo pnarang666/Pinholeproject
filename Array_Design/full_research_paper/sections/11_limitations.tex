@@ -1,0 +1,69 @@
+\chapter{Limitations}
+\label{ch:limitations}
+
+Stated plainly, in the order they matter for interpreting this project's results:
+
+\begin{enumerate}
+\item \textbf{External validation fails a formal significance bar.} Every tested
+comparison against real clinical data (Wang 2009, Section~\ref{sec:external-validation})
+gives $R^2\le0$; a genuine optics fix narrowed but did not close this gap
+(Section~\ref{sec:bug-shadowing}). This is the single most important limitation of this
+project's quantitative claims.
+\item \textbf{Deviation from reality is not a single, constant bias, and its magnitude
+is not shown to grow monotonically with any one variable.} Model error is optimistic at
+some (aperture, $M$) combinations and pessimistic at others
+(Section~\ref{sec:external-validation}); this project has not identified a single
+scalar predictor of when the model will be more or less accurate.
+\item \textbf{Both external clinical datasets used real, but not per-subject-resolved,
+data.} Wang (2009)'s summary table reports acuity vs.\ aperture only, with no
+per-myopia-power breakdown at all -- the same 5 observed values are necessarily reused
+at every tested $M$ in this paper's own comparisons, a structural limitation of the
+source data. Kim (2017) reports only group means and standard deviations, not
+per-subject refractive error or acuity.
+\item \textbf{Induced-defocus vs.\ native myopia.} Neither external dataset, nor this
+project's own single-aperture experiments, distinguishes between subjects with genuine
+native (axial) myopia and any induced-defocus condition; the axial myopia model
+(Section~\ref{sec:reduced-eye}) assumes the former.
+\item \textbf{Extrapolation beyond the validated gaze range.} Model~B's own gaze-time
+weighting includes one bin at $27^\circ$, outside \texttt{vignetting\_overlap.py}'s
+stated $\le25^\circ$ small-angle validity range (Section~\ref{sec:model-b-method}). The
+formula does not diverge there, but every number that includes this bin is, by the
+source module's own documentation, an extrapolation, not a validated result.
+\item \textbf{Model A's single-axis legacy remains embedded in some reported numbers.}
+Model~A (Chapter~\ref{ch:model-a}) is retained and reported in full, per this project's
+own policy of not deleting superseded models, but its single-axis sampling convention
+(Section~\ref{sec:model-a-limitation}) should not be read as an independent,
+full-azimuth confirmation of any result -- only Model~B's numbers carry that property.
+\item \textbf{No array-level clinical trial exists.} As documented in full in
+Section~\ref{sec:array-exp2}, no multi-subject, array-level clinical LogMAR data exists
+anywhere in this project's repository at the time of writing. The ``comparison to
+reality'' this paper reports (Chapter~\ref{ch:model-comparison}) validates the
+underlying \emph{single-aperture} acuity model only.
+\item \textbf{The heuristic-vs-Barten CSF correction (Section~\ref{sec:barten}) has not
+itself been re-run against the array-level Model~A/B evaluation pipeline.} It was
+developed and validated in a separate, standalone sweep
+(\texttt{Array\_Design/ghosting/}); this paper reports it as the theoretically correct
+ghosting-perceptibility criterion but the live \texttt{gates.py}/Model~A and Model~B
+pipelines reported in Chapters~\ref{ch:model-a}--\ref{ch:model-b} use the
+active-hole-fraction/geometric-overlap criterion (Section~\ref{sec:vignetting}), not
+the Barten-CSF three-regime criterion directly. \needsverify{Whether and how the
+Barten-corrected ghosting classification of Section~\ref{sec:barten} has been, or
+should be, integrated into the live \texttt{gates.py} ghost-safety gate was not
+resolved during this paper's preparation and is flagged here rather than assumed either
+way.}
+\item \textbf{Reduced-eye model simplifications, stated explicitly rather than hidden.}
+No anatomically-separate cornea/lens power split; no higher-order aberrations (only
+pure quadratic defocus phase); no Stiles--Crawford directional pupil apodization in the
+core PSF calculation (though a separate Stiles--Crawford term is applied elsewhere, in
+\texttt{stage4\_human\_vision/csf.py}'s own retinal-illuminance calculation); no
+longitudinal chromatic aberration (one fixed wavelength per run, not a dispersion
+model); binary hard-edged aperture masks, no finite membrane-thickness diffraction or
+oblique-angle vignetting effects (source:
+\texttt{stage2\_fixed/phase2\_retina.py}'s own module docstring, PHYSICS\_AUDIT.md
+items E1/E4, verified present).
+\label{sec:limitations-optics}
+\item \textbf{The proposed physical validation rig (Section~\ref{sec:proposed-rig}) is
+unbuilt.} Every number this paper reports for that apparatus is a theoretical preview
+from the already-validated simulation pipeline, explicitly labelled as such in its own
+source material, not a physical measurement.
+\end{enumerate}

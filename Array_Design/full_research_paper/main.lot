@@ -1,0 +1,47 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {9.1}{\ignorespaces Predicted LogMAR is \emph {numerically identical} across all six live evaluation models tested (worst-case gate/Model~A, ungated gaze-weighted, gated gaze-weighted/Model~B, density-only Metric~1, and two effective-density variants) -- every model chooses the same acuity-optimal aperture per $M$ from \texttt {new\_sweeps/per\_M\_optimum\_map.csv} (mtime 2026-09-13 00:11) before deciding geometry, per Section~\ref {sec:model-comparison-table}.}}{53}{table.9.1}%
+\contentsline {table}{\numberline {9.2}{\ignorespaces The model fails the stated bar ($R^2>0$ AND $p<0.05$) at every single comparison, before and after the 2026-08-06 optics fix, and before and after affine calibration. Source: \texttt {stage4\_human\_vision/outputs/wang2009\_validation\_postfix\_stats.csv} (per-$M$ rows) and \texttt {predicted\_logmar\_analysis/wang2009\_calibration\_pooled\_stats\_postfix.csv} (pooled rows), both verified read directly, 2026-09-28.}}{55}{table.9.2}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {14.1}{Data provenance table. Paths abbreviated \texttt {Array\_Design/.../} for \texttt {Array\_Design/array\_geometry\_lab/array\_data/evaluation\_results/} and \texttt {Array\_Design/array\_geometry\_lab/} respectively where unambiguous.}}{66}{table.14.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {16.1}{Every working formula referenced in this paper, with status.}}{72}{table.16.1}%
+\contentsline {table}{\numberline {16.2}{Constants used throughout this paper.}}{72}{table.16.2}%
+\contentsline {table}{\numberline {16.2}{Constants used throughout this paper.}}{73}{table.16.2}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {17.1}{Full 120-point acuity sweep (15 apertures x 8 myopia powers), all fields, verbatim from \texttt {new\_sweeps/acuity\_sweep\_stage4.csv} (mtime 2026-09-13 00:11).}}{74}{table.17.1}%
+\contentsline {table}{\numberline {17.1}{Full 120-point acuity sweep (15 apertures x 8 myopia powers), all fields, verbatim from \texttt {new\_sweeps/acuity\_sweep\_stage4.csv} (mtime 2026-09-13 00:11).}}{75}{table.17.1}%
+\contentsline {table}{\numberline {17.1}{Full 120-point acuity sweep (15 apertures x 8 myopia powers), all fields, verbatim from \texttt {new\_sweeps/acuity\_sweep\_stage4.csv} (mtime 2026-09-13 00:11).}}{76}{table.17.1}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {18.1}{Full 36-point Barten-CSF ghosting-regime sweep (4 apertures x 9 pitches, M=4D, verbatim from \texttt {Array\_Design/ghosting/ghosting\_sweep\_barten.csv}, mtime 2026-07-29 22:04). Regime per Equation~\ref {eq:three-regime}.}}{77}{table.18.1}%
+\contentsline {table}{\numberline {18.1}{Full 36-point Barten-CSF ghosting-regime sweep (4 apertures x 9 pitches, M=4D, verbatim from \texttt {Array\_Design/ghosting/ghosting\_sweep\_barten.csv}, mtime 2026-07-29 22:04). Regime per Equation~\ref {eq:three-regime}.}}{78}{table.18.1}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {20.1}{Full 36-point Pass 1 (heuristic, uncorrected CSF) sweep -- verbatim from \texttt {Array\_Design/ghosting/ghosting\_sweep.csv} (mtime 2026-07-29 21:53). Zero Regime C found; root cause in Section~\ref {sec:barten}.}}{81}{table.20.1}%
+\contentsline {table}{\numberline {20.1}{Full 36-point Pass 1 (heuristic, uncorrected CSF) sweep -- verbatim from \texttt {Array\_Design/ghosting/ghosting\_sweep.csv} (mtime 2026-07-29 21:53). Zero Regime C found; root cause in Section~\ref {sec:barten}.}}{82}{table.20.1}%
+\contentsline {table}{\numberline {20.2}{Full 36-point Pass 3 (harmonic-extended) sweep -- verbatim from \texttt {Array\_Design/ghosting/ghosting\_sweep\_harmonic.csv} (mtime 2026-07-29 22:11). Confirms the worst-case harmonic is never $n=1$ (Section~\ref {sec:harmonic}).}}{82}{table.20.2}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {21.1}{Hole coordinates, $M=0$D, from \texttt {hole\_coordinates\_M0.0.csv}.}}{83}{table.21.1}%
+\contentsline {table}{\numberline {21.2}{Hole coordinates, $M=1$D, from \texttt {hole\_coordinates\_M1.0.csv}.}}{84}{table.21.2}%
+\contentsline {table}{\numberline {21.3}{Hole coordinates, $M=2$D, from \texttt {hole\_coordinates\_M2.0.csv}.}}{84}{table.21.3}%
+\contentsline {table}{\numberline {21.4}{Hole coordinates, $M=3$D, from \texttt {hole\_coordinates\_M3.0.csv}.}}{85}{table.21.4}%
+\contentsline {table}{\numberline {21.5}{Hole coordinates, $M=4$D, from \texttt {hole\_coordinates\_M4.0.csv}.}}{85}{table.21.5}%
+\contentsline {table}{\numberline {21.6}{Hole coordinates, $M=5$D, from \texttt {hole\_coordinates\_M5.0.csv}.}}{86}{table.21.6}%
+\contentsline {table}{\numberline {21.7}{Hole coordinates, $M=6$D, from \texttt {hole\_coordinates\_M6.0.csv}.}}{86}{table.21.7}%
+\contentsline {table}{\numberline {21.7}{Hole coordinates, $M=6$D, from \texttt {hole\_coordinates\_M6.0.csv}.}}{87}{table.21.7}%
+\contentsline {table}{\numberline {21.7}{Hole coordinates, $M=6$D, from \texttt {hole\_coordinates\_M6.0.csv}.}}{88}{table.21.7}%
+\contentsline {table}{\numberline {21.8}{Hole coordinates, $M=8$D, from \texttt {hole\_coordinates\_M8.0.csv}.}}{88}{table.21.8}%
+\contentsline {table}{\numberline {21.8}{Hole coordinates, $M=8$D, from \texttt {hole\_coordinates\_M8.0.csv}.}}{89}{table.21.8}%
+\contentsline {table}{\numberline {21.9}{Hole coordinates, $M=global$D, from \texttt {hole\_coordinates\_Mglobal.csv}.}}{89}{table.21.9}%

@@ -1,0 +1,40 @@
+TIMELINE -- stage2/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01) unless a
+commit hash is shown.
+
+- 2026-07-27 -- Stage 2 built: extends Stage 1 through the eye lens + a
+  second ASM propagation to the retina, plus an axial-length myopia model.
+  Validated against the closed-form Airy disk at zero defocus (r_EE 50%
+  and 90% within 2%, r_EE 80% within 8% -- the wider 80% tolerance
+  explained by real ill-conditioning near the Airy first null, not
+  sloppiness).
+  STATUS: adopted at the time; produced the project's original headline
+  result -- pure blur minimization (r_EE 50%) optimum aperture
+  300um (M=1-4D) to 400um (M=5-8D).
+
+- 2026-08-01 (commit 60406cd, "initial commit") -- first git-tracked
+  snapshot; stage2/ enters version control as-is.
+
+- date unknown (on/before 2026-07-27, i.e. before the stage2_fixed fork)
+  -- two real bugs present in this folder, found and fixed only in the
+  fork (see stage2_fixed/CHANGES.md and stage2_fixed/TIMELINE.txt):
+    1. sweep_myopia.py finalize_row() energy-conservation check compared
+       discrete output power against a CONTINUOUS reference area
+       (pi*(a_hole/2)^2), silently mixing a ~0.05-0.35% pixelation
+       artifact into what should measure pure ASM propagation fidelity.
+    2. pipeline_junction.py validate_junction()'s wraparound safety check
+       used the Gaussian-beam (M^2=1) minimum-divergence formula,
+       mislabeled "conservative" -- it is actually a LOWER bound, not an
+       upper one; real hard-aperture fields diverge at least as fast.
+  Neither bug is fixed in THIS folder -- this folder is left exactly as
+  it was, bugs included, as the pre-fix historical record.
+
+- 2026-07-27 -- stage2_fixed/ forked from this folder to apply the two
+  fixes above, plus (on 2026-08-06) a separate physics audit correcting a
+  lens-phase/retina-propagation wavelength mismatch.
+  STATUS: superseded by stage2_fixed/ for all live use. Kept, not
+  deleted, as the pre-fix reference build -- see stage2_fixed/TIMELINE.txt
+  for the significant downstream consequence: the original 300-400um
+  blur-only optimum found here did NOT survive stage2_fixed's later
+  wavelength-consistency fix.

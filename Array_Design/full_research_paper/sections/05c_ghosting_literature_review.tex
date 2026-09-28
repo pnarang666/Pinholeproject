@@ -1,0 +1,136 @@
+\section{Ghosting theory: full literature review}
+\label{sec:ghosting-lit-review}
+Section~\ref{sec:ghosting-theory} gave the ghosting derivation in compressed form. This
+section expands the literature review behind it in full, reproducing the
+citation-fidelity discipline of the source document
+(\texttt{Array\_Design/ghosting/THEORY.md}, verified read directly, mtime 2026-08-14
+00:36) exactly: every claim below is labelled \textbf{[EXACT]} (a first-principles or
+exact identity), \textbf{[PUBLISHED]} (a specific cited result applied as originally
+derived), \textbf{[SYNTHESIS]} (a novel combination of citations not itself published as
+a unified result), or \textbf{[UNTESTED]} (a claim requiring physical or psychophysical
+confirmation this project has not obtained). This labelling convention is preserved
+here deliberately, not smoothed into uniform prose, because it is itself part of this
+project's own honesty discipline: a reader should be able to tell, claim by claim,
+which statements in this section are load-bearing established physics and which are
+this project's own proposed synthesis.
+
+\subsection{Motivation: two real, sold products the original criterion could not explain}
+An early criterion for this project treated adjacent holes at pitch $s$ as producing
+retinal images separated by $\Delta r\approx s\,v_r/d_{\mathrm{gap}}$
+\textbf{[EXACT, as originally labelled -- see below]}, and called a design ``ghost-free''
+when $\Delta r$ was smaller than the single-hole blur radius $r_{EE}(P)$. Checked
+against two real, commercially sold pinhole-eyewear patents -- KR~10-2081511 (pitch
+3.2--4.8\,mm) and CN~201716487U (pitch 0.7--1.2\,mm), both with
+$d_{\mathrm{gap}}\approx12$\,mm and $v_r\approx22$--$24$\,mm -- this criterion predicted
+severe (30$\times$--400$\times$) violations for \emph{both} presumably-functional, sold
+products. This direct contradiction between a theoretical prediction and two real
+commercial devices is what motivated the full re-derivation this section and
+Section~\ref{sec:ghosting-theory} document.
+
+\begin{warnbox}{A label that did not survive re-derivation, kept visible rather than quietly corrected}
+Equation~(1) above (the $\Delta r\approx s\,v_r/d_{\mathrm{gap}}$ form) was originally
+marked \textbf{[EXACT]} in this project's own working notes. An independent
+re-derivation subsequently found this label did not hold -- the formula is used nowhere
+in this paper's reported results (Section~\ref{sec:ghosting-theory} uses the corrected
+convolution-theorem derivation instead) -- and the source document's own convention is
+to leave the original claim, and its original (incorrect) fidelity label, visible in
+place with a note pointing to the correction, rather than silently edit history. This
+paper follows that same convention here.
+\end{warnbox}
+
+\subsection{2.1 Lenslet-array merging theory (Gabor superlens)}
+The closest existing precedent for a quantitative multi-channel merging condition in
+the optics literature is Gabor-superlens theory (a microlens-array imaging
+architecture, originating 1941, with modern quantitative treatments from 2014
+\needsverify{exact citation for the specific 2014 treatment referenced in the source
+document was not itself recorded there beyond the year -- not independently tracked
+down for this paper}): mismatched, non-integer-ratio pitches in a two-array relay cause
+imaging channels to, in the cited work's own language, ``unite to form superfocal
+lines much smaller in number than the number of microlenses'' \textbf{[PUBLISHED]}.
+This is cited here as evidence that the general class of problem -- multiple discrete
+optical channels merging or failing to merge into a single perceived image -- is a
+solved, quantitatively tractable one in an adjacent field, \emph{not} as a directly
+transferable formula: a Gabor superlens is a two-array relay forming a real
+intermediate image, physically a different system from a single perforated occluder
+imaged directly by the eye's own optics, and no attempt is made in this project to
+import the Gabor merging condition as-is.
+
+\subsection{2.2 Direct evidence that multi-aperture ghosting is a real, reported clinical symptom}
+The single most important literature finding underlying this section: Kim, Park, Park
+\& Chun (2017, \emph{J Korean Med Sci} 32(5):850--857) \citep{kim2017} -- already
+present in this project's own vetted citation library
+(\texttt{stage4\_human\_vision/literature.py}, and independently used elsewhere in this
+paper for a wholly separate purpose, Section~\ref{sec:external-validation}) -- directly
+reports, in real human subjects wearing real multi-pinhole glasses, ``discomfort from
+after-images such as honeycomb images, horizontal grating, and double or triple
+vision'' \textbf{[PUBLISHED, direct quotation from the primary source]}, significantly
+worse than for single-pinhole glasses tested in the same study. This finding overturns
+the original framing of this project's own investigation: the question this project
+initially set out to answer was ``why do real, sold multi-pinhole products show no
+reported ghosting problem'' -- and the honest literature answer is that they
+\emph{do} report exactly this problem, in a directly-quoted clinical source. The
+question this section's derivation (Section~\ref{sec:ghosting-theory}) actually needed
+to answer is therefore not ``why is ghosting absent,'' but ``why do the two specific
+sold patents checked in Section~\ref{sec:ghosting-theory} not appear to address it
+explicitly in their own documentation, and under exactly what geometric conditions does
+the symptom become severe.''
+
+\subsection{2.3 An independent real-world statement of the discrete-activation mechanism}
+A separate, unrelated US patent (cited in the source document by its own title,
+``Method for facilitating pinhole effect...''
+\needsverify{full patent number not recorded in the source THEORY.md document beyond
+this title fragment -- not independently tracked down for this paper}) states,
+entirely independently of anything already in this project's own derivation: ``If two
+pinholes are separated by less than the diameter of the pupil aperture, two pencils of
+ray\ldots{} form two retinal images. Further, too large of a separation will result in
+dead spots\ldots{} while too small\ldots{} will produce multiple images.''
+\textbf{[PUBLISHED, direct quotation]}. This is significant specifically because it
+states a \emph{discrete precondition} -- whether two or more holes are simultaneously
+illuminating the pupil at all -- rather than a continuous margin comparison. This is
+exactly the $N_{\mathrm{eff}}$ quantity this project's own active-pairs machinery
+(\texttt{margins/active\_pairs.py}, Section~\ref{sec:three-regime}) already computes
+via direct discrete-lattice enumeration, independently of this patent. The connection
+between the patent's own stated mechanism and this project's own pre-existing
+$N_{\mathrm{eff}}$ computation was not recognized until this literature review was
+written -- i.e.\ this project's own Regime-A criterion ($N_{\mathrm{eff}}\le1$,
+Equation~\ref{eq:three-regime}) turns out to be independently corroborated by real
+patent-literature language describing the identical physical mechanism, discovered
+after the fact rather than designed to match it.
+
+\subsection{2.4 Periodic-artifact visibility: the screen-door-effect precedent}
+Display engineering has a standard, mature treatment of an analogous problem: the
+visibility of a display's own pixel/subpixel grid structure (the ``screen-door
+effect''), which is assessed by expressing the grid's periodicity in cycles per
+degree of visual angle, determining the resulting pattern's modulation depth, and
+comparing that modulation depth against the human contrast sensitivity function's own
+threshold at that spatial frequency \textbf{[PUBLISHED]}. This confirms that the
+three-regime criterion's own frequency-domain framework
+(Section~\ref{sec:ghosting-theory}, Equation~\ref{eq:three-regime}) is the same
+established methodology display engineering already uses for a structurally analogous
+periodic-artifact-visibility problem, not a bespoke construction invented for this
+project alone. The same literature also confirms that a cruder, acuity-only rule (of
+the same general type as this project's own original, later-superseded criterion,
+Section~\ref{sec:ghosting-theory}) is a common, recognized first-pass approximation in
+that adjacent field too -- i.e.\ this project's own original mistake was not a mistake
+unique to this project, but a documented, recurring simplification in the broader
+periodic-visual-artifact literature, corrected here by the same frequency-domain
+methodology that field already uses to correct it.
+
+\subsection{Synthesis: the three-regime criterion, and what remains untested}
+Combining 2.2's discrete-activation precondition, 2.3's independent confirmation of the
+same mechanism, and 2.4's frequency-domain visibility methodology, with this project's
+own convolution-theorem derivation (Section~\ref{sec:ghosting-theory}), yields
+Equation~\ref{eq:three-regime}'s three-regime criterion \textbf{[SYNTHESIS]} -- a novel
+combination of these separately-published pieces, not itself a result published as a
+unified criterion anywhere in the cited literature. The predicted danger-zone mechanism
+(Regime C) is directionally consistent with Kim et al.'s directly-quoted clinical
+symptom report (2.2 above), but this consistency is \emph{directional}, not a
+quantitative validation: this project has not obtained psychophysical confirmation that
+the specific Barten-CSF threshold crossing computed in
+Section~\ref{sec:barten}--\ref{sec:harmonic} predicts \emph{which specific} real
+designs a real wearer would report symptoms for, only that the general mechanism and
+its general conclusion (dense real patent pitches are more dangerous than a
+heuristic CSF model suggested) point the same direction as the one directly-quoted
+clinical source available \textbf{[UNTESTED]} -- stated here explicitly as a limitation
+of this specific sub-claim, in addition to the broader limitations already catalogued
+in Chapter~\ref{ch:limitations}.

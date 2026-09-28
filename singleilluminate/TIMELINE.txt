@@ -1,0 +1,32 @@
+singleilluminate -- dated timeline (date from file mtimes -- git only shows "initial
+commit" 2026-08-01 for this folder, i.e. confirms it existed by that date, not the
+exact authored date; file mtimes below are more specific and internally consistent)
+==========================================================================
+
+2026-07-28 (~16:37-16:45, per file mtimes) -- BUILT: single-hole pinhole-brightness
+  module (closed-form (a_hole/D_pupil)^2 area-ratio illumination), kept deliberately
+  separate from the wave-optics pipeline since it needs no ASM propagation. Cross-checks
+  its own formula against stage3_human_vision/photometry.py's independently-implemented
+  version at import time (raises if they ever diverge) -- confirmed exact agreement.
+  Joined into stage3_integrated's combined grid as a new, explicitly-provenanced column
+  (join_with_system.py) without modifying stage3_integrated's own regenerated CSV.
+  STATUS: adopted, still the current single-hole illumination tool.
+
+SCOPE NEVER COMPLETED, STATED PLAINLY IN THIS FOLDER'S OWN README (not superseded --
+never built in the first place):
+  This module was originally specified to ALSO cover multi-hole array photometry
+  (worst/mean/best-case lattice alignment, square/hex packing, a no-ghost-pitch cross-
+  check) via a `stage_array/` module. That module "does not exist anywhere in this
+  project" -- confirmed by an exhaustive grep across every .py/.md file in the repo for
+  its expected function/column names. Per this project's no-invented-physics rule, the
+  multi-hole branch of percent_illumination() raises NotImplementedError (loud, not a
+  silent single-hole fallback), and the Array / No-ghost-cross-check tabs in
+  streamlit_app.py are explicit "blocked" placeholders. STATUS: open, not abandoned --
+  no work has been done on it either way; the single-hole part above is complete and in
+  active use independent of whether the array part is ever built.
+
+Open follow-up flagged in this folder's own README, not yet acted on (date unknown):
+  stage_v1_simulator/streamlit_app.py's Live Explorer tab still recomputes stage3a's
+  illumination formula separately instead of reading from this module -- a note was
+  added to stage_v1_simulator/README.md flagging this, but that app's own code was left
+  untouched.

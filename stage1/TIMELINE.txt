@@ -1,0 +1,32 @@
+TIMELINE -- stage1/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01) unless a
+commit hash is shown.
+
+- 2026-07-26 -- Stage 1 built: exact scalar Angular Spectrum Method (ASM)
+  propagation of a circular pinhole to the corneal plane (physics.py,
+  plotting.py, sweep.py, Streamlit app.py). Validated against closed-form
+  Fresnel on-axis oscillation theory, r=0.997 correlation.
+  STATUS: adopted at the time.
+
+- 2026-08-01 (commit 60406cd, "initial commit") -- first git-tracked
+  snapshot of this repo; stage1/ enters version control as-is.
+
+- date unknown (before the stage1_v2 fork, so on/before 2026-07-27) --
+  a real measurement bug found in this folder's own fwhm_radius(): FWHM
+  (and related 1/e^2 / custom-threshold radii) could jump tens of microns
+  between two aperture diameters differing by only 1um, because the
+  first-threshold-crossing search flips between Fresnel rings once the
+  diffraction pattern has more than one ring of comparable brightness.
+  STATUS: bug NOT fixed in this folder -- fixed in a fork instead, see
+  below, so this folder's fwhm_radius() output should be treated as
+  unreliable for any aperture in the multi-ring (N_F = O(1)-O(10)) regime.
+
+- 2026-07-27 -- stage1_v2/ forked from this folder specifically to fix the
+  FWHM bug above, "kept fully independent so the original tool stays
+  intact" (stage1_v2/README.md, its own words).
+  STATUS: this folder (stage1/) becomes a frozen historical-reference
+  build from this point on -- per pinhole_project_analysis.md's own
+  directory map: "stage1/ -- Unmodified reference build of Stage 1, kept
+  for historical reproducibility." Not deleted, not further developed.
+  Active development continues in stage1_v2/ -- see stage1_v2/TIMELINE.txt.

@@ -1,0 +1,191 @@
+300 Td BRIGHTNESS KNEE — WHAT IT IS, WHERE IT'S USED, WHAT IT ACTUALLY DOES
+============================================================================
+Companion note to acuity.py's brightness_logmar_correction(). Read this before
+citing the brightness term in the presentation.
+
+
+1. WHAT THE KNEE IS
+--------------------
+Retinal illuminance threshold, in trolands (Td), separating two regimes of
+contrast detection:
+
+  >= 300 Td  (Weber-Fechner regime)
+    Threshold contrast modulation is illuminance-independent. Being brighter
+    than this does not make fine detail any easier to see.
+
+  <  300 Td  (de Vries-Rose regime)
+    Threshold contrast rises as illuminance^-0.5. Below the knee, every drop
+    in light costs real acuity.
+
+Source: Van Nes & Bouman (1967), J Opt Soc Am 57(3):401-406. Verified
+directly against the primary abstract (see constants.json citation block
+and acuity.py's docstring) -- not a secondary summary.
+
+
+2. THE FORMULA (acuity.py: brightness_logmar_correction)
+----------------------------------------------------------
+    delta_bright = 0                                  if Td >= 300
+    delta_bright = 0.060 * log10(300 / Td)             if Td <  300
+
+  0.060 = logmar_per_log10_illuminance
+          Source: Tidbury, Czanner & Newsham (2016), verified against
+          their Table 3 (p<0.001). An independently-derived alternative
+          slope from Sheedy, Bailey & Raasch (1984), ~0.0664, could only
+          be traced to a secondary summary -- Tidbury's directly-verified
+          value is what's wired in.
+
+  300   = weber_knee_td (constants.json -> brightness_acuity.weber_knee_td)
+
+delta_bright is ADDED to logMAR (additive in log space, not multiplicative
+in MAR-arcmin space). It only ever makes acuity worse (delta >= 0), never
+better -- there is no negative branch above the knee.
+
+
+3. HOW Td ITSELF IS COMPUTED (illuminance.py)
+------------------------------------------------
+    effective_stop_mm = min(natural_pupil_diameter_mm, pinhole_diameter_mm)
+    Td = scene_luminance_cdm2 * pupil_area_mm2(effective_stop_mm)
+
+  scene_luminance_cdm2 defaults to 10,000 cd/m^2
+  (constants.json -> pipeline.default_scene_luminance_cdm2)
+  = bright outdoor daylight on a white surface. NOT indoor room lighting.
+
+  Natural pupil diameter comes from the Watson-Yellott (2012) model,
+  solved iteratively against the illuminance itself (pupil.py).
+
+  For every fabricated design in this project the pinhole is smaller than
+  the natural pupil, so the pinhole IS the effective stop -- this is the
+  whole physical point of the device, and it's why aperture diameter alone
+  determines Td at fixed scene luminance.
+
+
+4. WHERE THE KNEE ACTUALLY SITS, FOR THIS PROJECT'S APERTURES
+-----------------------------------------------------------------
+At the default 10,000 cd/m^2 scene luminance:
+
+  aperture (um)   Td          delta_bright (logMAR)
+  -------------   ---------   ----------------------
+  75              44.2        +0.0499
+  100             78.5        +0.0349
+  150             176.7       +0.0138
+  200             314.2        0.0000   <-- crosses the knee here
+  300             706.9        0.0000
+  400            1256.6        0.0000   <- your M=8 fabricated design
+  500            1963.5        0.0000
+  600            2827.4        0.0000
+  700            3848.5        0.0000
+  750            4417.9        0.0000
+  1000           7854.0        0.0000
+  1250          12271.8        0.0000
+  1500          17671.5        0.0000
+  1750          24052.8        0.0000
+  2000          31415.9        0.0000   <- your M=0 fabricated design
+
+  ALL EIGHT gaze-weighted winning apertures (400-2000 um) sit above the
+  knee. delta_bright = 0 for every design you have actually fabricated,
+  at this luminance.
+
+
+5. WHAT THIS MEANS -- SAY THIS FIRST, DON'T LET IT BE FOUND
+-----------------------------------------------------------------
+The brightness term is real, correctly cited, correctly implemented, and
+currently inert for your headline results. It is not doing any work in
+the numbers you're presenting. It WOULD activate:
+  - for any aperture below 200 um, or
+  - for a measurement taken at lower scene luminance (e.g. indoors,
+    typically 100-300 cd/m^2 -- see section 7 below).
+
+Defensible line: "The brightness correction is cited and implemented, but
+at our assumed outdoor luminance it's zero for every aperture we actually
+selected -- our optimum is set by the MTF10 cutoff, not by illuminance.
+It would bind indoors, which is why we specify the measurement luminance
+before any acuity test."
+
+
+6. *** THE ACUITY MODEL FAILED ITS OWN VALIDATION -- READ BEFORE CITING ANY
+   PREDICTED LOGMAR NUMBER ***
+-----------------------------------------------------------------------------
+Source: stage4_human_vision/RESULTS.md (Section 2) and
+        stage4_human_vision/LUMINANCE_RECONCILIATION.md
+
+The full acuity predictor (MTF10 + VSOTF + this brightness term) was
+validated against Wang et al. 2009's real clinical pinhole-acuity data.
+Result:
+
+  M (D)   R^2      Pearson r   p-value
+  -----   ------   ---------   -------
+  0       -6.39    0.395       0.510
+  2       -4.98    0.393       0.513
+  5       -2.84    0.405       0.499
+
+Negative R^2 = worse than predicting the mean every time. p ~ 0.50 = no
+significant relationship detected. Every one of the 15 tested (aperture,
+M) points showed the SAME-DIRECTION bias -- the model over-predicts blur
+(worse logMAR than observed) at every point, not just weak scatter.
+
+The luminance assumption was tested as a possible cause and RULED OUT:
+correcting to Wang 2009's own stated illumination (15 foot-candles ->
+43.7 cd/m^2, replacing the 10,000 cd/m^2 default) made R^2 WORSE
+(-7.88 vs -6.68 at M=0), not better -- because it pushed apertures below
+the 300 Td knee and added predicted blur on top of a model that was
+already over-predicting it.
+
+RESULTS.md's own diagnosis, most-likely cause first:
+  1. Uncalibrated combination -- acuity.py's VSOTF/brightness formula has
+     no fitted offset or scale against real data (DESIGN.md flags this
+     as a known "requires empirical calibration" gap).
+  2. The Wang 2009 dataset itself is non-monotonic at n=5: observed
+     logMAR = 0.28, 0.31, 1.00, 0.40, 0.50 at 500/750/1000/1200/1500 um --
+     a spike at 1000um that reverses at 1200um. A single outlier at n=5
+     will sink any smooth model regardless of which optical metric
+     underlies it.
+  3. No per-subject refractive error recorded in the dataset -- comparing
+     one simulated M against subjects with unstated real M adds
+     irreducible noise.
+  4. n=5 per M is too small for p<0.05 even with real signal present.
+
+RESULTS.md's own conclusion: this "cannot be properly validated with
+currently available public data." A fourth predictor variant was
+deliberately not chased, since (1)-(3) would sink any smooth model built
+on this project's optics against this specific dataset -- this reads as
+a dataset/task-mismatch problem, not proof the underlying optics are
+wrong.
+
+WHAT TO DO WITH THIS AT PRESENTATION:
+  - Do NOT present "+0.33 logMAR at M=8D" as a validated clinical
+    prediction. It is a self-consistent model output that has not been
+    externally validated, and the one external check available found no
+    significant relationship to real data.
+  - DO say this yourself, in this order, if the acuity model comes up:
+    the model is internally consistent (traceable, cited, each term
+    justified) but externally unvalidated; the one validation attempt
+    against Wang 2009 failed (R^2 negative, p~0.5); the luminance
+    assumption was tested and ruled out as the cause; the leading
+    suspects are lack of calibration and the small, non-monotonic
+    clinical dataset, not necessarily the optics.
+  - This is exactly why the two-pinhole / logMAR measurement protocol
+    (LOGMAR_ACUITY_PROTOCOL.pdf) matters more than it might otherwise --
+    it is your own calibration data, on your own device, which the model
+    currently lacks entirely.
+
+
+7. RELATED, SEPARATE FINDING -- DO NOT CONFUSE WITH SECTION 6
+-------------------------------------------------------------
+brightness_reconciliation/FINDINGS.md's earlier result (the 6.25-9%
+brightness-floor percentage landing the BLUR-ONLY optimum near
+900-1250um) is a DIFFERENT question from the acuity-predictor validation
+above, and stands on its own -- it is about whether a reverse-engineered
+transmission percentage matches the 300 Td floor at ~300 cd/m^2, not
+about whether the full acuity model predicts real clinical logMAR
+correctly. Don't let one finding be mistaken for resolving the other.
+
+
+REFERENCES (full detail in constants.json / literature.py)
+------------------------------------------------------------
+- Van Nes & Bouman (1967), J Opt Soc Am 57(3):401-406 -- knee value
+- Tidbury, Czanner & Newsham (2016), doi:10.1007/s00417-016-3329-7 -- slope
+- Wang et al. (2009) -- external validation dataset (see literature.py)
+- stage4_human_vision/RESULTS.md -- full validation run and diagnosis
+- stage4_human_vision/LUMINANCE_RECONCILIATION.md -- luminance ruled out
+- stage4_human_vision/DESIGN.md -- documents the "requires empirical
+  calibration" gap in advance

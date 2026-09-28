@@ -1,0 +1,472 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\definecolor{warnred}{HTML}{9C2B2B}
+\definecolor{boxgrey}{HTML}{F4F4F6}
+
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape Single-Pinhole logMAR Acuity Protocol}
+\fancyfoot[C]{\thepage}
+
+\newsavebox{\kbsave}
+\newsavebox{\wbsave}
+\newenvironment{keybox}[1]%
+{\par\vspace{8pt}\begin{lrbox}{\kbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{hbblue}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{8pt}%
+\fcolorbox{hbblue}{boxgrey}{\usebox{\kbsave}}\end{center}\vspace{8pt}\par}
+\newenvironment{warnbox}[1]%
+{\par\vspace{8pt}\begin{lrbox}{\wbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{warnred}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{8pt}%
+\fcolorbox{warnred}{white}{\usebox{\wbsave}}\end{center}\vspace{8pt}\par}
+
+\title{\textbf{\Huge Single-Pinhole Acuity}\\[0.3cm]
+\textcolor{hbblue}{\huge logMAR Measurement Protocol}\\[0.5cm]
+\large\itshape Model predictions read from \texttt{acuity\_sweep\_stage4.csv},\\
+and the experiment that tests them}
+\author{}
+\date{IYPT 2027 Problem 1}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter*{Provenance of every number in this document}
+\addcontentsline{toc}{chapter}{Provenance}
+
+\begin{warnbox}{Read this first}
+Every predicted acuity value in this document is read directly from
+\texttt{new\_sweeps/acuity\_sweep\_stage4.csv}, column \texttt{logmar}, produced by the
+\texttt{mtf10\_vsotf\_brightness\_adjusted} model. No value here is estimated, interpolated, or
+assumed. Where a quantity is \emph{not} available from the model --- most importantly the
+bare-eye baseline --- this document says so explicitly and does not supply a substitute.
+\end{warnbox}
+
+\begin{warnbox}{This model failed its one external validation check --- read before quoting any number below}
+The full acuity model (every number in this document) was tested against Wang et al.\ (2009)'s real
+clinical pinhole-acuity data, in \texttt{stage4\_human\_vision/RESULTS.md}: $R^2 = -6.39$ to $-2.84$
+across $M=0,2,5$, $p\approx0.50$. Negative $R^2$ means worse than guessing the mean; $p\approx0.50$
+means no significant relationship was detected. Every one of the 15 tested points showed the same
+bias direction --- the model over-predicts blur at every point.
+
+The scene-luminance assumption was tested and ruled out as the cause: correcting to Wang 2009's own
+reported illumination made $R^2$ \emph{worse}, not better. The project's own leading diagnosis is an
+uncalibrated formula combined with a small ($n=5$), non-monotonic clinical dataset --- not
+necessarily wrong optics. Full reasoning in \texttt{stage4\_human\_vision/300TD\_KNEE\_NOTES.txt}.
+
+\textbf{This is exactly why the experiment below matters.} Every number in this document is a
+self-consistent, traceable model output --- not a validated clinical prediction. The measurement you
+are about to run is calibration data this model currently has none of.
+\end{warnbox}
+
+\chapter{What the model predicts, and what it does not}
+
+\section{What it predicts}
+
+The model predicts \textbf{acuity through a pinhole of stated diameter, at stated myopia}. That is
+one endpoint of the experiment.
+
+\section{What it does not predict}
+
+The model does \textbf{not} predict uncorrected bare-eye acuity. This is not an oversight --- it is a
+direct consequence of the declared scope. Uncorrected acuity in a real eye is set by defocus
+\emph{plus} higher-order aberrations, accommodation, and neural factors, all of which are explicitly
+excluded from this project's model. The simulation contains a pinhole in every configuration it can
+evaluate; there is no aperture-free case in the sweep.
+
+\begin{keybox}{The consequence for your experimental claim}
+You cannot state a predicted \emph{improvement}. You can state a predicted \emph{endpoint}, and
+measure the improvement against a \emph{measured} baseline. The defensible sentence is:
+
+\emph{``The model predicts logMAR $+0.33$ through a 400\,\textmu m aperture at $M=8$\,D. We measured
+logMAR $X$ through that aperture, against a measured bare-eye baseline of $Y$.''}
+
+Anyone claiming a predicted $\Delta$ from this model is asserting a bare-eye number the model never
+produced.
+\end{keybox}
+
+\chapter{Predicted acuity for the fabricated designs}
+
+Each row pairs the gaze-weighted winning aperture for that myopia level with the model's predicted
+acuity at exactly that aperture and myopia.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{cccccc}
+\toprule
+$M$ (D) & Aperture (\textmu m) & MAR (arcmin) & logMAR & Snellen & Retinal illum.\ (Td) \\
+\midrule
+0 & 2000 & 0.45 & $-0.344$ & 20/9.1 & 31416 \\
+1 & 1250 & 0.76 & $-0.120$ & 20/15.2 & 12272 \\
+2 & 750 & 1.19 & $+0.076$ & 20/23.8 & 4418 \\
+3 & 750 & 1.29 & $+0.112$ & 20/25.9 & 4418 \\
+4 & 600 & 1.52 & $+0.181$ & 20/30.3 & 2827 \\
+5 & 600 & 1.74 & $+0.240$ & 20/34.8 & 2827 \\
+6 & 500 & 1.81 & $+0.259$ & 20/36.3 & 1963 \\
+8 & 400 & 2.14 & $+0.331$ & 20/42.8 & 1257 \\
+\bottomrule
+\end{tabular}
+\caption{Predicted acuity through each fabricated design. Apertures from
+\texttt{gaze\_weighted\_winner\_per\_M.csv}; acuity from \texttt{acuity\_sweep\_stage4.csv}.}
+\end{table}
+
+\begin{keybox}{An independent consistency check, worth stating at defence}
+These winning apertures were selected by the \emph{gaze-weighted geometric} evaluator --- viability,
+ghost margin, blind fraction --- with no acuity term in its objective. Yet at every myopia level from
+0 to 8\,D, the selected aperture is \textbf{also} the acuity-optimal aperture in the independent
+Stage-4 sweep. Two evaluators built on different objectives agree on all eight designs. That
+agreement was not enforced and is not a coincidence worth passing over.
+\end{keybox}
+
+\chapter{The strongest testable prediction you have}
+\label{ch:flatness}
+
+\section{Acuity through a fixed small aperture is nearly independent of myopia}
+
+Holding the aperture at 400\,\textmu m and varying only myopia, the model gives:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$M$ (D) & logMAR & Snellen \\
+\midrule
+0 & $+0.341$ & 20/43.9 \\
+1 & $+0.337$ & 20/43.4 \\
+2 & $+0.333$ & 20/43.0 \\
+3 & $+0.329$ & 20/42.7 \\
+4 & $+0.327$ & 20/42.4 \\
+5 & $+0.325$ & 20/42.3 \\
+6 & $+0.325$ & 20/42.2 \\
+8 & $+0.331$ & 20/42.8 \\
+\bottomrule
+\end{tabular}
+\caption{Predicted acuity through a fixed 400\,\textmu m aperture across the full myopia range.
+Total spread: 0.016 logMAR.}
+\end{table}
+
+Across eight dioptres of myopia the predicted acuity varies by \textbf{0.016 logMAR} --- roughly a
+twentieth of one chart line, and far below the $\pm0.1$ logMAR repeatability of human acuity
+testing. At 400\,\textmu m the aperture, not the refractive error, sets the acuity.
+
+\begin{keybox}{Why this is the experiment to run}
+This prediction is \textbf{falsifiable, sharp, and requires no knowledge of anyone's exact
+prescription}. Recruit subjects across a range of myopia. If the model is right, all of them read
+approximately the same line through the same 400\,\textmu m pinhole --- while their bare-eye acuity
+differs enormously.
+
+That is a far stronger experimental design than measuring one subject and comparing to one number,
+because the \emph{shape} of the result carries the claim. A flat line across subjects of very
+different refractive error is difficult to produce by accident.
+\end{keybox}
+
+\section{Why the flatness happens}
+
+Two effects nearly cancel. As myopia increases, the defocus blur circle grows --- but the pinhole is
+already narrow enough that the accepted cone is set by the aperture, not by the eye's focusing error.
+The residual defocus contribution is small compared with the diffraction floor the 400\,\textmu m
+aperture imposes. The predicted acuity therefore tracks the diffraction limit of the aperture, which
+does not depend on $M$ at all.
+
+The flatness breaks at larger apertures, where defocus reasserts itself. Compare 2000\,\textmu m:
+logMAR $-0.344$ at $M=0$ but $+1.330$ at $M=8$ --- a spread of 1.67 logMAR, a hundred times larger.
+That contrast is itself a second testable prediction, and a good slide.
+
+\chapter{Building the chart}
+
+\section{logMAR, defined}
+
+logMAR is $\log_{10}$ of the minimum resolvable angle in arcminutes. A one-arcminute detail gives
+logMAR $=0$, conventionally 20/20. Positive is worse, negative is better. One chart line is 0.1
+logMAR by construction, so a line's letters are $10^{0.1} = 1.259\times$ the size of the next line down.
+
+\begin{equation}
+\text{logMAR} = \log_{10}(\text{MAR in arcmin}), \qquad
+\text{Snellen denominator} = 20 \times 10^{\text{logMAR}}
+\end{equation}
+
+\section{Letter sizing}
+
+A Snellen letter is five times the stroke width, and the stroke subtends the MAR. So at viewing
+distance $D$, the letter height is
+\begin{equation}
+h = 5 \times \text{MAR}_{\text{arcmin}} \times \frac{\pi}{180\times 60} \times D
+= 1.4544\times10^{-3}\,\text{MAR}_{\text{arcmin}} \times D
+\end{equation}
+
+At $D = 4.0$\,m:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccccc}
+\toprule
+logMAR & MAR (arcmin) & Snellen & Letter height (mm) & Stroke (mm) \\
+\midrule
+$+0.7$ & 5.01 & 20/100 & 29.2 & 5.83 \\
+$+0.6$ & 3.98 & 20/79.6 & 23.2 & 4.63 \\
+$+0.5$ & 3.16 & 20/63.2 & 18.4 & 3.68 \\
+$+0.4$ & 2.51 & 20/50.2 & 14.6 & 2.92 \\
+$+0.3$ & 2.00 & 20/39.9 & 11.6 & 2.32 \\
+$+0.2$ & 1.58 & 20/31.7 & 9.2 & 1.84 \\
+$+0.1$ & 1.26 & 20/25.2 & 7.3 & 1.46 \\
+$0.0$ & 1.00 & 20/20 & 5.8 & 1.16 \\
+$-0.1$ & 0.79 & 20/15.9 & 4.6 & 0.92 \\
+$-0.2$ & 0.63 & 20/12.6 & 3.7 & 0.73 \\
+\bottomrule
+\end{tabular}
+\caption{Letter dimensions at 4.0\,m viewing distance. Scale linearly for other distances.}
+\end{table}
+
+\begin{keybox}{Why 4 metres, and why this range}
+The predictions cluster between logMAR $-0.34$ and $+0.34$, so the chart must span at least
+$-0.2$ to $+0.7$ to bracket both the predicted pinhole endpoints and plausible bare-eye baselines
+for mild myopes. At 4\,m the smallest stroke is 0.92\,mm --- printable on a domestic laser printer.
+At 2\,m it would be 0.46\,mm, at the edge of print fidelity, and printer dot structure would start
+to limit the measurement rather than the eye.
+\end{keybox}
+
+\section{Construction}
+
+Five letters per line, Sloan set (C, D, H, K, N, O, R, S, V, Z --- equal legibility by design), even
+spacing of one letter width. Print black on matte white; glossy paper produces specular glare that
+confounds the low-transmission conditions. Verify the print scale by measuring a printed reference
+bar with callipers before use, exactly as with the etch masks.
+
+\chapter{The confounder that will ruin this measurement}
+
+\section{Retinal illuminance is not a footnote}
+
+The predicted-acuity table carries a Troland column for a reason. At $M=8$ the 400\,\textmu m design
+delivers 1257\,Td against 31416\,Td for the 2000\,\textmu m case --- a factor of 25. The model's
+\texttt{mtf10\_vsotf\_brightness\_adjusted} predictions already include a brightness adjustment, but
+they assume a specific scene luminance (10\,000\,cd/m$^2$, a bright outdoor surface).
+
+\begin{warnbox}{If you test indoors, the model's assumption is violated}
+A typical indoor chart under room lighting is 100--300\,cd/m$^2$, some 30--100$\times$ dimmer than
+assumed. Through a 400\,\textmu m aperture at 1\% transmission, the retinal illuminance can fall low
+enough that acuity becomes photon-limited rather than optics-limited --- and you will measure a
+brightness effect while believing you measured a diffraction effect.
+
+\textbf{Mitigation: illuminate the chart hard.} Direct lamps onto the chart to raise its luminance as
+high as you can and \emph{measure it} with a light meter (a phone app with a calibrated lux reading is
+adequate to within a factor of two, which is enough to know whether you are in the right regime).
+Record the value. If you cannot reach high luminance, state that the bare-eye and pinhole conditions
+were measured at different effective retinal illuminance, and that the comparison is therefore not
+purely optical.
+\end{warnbox}
+
+\section{Accommodation}
+
+At 4\,m a myopic eye cannot accommodate to bring the chart into focus --- accommodation only adds
+power, moving focus nearer, which is the wrong direction. That is convenient: it means the defocus
+you are testing is stable. \textbf{Do not test at short distances}, where accommodative effort varies
+between trials and between conditions.
+
+\section{Pupil diameter}
+
+The model assumes a 4\,mm pupil. Under the bright illumination this protocol requires, real pupils
+constrict to 2--3\,mm. A smaller pupil improves bare-eye acuity by itself --- a natural pinhole
+effect --- which \emph{reduces} the apparent benefit of the artificial aperture. Photograph the eye
+against a mm scale under test lighting, or at minimum record the lighting conditions so the
+direction of this bias is documented.
+
+\section{Learning effect}
+
+Subjects memorise charts. Use at least two different letter arrangements and alternate them, or
+randomise the letter order between repeats. Otherwise later conditions score artificially well.
+
+\section{The ranked list of things that will go wrong}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item Chart too dim, so you measure photon noise instead of optics.
+\item Chart printed at the wrong scale --- verify with callipers.
+\item Pupil constricted under bright light, shrinking the measured benefit.
+\item Subject memorising the chart.
+\item Pinhole not centred on the pupil, so the subject sees through its edge or misses it entirely.
+\item $d_{\text{gap}}$ varying between conditions because the mount is hand-held.
+\end{enumerate}
+
+\chapter{Protocol}
+
+\section{Fixed conditions --- record once per session}
+
+\begin{longtable}{p{5.5cm}p{4.0cm}p{4.5cm}}
+\toprule
+\textbf{Quantity} & \textbf{Value} & \textbf{How obtained} \\
+\midrule
+\endhead
+Viewing distance & \rule{3cm}{0.4pt}\,m & tape measure, $\pm0.02$\,m \\
+Chart luminance & \rule{3cm}{0.4pt}\,cd/m$^2$ or lux & light meter / phone app \\
+Chart version(s) used & \rule{3cm}{0.4pt} & A / B alternation \\
+$d_{\text{gap}}$ (mount to cornea) & \rule{3cm}{0.4pt}\,mm & spacer, fixed \\
+Room lighting & \rule{3cm}{0.4pt} & description \\
+Date / time & \rule{3cm}{0.4pt} & \\
+\bottomrule
+\end{longtable}
+
+\section{Per-subject record}
+
+\begin{longtable}{p{5.5cm}p{4.0cm}p{4.5cm}}
+\toprule
+\textbf{Quantity} & \textbf{Value} & \textbf{Source} \\
+\midrule
+\endhead
+Subject ID & \rule{3cm}{0.4pt} & anonymised \\
+Refractive error, tested eye & \rule{3cm}{0.4pt}\,D & optometrist Rx if available \\
+Rx date & \rule{3cm}{0.4pt} & \\
+Astigmatism (cyl) & \rule{3cm}{0.4pt}\,D & note if $>1$\,D \\
+Eye tested & L / R & occlude the other \\
+Pupil diameter under test light & \rule{3cm}{0.4pt}\,mm & photo vs.\ scale, or note \\
+\bottomrule
+\end{longtable}
+
+\begin{keybox}{If prescriptions are unavailable}
+Chapter~\ref{ch:flatness}'s flatness prediction does not need them. Rank subjects qualitatively
+(``no glasses'', ``mild'', ``strong'') and test whether pinhole acuity is flat across that ranking
+while bare-eye acuity is not. Report refractive error as unmeasured. A qualitative ordering with an
+honest caveat is worth more than a fabricated dioptre value.
+\end{keybox}
+
+\section{Procedure}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item Occlude the untested eye. Keep it open under the occluder.
+\item Seat the subject at the fixed distance, head steady.
+\item Present the chart. Subject reads from the largest line downward, aloud, letter by letter.
+\item Score a line as read if at least 3 of 5 letters are correct. The threshold is the smallest such line.
+\item Record the line's logMAR.
+\item Rest 30\,s. Change chart version.
+\item Repeat for the next condition in randomised order.
+\end{enumerate}
+
+\textbf{Conditions:} (1) bare eye, (2) single 400\,\textmu m pinhole, (3) fabricated array.
+Three repeats each, order randomised across all nine trials.
+
+\section{Recording table}
+
+\begin{longtable}{cccccc}
+\toprule
+Trial & Subject & Condition & Chart & Threshold line & logMAR \\
+\midrule
+\endhead
+1 & & & & & \\
+2 & & & & & \\
+3 & & & & & \\
+4 & & & & & \\
+5 & & & & & \\
+6 & & & & & \\
+7 & & & & & \\
+8 & & & & & \\
+9 & & & & & \\
+\bottomrule
+\end{longtable}
+
+\chapter{Analysis}
+
+\section{Per condition}
+
+Mean and standard deviation of the three repeats. Human acuity repeatability is typically
+$\pm0.1$ logMAR, so a standard deviation much above 0.15 indicates a procedural problem --- most
+often inconsistent pinhole centring --- rather than a real effect.
+
+\section{Test 1 --- the endpoint comparison}
+
+For each subject, compare measured pinhole acuity against the model's prediction at that aperture
+and that subject's myopia (Chapter~3 table).
+
+\begin{equation}
+\text{residual} = \text{logMAR}_{\text{measured}} - \text{logMAR}_{\text{predicted}}
+\end{equation}
+
+Report the residual, signed. A positive residual means the eye did worse than predicted. Interpretation:
+
+\begin{itemize}[leftmargin=1.2cm]
+\item $|{\text{residual}}| < 0.15$: agreement within measurement repeatability.
+\item Residual $> +0.3$ consistently: a confounder is active. Check chart luminance first --- the model
+assumes bright outdoor conditions.
+\item Residual $< -0.3$: the eye outperforms the model. The model omits neural processing and
+excludes higher-order aberrations, both of which can favour the real eye.
+\end{itemize}
+
+\section{Test 2 --- the flatness test (the strong one)}
+
+Plot measured pinhole logMAR against myopia (or qualitative rank) for all subjects. The model
+predicts a spread of 0.016 logMAR across 0--8\,D --- effectively a horizontal line. On the same axes
+plot bare-eye logMAR, which should fall steeply with increasing myopia.
+
+\begin{keybox}{What each outcome licenses you to say}
+\textbf{Pinhole flat, bare-eye steep:} the central claim of the whole project, measured. \emph{``Through
+a 400\,\textmu m aperture, acuity is set by the aperture rather than by refractive error --- measured
+across subjects spanning X dioptres.''}
+
+\textbf{Pinhole also falls with myopia:} the model is wrong in a specific, interesting way, and the
+slope tells you how wrong. This is a publishable-grade negative result, not a failure.
+
+\textbf{Both flat:} your subjects are not myopic enough to separate the conditions, or the chart is
+too easy. Extend the chart to smaller lines and recruit a stronger myope.
+\end{keybox}
+
+\section{Test 3 --- array versus single hole}
+
+The sparse array is designed so that only one aperture illuminates the pupil at a time. Two
+consequences follow, both testable:
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item \textbf{On axis, array acuity should equal single-hole acuity} to within repeatability, since
+the eye is looking through one hole in both cases.
+\item \textbf{Off axis, the array should keep working and the single hole should not.} Rotate the
+subject's gaze $10$--$20^\circ$ by moving the chart laterally while the mount stays fixed. The single
+hole should go dark; the array should hand over to a neighbouring aperture.
+\end{enumerate}
+
+Also record: \textbf{does any subject report a doubled image at any gaze angle?} The model predicts
+none, at any myopia, because no ghost pair ever forms. An observed ghost would falsify that
+prediction and is worth more than confirming it.
+
+\chapter{Reporting}
+
+\section{The claim, written honestly}
+
+\begin{quote}
+``Through a 400\,\textmu m aperture at $d_{\text{gap}} = $\,\rule{1cm}{0.4pt}\,mm and
+\rule{1cm}{0.4pt}\,m viewing distance, $N$ subjects spanning \rule{1cm}{0.4pt}--\rule{1cm}{0.4pt}\,D
+of myopia read logMAR \rule{1cm}{0.4pt} $\pm$ \rule{1cm}{0.4pt}, against bare-eye acuity ranging from
+\rule{1cm}{0.4pt} to \rule{1cm}{0.4pt}. Our model predicts $+0.33 \pm 0.01$ across that same range;
+this model has not previously been validated against real clinical data, and our one prior validation
+attempt (against Wang et al.\ 2009) found no significant relationship ($R^2<0$). This measurement is
+that calibration.''
+\end{quote}
+
+\section{What must accompany it}
+
+\begin{itemize}[leftmargin=1.2cm]
+\item Chart luminance, measured, with a statement of whether it met the model's assumed regime.
+\item Pupil diameter, measured or noted as unmeasured.
+\item Sample size and how refractive error was established.
+\item Every subject's raw data --- do not report only the mean.
+\item Any subject excluded, and why, decided before analysis.
+\end{itemize}
+
+\begin{warnbox}{Do not report a predicted improvement}
+The model produces no bare-eye baseline. Any $\Delta$ you quote must have a \emph{measured} baseline
+on both sides. Quoting a predicted improvement means quoting a bare-eye number the model never
+generated --- which is exactly the kind of unsourced figure this project has otherwise been careful
+to avoid.
+\end{warnbox}
+
+\end{document}

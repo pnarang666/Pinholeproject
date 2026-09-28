@@ -1,0 +1,425 @@
+\documentclass[11pt]{report}
+\usepackage[a4paper,margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\definecolor{hbblue}{HTML}{2A4D8F}
+\definecolor{warnred}{HTML}{9C2B2B}
+\definecolor{boxgrey}{HTML}{F4F4F6}
+
+\titleformat{\chapter}[display]{\bfseries\Large\color{hbblue}}{\chaptertitlename\ \thechapter}{10pt}{\huge}
+\titleformat{\section}{\normalfont\large\bfseries\color{hbblue}}{\thesection}{1em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\itshape Slide Deck Specification}
+\fancyfoot[C]{\thepage}
+
+\newsavebox{\kbsave}
+\newsavebox{\wbsave}
+\newenvironment{keybox}[1]%
+{\par\vspace{6pt}\begin{lrbox}{\kbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{hbblue}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{7pt}%
+\fcolorbox{hbblue}{boxgrey}{\usebox{\kbsave}}\end{center}\vspace{6pt}\par}
+\newenvironment{warnbox}[1]%
+{\par\vspace{6pt}\begin{lrbox}{\wbsave}\begin{minipage}{0.88\textwidth}%
+{\bfseries\color{warnred}#1}\par\vspace{4pt}\ignorespaces}%
+{\end{minipage}\end{lrbox}%
+\begin{center}\setlength{\fboxrule}{1.2pt}\setlength{\fboxsep}{7pt}%
+\fcolorbox{warnred}{white}{\usebox{\wbsave}}\end{center}\vspace{6pt}\par}
+
+\newcommand{\slide}[2]{\section*{Slide #1 --- #2}\addcontentsline{toc}{section}{Slide #1: #2}}
+
+\title{\textbf{\Huge IYPT Presentation}\\[0.3cm]
+\textcolor{hbblue}{\huge Slide-by-Slide Specification}\\[0.5cm]
+\large\itshape 12 main slides, 25 reserve. Every figure path verified on disk.}
+\author{}
+\date{Pinhole Sunglasses --- IYPT 2027 Problem 1}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Structure and rules}
+
+\section{The format constraint that drives everything}
+
+IYPT Reporter is 12 minutes. At 45--55 slides that is 13--16 seconds per slide, which is not a
+presentation --- it is a slideshow you narrate over while losing the room. The structure here is:
+
+\begin{itemize}[leftmargin=1.2cm]
+\item \textbf{12 main slides}, roughly 60\,s each, shown in order.
+\item \textbf{25 reserve slides}, shown only when a question demands one.
+\end{itemize}
+
+Total is 37 slides --- close to the volume you were planning, but with the depth held in reserve
+rather than forced through the clock. Flipping to a prepared backup slide mid-answer reads as
+mastery. Running out of time reads as the opposite, regardless of what was on the skipped slides.
+
+\section{Rules for every slide}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item \textbf{One claim per slide.} If you need ``and'' to state the point, it is two slides.
+\item \textbf{No paragraph text.} Numbers, one figure, at most three short lines.
+\item \textbf{Every number traceable.} If it is on a slide, you can name the CSV it came from.
+\item \textbf{Deprecated formulas marked as such} wherever they appear, so nobody thinks you still use them.
+\item \textbf{Negatives on your own slides}, in your own words, before anyone asks.
+\end{enumerate}
+
+\section{Figures that must be created --- the only real gap}
+
+Everything else is already on disk. Two figures do not exist and cannot be substituted:
+
+\begin{warnbox}{Build these before anything else}
+\textbf{FIG-A --- ``One hole per pupil'' overlap diagram.} Hexagonal lattice at 4000\,\textmu m pitch
+with a 4000\,\textmu m pupil circle overlaid, showing exactly one hole inside the pupil, plus the
+nearest neighbour at 4000\,\textmu m clearly outside. This carries Slide 9, which is the slide that
+closes your biggest vulnerability. Without it you are asserting the geometry rather than showing it.
+
+\textbf{FIG-B --- $\mu_g$ saturation histogram.} Distribution of Shen's ghost-membership term across
+all 8501 candidates, showing it pinned at one value. This carries Slide 8, your only original
+finding against published literature.
+\end{warnbox}
+
+Both are quick matplotlib scripts from data you already have. Do them first --- they are the two
+slides nobody else at the tournament can show.
+
+\chapter{The 12 main slides}
+
+\slide{1}{The problem, and the tension inside it}
+
+\textbf{Figure:} \texttt{all\_outputs/stage1\_radius\_vs\_diameter.png} --- blur radius vs.\ aperture,
+showing both branches and the minimum.
+
+\textbf{On slide:} Title. The figure. Two labels on the curve: ``defocus-limited'' on the falling
+branch, ``diffraction-limited'' on the rising branch.
+
+\textbf{Say (45\,s):} ``A short-sighted eye focuses in front of the retina, so every point becomes a
+disc. Narrow the aperture and the disc shrinks --- that is why squinting works. But light is a wave,
+and a small hole spreads it. Below some size, diffraction grows faster than defocus shrinks. There is
+a minimum. Finding it correctly is the whole problem, and `correctly' turns out to be the hard word.''
+
+\slide{2}{The architectural correction}
+
+\textbf{Figure:} Two-panel pipeline diagram --- build in the slide tool, not matplotlib. Top: mask
+$\to$ ASM $\to$ pupil $\to$ lens phase $\to$ \textbf{FFT} $\to$ retina, with FFT struck through in
+red. Bottom: same chain with \textbf{ASM($v_r$)} in place of the FFT.
+
+\textbf{On slide:} The two chains. One line: $L_{ax} = n'/(P_0-M)$, and $v_r \neq v_f$.
+
+\textbf{Say (90\,s):} ``A lens phase followed by a single FFT gives you the field at the lens's own
+back focal plane. For a healthy eye that is the retina and the answer is right. For a myopic eye the
+retina is not at the focal plane --- that mismatch is the definition of myopia. So that pipeline
+computes a perfectly sharp Airy pattern at the one plane in the system where defocus is exactly zero.
+It would model a corrected eye and call it myopic.
+
+We replaced the FFT with a second Angular Spectrum propagation over the real physical distance. That
+is not just more accurate --- it makes two formulas unnecessary. Geometric blur is no longer computed
+and added; it emerges from propagating a wrongly-curved wavefront the correct distance. And
+root-sum-square combination has nothing left to combine.''
+
+\begin{keybox}{This is your strongest slide. Do not rush it.}
+Most teams ship this bug and never detect it. Spending 90 seconds here is the single best use of
+your twelve minutes.
+\end{keybox}
+
+\slide{3}{Validation against the closed form}
+
+\textbf{Figure:} \texttt{data\_collection/stage3\_integrated/plots/validation\_tolerance\_bands.png}
+
+\textbf{On slide:} ``$d_{gap} \to 0$, $M=0$ $\Rightarrow$ must reduce to Fraunhofer''. Three numbers:
+$r_{EE}(50\%)$ 2\%, $r_{EE}(90\%)$ 2\%, $r_{EE}(80\%)$ 8\%.
+
+\textbf{Say (45\,s):} ``Setting the gap to zero and myopia to zero, the whole chain must collapse to
+the textbook Airy result. It does, to two percent --- except at the 80\% percentile, which needs
+eight. That percentile sits almost exactly on the first null, where the encircled-energy curve is
+flat, so a tiny error in energy maps to a large error in radius. We checked whether it was
+resolution: from grid 1024 to 8192 it never dropped below 2.3\%. It is ill-conditioning, not a bug.''
+
+\begin{keybox}{Volunteer the exception}
+Saying the 8\% yourself, with the reason, is worth more than the 2\% figures. It signals you
+understand your own error structure rather than reporting only what flatters you.
+\end{keybox}
+
+\slide{4}{What the deprecated shortcut costs}
+
+\textbf{Figure:} \texttt{all\_outputs/comparison\_retina\_M4.png} or the RSS-vs-exact comparison plot.
+
+\textbf{On slide:} $r_{tot} \overset{?}{=} \sqrt{r_{geo}^2+r_{diff}^2}$ struck through. Two numbers:
+mean divergence 64.8\%, max 192.8\%.
+
+\textbf{Say (45\,s):} ``Root-sum-square assumes two independent Gaussian error terms. Neither blur
+here is Gaussian --- defocus gives a roughly uniform disc, diffraction gives an Airy pattern with
+rings. Blurs combine by convolving point-spread functions, not by adding radii in quadrature. We did
+not assert the shortcut was wrong; we measured it against the exact result. Mean divergence 65\%,
+worst case 193\%, and worst at mild myopia --- the regime that matters most.''
+
+\slide{5}{Blur-only optimum}
+
+\textbf{Figure:} \texttt{all\_outputs/stage2\_optimum\_vs\_M\_summary.png}
+
+\textbf{On slide:} The U-curve family. One line: ``optimum 300--400\,\textmu m across 1--8\,D''.
+
+\textbf{Say (40\,s):} ``Minimising blur alone gives 300 to 400 microns, essentially flat across the
+whole myopia range. That is a clean result. It is also, as stated, wrong for a real device.''
+
+Deliver that last sentence and pause. It sets up Slide 6.
+
+\slide{6}{The reconciliation --- the pivot of the talk}
+
+\textbf{Figure:} \texttt{brightness\_reconciliation.png}, or
+\texttt{stage3a/stage3a\_fig2\_optimum\_vs\_Tmin\_wl550nm\_gap12mm.png}
+
+\textbf{On slide:} $E_{rel}=(\min(a,D_p)/D_p)^2$. Small table: $T_{min}$ 0\% $\to$ 300--400\,\textmu m;
+6.25\% $\to$ 1000\,\textmu m; 9\% $\to$ 1250\,\textmu m. Clinical bracket 0.94--1.75\,mm marked.
+
+\textbf{Say (75\,s):} ``Published and commercial pinhole devices sit between 0.94 and 1.75
+millimetres. Our blur-only answer is three times smaller. Rather than assume our physics was wrong,
+we tested a hypothesis: that brightness is a binding constraint we had omitted.
+
+Illuminance follows from energy conservation --- diffraction redistributes light, it does not destroy
+it, so transmission goes as the physical aperture area, not the diffracted spot. Re-running the
+optimisation with a floor on retinal illuminance: a floor of six to nine percent, comparable to
+ordinary sunglass tinting, moves the optimum into the clinical bracket at every myopia level.
+
+The diffraction physics was never wrong. Blur-only optimisation was answering the wrong question.''
+
+\begin{keybox}{This slide also pre-answers ``which aperture is your answer?''}
+Three numbers appear across your work --- 300--400, 900--1250, 530\,\textmu m. They are one U-curve
+under three constraint sets. Saying so here means nobody gets to frame it as a contradiction later.
+\end{keybox}
+
+\slide{7}{Array physics}
+
+\textbf{Figure:} \texttt{Array\_Design/array\_geometry\_lab/verification\_pdf\_figs/fig\_ghost.png}
+alongside \texttt{fig\_viability.png}.
+
+\textbf{On slide:} $d-R_h<R_p$ (viability). $\Delta r = sM/(P_0-M)$ (ghosting), $R^2=0.995$.
+
+\textbf{Say (60\,s):} ``An array adds two questions a single hole does not have. First, does light get
+through at all --- pure circle-circle overlap between hole and pupil, and it changes with gaze because
+the pupil itself translates as the eye rotates. Second, if two holes are lit at once, each sends a
+beam through the lens at a different position, and in a defocused eye they land apart. That
+separation is $sM/(P_0-M)$, validated against the full model at $R^2$ of 0.995.
+
+It vanishes at zero myopia by construction --- an in-focus eye converges every beam to one point, so
+it cannot ghost. That sanity check is how we caught an earlier version of this formula that was wrong
+by two orders of magnitude.''
+
+\slide{8}{Original finding --- a published criterion that does not discriminate}
+
+\textbf{Figure:} \textbf{FIG-B} (must be created). Histogram of $\mu_g$ across 8501 candidates,
+pinned at one value.
+
+\textbf{On slide:} ``Shen et al.\ ghost-membership term $\mu_g$'' --- ``8501 candidates evaluated'' ---
+``fires on 0''.
+
+\textbf{Say (60\,s):} ``The closest published work to ours scores candidate designs with a
+ghost-safety term. We implemented it and ran it across our full candidate set --- 8501 designs
+spanning every lattice family, aperture, and pitch we generated. The term saturates. It takes
+effectively the same value for every design, so it contributes nothing to the ranking. A criterion
+that cannot distinguish between any two designs in a realistic design space is inert.
+
+We are not claiming the paper is wrong. We are reporting that this particular term does not
+discriminate at device scale, which matters if anyone intends to use it to select a design.''
+
+\begin{keybox}{Delivery}
+Flat, factual, no triumph. The finding is strong enough that overselling it weakens it. This is the
+only slide in the deck presenting something nobody has published.
+\end{keybox}
+
+\slide{9}{Our design --- and why the uncalibrated parameter does not bind}
+
+\textbf{Figure:} \textbf{FIG-A} (must be created). Lattice at 4000\,\textmu m pitch with 4000\,\textmu m
+pupil overlaid, one hole inside, neighbours clearly outside.
+
+\textbf{On slide:} ``pitch 4000\,\textmu m = pupil 4000\,\textmu m''. ``Holes illuminating pupil: 1''.
+``Ghost pairs: 0''. ``$\Delta r$ if paired at 8\,D: 615\,\textmu m vs.\ $c_{min}=55$\,\textmu m''.
+
+\textbf{Say (75\,s):} ``The fusion threshold in the published ghost model is a single calibration
+constant, and the source paper describes it as qualitative --- it predicts ghost onset at 1.1 dioptres
+against a clinical 4. We did not calibrate it. We showed it does not matter for our design.
+
+Our pitch equals the pupil diameter, so only one aperture illuminates the pupil at any gaze angle.
+We verified this directly from the generated coordinates: one hole inside the pupil, nearest
+neighbour at 4000 microns, well outside. If two were ever lit at 8 dioptres, their images would land
+615 microns apart against a 55 micron threshold --- eleven times over, and still over at any
+plausible value of that constant.
+
+This design does not survive ghosting by fusing ghost images. It never forms a pair. The parameter is
+structurally non-binding here, and that is a geometric argument, not a calibration claim.''
+
+\begin{warnbox}{Immediately follow with the cost --- do not let it be extracted}
+``The price is light. One hole per pupil at 400 microns is one percent transmission. That is dark,
+and it is the real trade against a dense array, which buys brightness and pays in ghosting it then
+has to fuse away. We chose the other side of that trade.''
+\end{warnbox}
+
+\slide{10}{Fabrication}
+
+\textbf{Figure:} Photograph of the etched brass array against a scale. If not yet etched, use the
+mask SVG rendered, and say so.
+
+\textbf{On slide:} ``350\,\textmu m mask $\to$ 400\,\textmu m etched, 50 holes, 4000\,\textmu m pitch,
+0.05\,mm brass''. ``Design $\to$ part traceable row-for-row''.
+
+\textbf{Say (45\,s):} ``Photochemical etching in 0.05 millimetre brass. The etch is isotropic, so it
+undercuts the resist and the hole comes out wider than the mask opening --- we compensate by one shim
+thickness. The fabrication table traces row-for-row to the design table: the part is the design, not
+an approximation to it.''
+
+\slide{11}{Measurement}
+
+\textbf{Figure:} Whatever exists at presentation time. If the logMAR run is done: measured vs.\
+predicted. If not: \texttt{ExP3} frosted-screen blur-growth series.
+
+\textbf{On slide (if logMAR done):} Predicted logMAR $+0.33$ at 400\,\textmu m, flat to 0.016 across
+0--8\,D. Measured values. Bare-eye baseline, measured.
+
+\textbf{Say (75\,s), flatness version:} ``The model makes one sharp prediction we can test without
+knowing anyone's prescription. Through a fixed 400 micron aperture, predicted acuity varies by
+0.016 logMAR across eight dioptres of myopia --- a twentieth of one chart line. At that aperture the
+aperture sets the acuity, not the refractive error. So subjects with very different uncorrected
+vision should read the same line through the same pinhole. That is what we tested.''
+
+\textbf{If no measurement yet:} ``Our single-hole photography shows monotonic blur growth with
+defocus, consistent with the model. It is uncalibrated in dioptres, so we present it as
+qualitative support, not validation. Calibrated acuity measurement is the next step and we are not
+claiming it until we have it.''
+
+\begin{warnbox}{Never state a predicted improvement}
+The model produces no bare-eye baseline --- every configuration in the sweep has an aperture. Any
+$\Delta$ needs a measured number on both sides.
+\end{warnbox}
+
+\slide{12}{Limits}
+
+\textbf{On slide:} Four bullets, no figure.
+\begin{itemize}[leftmargin=1cm]
+\item Transmission 1\% at 8\,D --- the cost of one-hole-per-pupil.
+\item Blind fraction 0.33\% at 8\,D, 0.12\% at 6\,D.
+\item $c_{min}$ inherited, argued non-binding, not measured.
+\item No calibrated acuity loop closed yet.
+\end{itemize}
+
+\textbf{Say (60\,s):} ``What we have not done. Transmission is one percent at high myopia --- dark, and
+a genuine cost. At six and eight dioptres there are gaze angles where no hole is lit, 0.12 and 0.33
+percent of the time. The fusion constant is inherited and we argued it away geometrically rather than
+measuring it. And we have not closed the loop from simulated blur to measured acuity in dioptres.
+Those are the four things we would do next.''
+
+\chapter{Reserve deck}
+
+Never shown unless a question calls for one. Group them so you can find one under pressure ---
+tab or section markers, not a flat run of 25.
+
+\begin{longtable}{p{0.8cm}p{5.3cm}p{8.2cm}}
+\caption{Reserve slides, with the figure each uses.}\\
+\toprule
+\textbf{\#} & \textbf{Slide} & \textbf{Figure (path under project root)} \\
+\midrule
+\endhead
+\multicolumn{3}{l}{\textbf{Group A --- Metric reliability}}\\
+R1 & FWHM ring-hopping & \texttt{data\_collection/stage3\_integrated/plots/retina\_fwhm\_ring\_hopping.png} \\
+R2 & Strehl multi-peak investigation & \texttt{data\_collection/stage3\_integrated/plots/strehl\_investigation.png} \\
+R3 & On-axis Fresnel closed form, $r=0.997$ & \texttt{all\_outputs/strehl\_vs\_aperture.png} \\
+R4 & All EE percentiles & \texttt{data\_collection/stage3\_integrated/plots/ee\_all\_percentiles.png} \\
+R5 & MTF curves & \texttt{data\_collection/stage3\_integrated/plots/mtf\_curves.png} \\
+R6 & Acuity models compared & \texttt{data\_collection/stage3\_integrated/plots/acuity\_models\_combined.png} \\
+R7 & CSF model comparison & \texttt{data\_collection/stage3\_integrated/plots/csf\_comparison.png} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Group B --- Optics detail}}\\
+R8 & Stage-1 heatmap & \texttt{all\_outputs/stage1\_heatmap.png} \\
+R9 & Retinal images, M8 & \texttt{all\_outputs/comparison\_retina\_M8.png} \\
+R10 & Optimum vs.\ myopia by metric & \texttt{all\_outputs/optimum\_vs\_myopia\_by\_metric.png} \\
+R11 & Wavelength sensitivity & \texttt{all\_outputs/stage2\_wavelength\_comparison.png} \\
+R12 & Gap sensitivity & \texttt{all\_outputs/stage2\_gap\_comparison.png} \\
+R13 & Sensitivity heatmaps & \texttt{data\_collection/stage3\_integrated/plots/sensitivity\_heatmaps\_aperture\_M.png} \\
+R14 & Optimum vs.\ Rayleigh criterion & \texttt{all\_outputs/comparison\_optimum\_vs\_rayleigh.png} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Group C --- Brightness}}\\
+R15 & Blur vs.\ brightness trade & \texttt{stage3a/stage3a\_fig1\_blur\_vs\_brightness\_wl550nm\_gap12mm.png} \\
+R16 & Optimum vs.\ $T_{min}$ & \texttt{stage3a/stage3a\_fig2\_optimum\_vs\_Tmin\_wl550nm\_gap12mm.png} \\
+R17 & Blur-then-constraint & \texttt{stage3a/stage3a\_fig4\_blur\_then\_constraint\_Tmin0.0625.png} \\
+R18 & Illuminance in trolands & \texttt{data\_collection/stage3\_integrated/plots/illuminance\_troland.png} \\
+R19 & Pareto fronts, all M & \texttt{data\_collection/stage3\_integrated/plots/pareto\_all\_M\_overlay.png} \\
+\midrule
+\multicolumn{3}{l}{\textbf{Group D --- Array}}\\
+R20 & Viability geometry & \texttt{Array\_Design/array\_geometry\_lab/verification\_pdf\_figs/fig\_viability.png} \\
+R21 & Packing density & \texttt{Array\_Design/array\_geometry\_lab/verification\_pdf\_figs/fig\_density.png} \\
+R22 & Ghosting regime map & \texttt{Array\_Design/ghosting/ghosting\_regime\_map.png} \\
+R23 & Joint design space, M8 & \texttt{Array\_Design/collected data/joint\_design\_space\_M8.png} \\
+R24 & Gaze-weighted winner, M8 & \texttt{Array\_Design/array\_geometry\_lab/gaze\_weighted\_viz\_figs/fig\_M8.png} \\
+R25 & Alignment fractions vs.\ gaze & \texttt{Array\_Design/collected data/alignment\_fractions.png} \\
+\bottomrule
+\end{longtable}
+
+\begin{keybox}{Two more worth preparing as text-only reserve slides}
+\textbf{R26 --- Full per-M winner table} (all eight designs, apertures, margins, blind fractions).\\
+\textbf{R27 --- Constants and assumptions} ($P_0=60$\,D, $n'=1.336$, $\lambda=550$\,nm,
+$d_{gap}=12$\,mm, $D_{pupil}=4$\,mm, scene luminance 10\,000\,cd/m$^2$). The luminance line matters:
+it is the assumption behind every acuity number, and it is the one an examiner is most likely to
+probe if you present measured data taken indoors.
+\end{keybox}
+
+\chapter{Question preparation}
+
+\begin{longtable}{p{4.6cm}p{9.7cm}}
+\caption{The five questions you will get, with the reserve slide to flip to.}\\
+\toprule
+\textbf{Question} & \textbf{Answer, and where to go} \\
+\midrule
+\endhead
+Why $c_{min}=55$\,\textmu m? &
+Shen's, and their own paper calls it a single-parameter qualitative calibration predicting onset at
+1.1\,D against clinical 4\,D. We showed it does not bind: pitch equals pupil diameter, no pair forms.
+$\to$ Slide 9, then R22. \\
+\addlinespace
+Which aperture is your answer? &
+All three, to three different questions. One U-curve, three constraint sets. $\to$ Slide 6, then R16. \\
+\addlinespace
+Is FWHM reliable? &
+Not per-aperture --- it jumps 4.7 to 154.7\,\textmu m between adjacent apertures. Its coarse trend
+tracks clinical data better than $r_{EE}(50\%)$, which is stable but pessimistic by $\sim7\times$. We
+optimise on $r_{EE}(50\%)$ and state the bias. $\to$ R1, then R6. \\
+\addlinespace
+Did you measure that it corrects vision? &
+Whatever is true. If not yet: ``No. Our single-hole photography is qualitatively consistent and
+uncalibrated. We are not claiming it until we have measured it.'' $\to$ Slide 11. \\
+\addlinespace
+Why is it so dark? &
+One hole per pupil is what makes it ghost-free; 1\% at 8\,D is the price. A dense array buys light
+and pays in ghosting it must fuse away. $\to$ Slide 9, then R18. \\
+\bottomrule
+\end{longtable}
+
+\chapter{Build order}
+
+\begin{enumerate}[leftmargin=1.2cm]
+\item \textbf{FIG-A and FIG-B.} Nothing else in the deck is blocked, and these two carry your two
+strongest slides. Half a day.
+\item \textbf{Slides 2, 6, 8, 9.} The four slides that do the actual work. Build these fully ---
+figure, text, and rehearsed script --- before touching anything else.
+\item \textbf{Slides 1, 3, 4, 5, 7, 12.} Straightforward: figure already exists, one claim each.
+\item \textbf{Reserve deck.} Bulk import; these need no design work, just a figure and a title.
+\item \textbf{Slide 10 and 11.} Last, because they depend on fabrication and measurement finishing.
+Leave placeholders with the honest fallback text already written.
+\item \textbf{Rehearse against the five questions, with a stopwatch.} If any answer runs past 20
+seconds or you have to hunt for the reserve slide, the grouping is wrong.
+\end{enumerate}
+
+\begin{warnbox}{Time the whole thing before polishing anything}
+Twelve minutes is less than it sounds. Run the full deck out loud, with a timer, before you spend a
+single hour on visual polish. If it runs long, cut Slide 5 into Slide 6 and shorten Slide 3 --- in
+that order. Never cut Slides 2, 6, 8, or 9.
+\end{warnbox}
+
+\end{document}

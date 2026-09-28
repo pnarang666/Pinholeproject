@@ -1,0 +1,34 @@
+<svg width="24mm" height="24mm" viewBox="-12 -12 24 24" xmlns="http://www.w3.org/2000/svg">
+
+  
+  <circle cx="0" cy="0" r="10" fill="#f0f0f0" stroke="#333" stroke-width="0.15"></circle>
+
+  
+  
+
+  
+  <circle cx="0" cy="0" r="0.3" fill="#222"></circle>
+
+  
+  <circle cx="4" cy="0" r="0.3" fill="#222"></circle>
+  <circle cx="-4" cy="0" r="0.3" fill="#222"></circle>
+  <circle cx="2" cy="3.464" r="0.3" fill="#222"></circle>
+  <circle cx="-2" cy="3.464" r="0.3" fill="#222"></circle>
+  <circle cx="2" cy="-3.464" r="0.3" fill="#222"></circle>
+  <circle cx="-2" cy="-3.464" r="0.3" fill="#222"></circle>
+
+  
+  <circle cx="8" cy="0" r="0.3" fill="#222"></circle>
+  <circle cx="-8" cy="0" r="0.3" fill="#222"></circle>
+  <circle cx="4" cy="6.928" r="0.3" fill="#222"></circle>
+  <circle cx="-4" cy="6.928" r="0.3" fill="#222"></circle>
+  <circle cx="4" cy="-6.928" r="0.3" fill="#222"></circle>
+  <circle cx="-4" cy="-6.928" r="0.3" fill="#222"></circle>
+  <circle cx="6" cy="3.464" r="0.3" fill="#222"></circle>
+  <circle cx="-6" cy="3.464" r="0.3" fill="#222"></circle>
+  <circle cx="6" cy="-3.464" r="0.3" fill="#222"></circle>
+  <circle cx="-6" cy="-3.464" r="0.3" fill="#222"></circle>
+  <circle cx="0" cy="6.928" r="0.3" fill="#222"></circle>
+  <circle cx="0" cy="-6.928" r="0.3" fill="#222"></circle>
+
+</svg>

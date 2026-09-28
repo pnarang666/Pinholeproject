@@ -208,7 +208,8 @@ margin and every gate outcome in the dataset — inherits this approximation.
 | 06_degeneracy_contaminated | 7 | Open-area fraction > 1, impossible densities |
 | 07_pre_rotation | 3 | Orientation never explored |
 | 08_stale_acuity_aperture_artifact | 16 | a_hole(M) sourced from a stale (grid_N=2048) acuity sweep -- final winners verified byte-identical after fix |
-| **Total** | **53** | |
+| 09_stale_model_a_winner_report | 4 | Aug-18 report's ring_offset_concentric winner superseded by Sep-12/13 pipeline regeneration (square/hexagonal); root cause plausible, not confirmed |
+| **Total** | **57** | |
 
 ---
 

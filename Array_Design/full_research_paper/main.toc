@@ -1,0 +1,135 @@
+\contentsline {chapter}{\numberline {1}Introduction and Problem Statement}{11}{chapter.1}%
+\contentsline {section}{\numberline {1.1}The official problem}{11}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Why this is genuinely hard}{11}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Design variables and constraints}{12}{section.1.3}%
+\contentsline {section}{\numberline {1.4}What ``success'' means for this document}{12}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Theoretical Framework I: Single-Aperture Optics}{13}{chapter.2}%
+\contentsline {section}{\numberline {2.1}The reduced eye model}{13}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Axial myopia model}{13}{subsection.2.1.1}%
+\contentsline {section}{\numberline {2.2}Geometric blur, diffraction blur, and the stenopeic effect}{14}{section.2.2}%
+\contentsline {section}{\numberline {2.3}The RSS combination model and its limits}{14}{section.2.3}%
+\contentsline {section}{\numberline {2.4}The Angular Spectrum Method: exact propagation}{15}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}The pipeline chain}{15}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}The effective-wavelength correction}{15}{subsection.2.4.2}%
+\contentsline {section}{\numberline {2.5}Fresnel number: which diffraction regime a given stage is in}{17}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Numerical implementation: grid, band-limiting, and energy accounting}{17}{section.2.6}%
+\contentsline {section}{\numberline {2.7}Grid-resolution artifact and the grid$\_N$ fix}{18}{section.2.7}%
+\contentsline {section}{\numberline {2.8}Validation of the ASM engine}{18}{section.2.8}%
+\contentsline {section}{\numberline {2.9}Blur metrics and where each one breaks}{19}{section.2.9}%
+\contentsline {section}{\numberline {2.10}Deprecated formulas}{19}{section.2.10}%
+\contentsline {section}{\numberline {2.11}Array optics reuse single-aperture optics unmodified}{20}{section.2.11}%
+\contentsline {chapter}{\numberline {3}The Acuity Model}{21}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Why blur radius is the wrong optimization target on its own}{21}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Pupil and retinal illuminance}{21}{section.3.2}%
+\contentsline {section}{\numberline {3.3}MTF, contrast sensitivity, and Visual Strehl}{21}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}The recommended predictor}{22}{subsection.3.3.1}%
+\contentsline {section}{\numberline {3.4}The brightness correction}{22}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Full acuity-model input inventory}{23}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Single-Aperture Experimental Validation}{24}{chapter.4}%
+\contentsline {section}{\numberline {4.1}BRISQUE scenery test}{24}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Frosted-screen optical-bench defocus sweep (ExP3)}{25}{section.4.2}%
+\contentsline {section}{\numberline {4.3}LogMAR acuity chart protocol}{26}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Reconciliation with theory}{27}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Theoretical Framework II: Array-Level Optics}{28}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Mathematical array representation}{28}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Fill factor and brightness}{28}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Comprehensive ghosting theory}{29}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}The crude formula and why it was replaced}{29}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Multi-hole image formation}{29}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}The Fourier consequence the crude formula omitted}{29}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}The discrete precondition}{29}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}A refined three-regime criterion}{30}{subsection.5.3.5}%
+\contentsline {section}{\numberline {5.4}The heuristic-CSF-out-of-range bug and the Barten (1999) fix}{30}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Pass 3: the harmonic series, not just the fundamental}{31}{subsection.5.4.1}%
+\contentsline {section}{\numberline {5.5}Vignetting: gaze-dependent aperture activation}{32}{section.5.5}%
+\contentsline {subsection}{\numberline {5.5.1}Single-axis vs.\ full-azimuth sampling}{32}{subsection.5.5.1}%
+\contentsline {section}{\numberline {5.6}Blinding, and the fundamental array trade-off}{34}{section.5.6}%
+\contentsline {section}{\numberline {5.7}Ghosting theory: full literature review}{34}{section.5.7}%
+\contentsline {subsection}{\numberline {5.7.1}Motivation: two real, sold products the original criterion could not explain}{34}{subsection.5.7.1}%
+\contentsline {subsection}{\numberline {5.7.2}2.1 Lenslet-array merging theory (Gabor superlens)}{35}{subsection.5.7.2}%
+\contentsline {subsection}{\numberline {5.7.3}2.2 Direct evidence that multi-aperture ghosting is a real, reported clinical symptom}{35}{subsection.5.7.3}%
+\contentsline {subsection}{\numberline {5.7.4}2.3 An independent real-world statement of the discrete-activation mechanism}{35}{subsection.5.7.4}%
+\contentsline {subsection}{\numberline {5.7.5}2.4 Periodic-artifact visibility: the screen-door-effect precedent}{36}{subsection.5.7.5}%
+\contentsline {subsection}{\numberline {5.7.6}Synthesis: the three-regime criterion, and what remains untested}{36}{subsection.5.7.6}%
+\contentsline {section}{\numberline {5.8}Full generator equations for all eleven families}{36}{section.5.8}%
+\contentsline {subsection}{\numberline {5.8.1}Square}{37}{subsection.5.8.1}%
+\contentsline {subsection}{\numberline {5.8.2}Hexagonal}{37}{subsection.5.8.2}%
+\contentsline {subsection}{\numberline {5.8.3}Rectangular}{37}{subsection.5.8.3}%
+\contentsline {subsection}{\numberline {5.8.4}Concentric}{37}{subsection.5.8.4}%
+\contentsline {subsection}{\numberline {5.8.5}Ring-offset concentric}{38}{subsection.5.8.5}%
+\contentsline {subsection}{\numberline {5.8.6}Concentric-centered, and a real, documented bug it exists to fix}{38}{subsection.5.8.6}%
+\contentsline {subsection}{\numberline {5.8.7}Archimedean spiral}{38}{subsection.5.8.7}%
+\contentsline {subsection}{\numberline {5.8.8}Fibonacci (Vogel) spiral and golden-angle phyllotaxis}{39}{subsection.5.8.8}%
+\contentsline {subsection}{\numberline {5.8.9}Poisson-disk (blue-noise)}{39}{subsection.5.8.9}%
+\contentsline {subsection}{\numberline {5.8.10}Jittered lattice}{39}{subsection.5.8.10}%
+\contentsline {chapter}{\numberline {6}Evaluation Model A: The Single-Axis Worst-Case Gate}{40}{chapter.6}%
+\contentsline {section}{\numberline {6.1}The three gates}{40}{section.6.1}%
+\contentsline {section}{\numberline {6.2}The single-axis limitation, acknowledged}{40}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Current results}{41}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Evaluation Model B: Two-Dimensional Gaze-Weighted Evaluation}{43}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Methodology change}{43}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Full-azimuth, gaze-time-weighted sampling}{43}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Adding a hard blindness gate}{44}{section.7.3}%
+\contentsline {section}{\numberline {7.4}Current results}{44}{section.7.4}%
+\contentsline {section}{\numberline {7.5}Why hexagonal: the physical intuition}{45}{section.7.5}%
+\contentsline {section}{\numberline {7.6}Predicted acuity is identical across every evaluation model}{45}{section.7.6}%
+\contentsline {chapter}{\numberline {8}Array Fabrication and Experimental Validation}{48}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Fabrication package}{48}{section.8.1}%
+\contentsline {subsection}{\numberline {8.1.1}Undercut compensation, derived in full}{48}{subsection.8.1.1}%
+\contentsline {subsection}{\numberline {8.1.2}Real hole-layout diagrams, every winning design}{49}{subsection.8.1.2}%
+\contentsline {section}{\numberline {8.2}Simulated retinal light-intensity distribution}{49}{section.8.2}%
+\contentsline {section}{\numberline {8.3}A proposed physical validation rig}{49}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Array-level clinical acuity trial}{52}{section.8.4}%
+\contentsline {chapter}{\numberline {9}Comparison to Reality}{53}{chapter.9}%
+\contentsline {section}{\numberline {9.1}Predicted acuity across all six evaluation models}{53}{section.9.1}%
+\contentsline {section}{\numberline {9.2}The flatness prediction}{53}{section.9.2}%
+\contentsline {section}{\numberline {9.3}External validation against real clinical data}{54}{section.9.3}%
+\contentsline {subsection}{\numberline {9.3.1}A stale-data correction, made during this project's own development}{54}{subsection.9.3.1}%
+\contentsline {subsection}{\numberline {9.3.2}At the specific apertures this project's own array designs actually use}{55}{subsection.9.3.2}%
+\contentsline {subsection}{\numberline {9.3.3}A second real anchor: Kim (2017)}{56}{subsection.9.3.3}%
+\contentsline {subsection}{\numberline {9.3.4}A note on search-derived claims}{56}{subsection.9.3.4}%
+\contentsline {chapter}{\numberline {10}Errors Identified and Corrected}{57}{chapter.10}%
+\contentsline {section}{\numberline {10.1}The single-FFT defocus-plane bug}{57}{section.10.1}%
+\contentsline {section}{\numberline {10.2}The stage2/ vs.\ stage2\_fixed/ import-shadowing bug}{57}{section.10.2}%
+\contentsline {subsection}{\numberline {10.2.1}A follow-on staleness discovery}{58}{subsection.10.2.1}%
+\contentsline {section}{\numberline {10.3}Model A's single-axis gaze limitation}{58}{section.10.3}%
+\contentsline {section}{\numberline {10.4}The grid-resolution ($N_{\mathrm {grid}}$) staleness bug}{59}{section.10.4}%
+\contentsline {section}{\numberline {10.5}A related, lower-priority finding, disclosed for completeness}{59}{section.10.5}%
+\contentsline {chapter}{\numberline {11}Discussion}{60}{chapter.11}%
+\contentsline {chapter}{\numberline {12}Limitations}{61}{chapter.12}%
+\contentsline {chapter}{\numberline {13}Future Work}{63}{chapter.13}%
+\contentsline {chapter}{\numberline {14}Data Provenance Appendix}{64}{chapter.14}%
+\contentsline {section}{\numberline {14.1}Conflicts found and how they were resolved}{66}{section.14.1}%
+\contentsline {chapter}{\numberline {15}Code Appendix}{67}{chapter.15}%
+\contentsline {section}{\numberline {15.1}Circle--circle overlap area (Equation~\ref {eq:overlap})}{67}{section.15.1}%
+\contentsline {section}{\numberline {15.2}Pupil radial shift (Equation~\ref {eq:pupil-shift})}{67}{section.15.2}%
+\contentsline {section}{\numberline {15.3}Ghost-separation formula}{68}{section.15.3}%
+\contentsline {section}{\numberline {15.4}Axial myopia model}{68}{section.15.4}%
+\contentsline {section}{\numberline {15.5}The lens-phase / effective-wavelength pairing (root of Sections~\ref {sec:bug-fft}, \ref {sec:bug-shadowing})}{68}{section.15.5}%
+\contentsline {section}{\numberline {15.6}The ASM propagator itself (Equation~\ref {eq:asm}), verbatim}{69}{section.15.6}%
+\contentsline {section}{\numberline {15.7}Visual Strehl (VSOTF), the CSF-weighted OTF-similarity integral}{69}{section.15.7}%
+\contentsline {section}{\numberline {15.8}Model A gate thresholds}{70}{section.15.8}%
+\contentsline {section}{\numberline {15.9}Ring-offset concentric: the alternating angular-offset construction}{70}{section.15.9}%
+\contentsline {section}{\numberline {15.10}Concentric-centered: the recenter-before-prepend fix (Section~\ref {sec:centered-bug})}{71}{section.15.10}%
+\contentsline {section}{\numberline {15.11}Effective-density / Pareto binding-margin sentinel}{71}{section.15.11}%
+\contentsline {section}{\numberline {15.12}Model B: active-hole and blindness classification}{71}{section.15.12}%
+\contentsline {chapter}{\numberline {16}Formula and Constants Quick-Reference}{72}{chapter.16}%
+\contentsline {chapter}{\numberline {17}Full Acuity Sweep Table}{74}{chapter.17}%
+\contentsline {chapter}{\numberline {18}Full Barten-CSF Ghosting Sweep Table}{77}{chapter.18}%
+\contentsline {chapter}{\numberline {19}Additional Full Results Tables}{79}{chapter.19}%
+\contentsline {section}{\numberline {19.1}Family ranking: best-of-eleven per myopia power}{79}{section.19.1}%
+\contentsline {section}{\numberline {19.2}Effective-density ranking, both fusion-threshold variants}{79}{section.19.2}%
+\contentsline {section}{\numberline {19.3}Metric 2: the full density/margin Pareto front}{80}{section.19.3}%
+\contentsline {chapter}{\numberline {20}Full Ghosting Sweep Tables: Passes 1 and 3}{81}{chapter.20}%
+\contentsline {section}{\numberline {20.1}Pass 1: the heuristic-CSF sweep that motivated the investigation}{81}{section.20.1}%
+\contentsline {section}{\numberline {20.2}Pass 3: the harmonic-extended sweep}{82}{section.20.2}%
+\contentsline {chapter}{\numberline {21}Full Fabrication Hole-Coordinate Tables}{83}{chapter.21}%
+\contentsline {section}{\numberline {21.1}$M=0$D (20 holes)}{83}{section.21.1}%
+\contentsline {section}{\numberline {21.2}$M=1$D (20 holes)}{83}{section.21.2}%
+\contentsline {section}{\numberline {21.3}$M=2$D (20 holes)}{84}{section.21.3}%
+\contentsline {section}{\numberline {21.4}$M=3$D (20 holes)}{84}{section.21.4}%
+\contentsline {section}{\numberline {21.5}$M=4$D (20 holes)}{85}{section.21.5}%
+\contentsline {section}{\numberline {21.6}$M=5$D (20 holes)}{85}{section.21.6}%
+\contentsline {section}{\numberline {21.7}$M=6$D (100 holes)}{86}{section.21.7}%
+\contentsline {section}{\numberline {21.8}$M=8$D (50 holes)}{88}{section.21.8}%
+\contentsline {section}{\numberline {21.9}$M=global$D (20 holes)}{89}{section.21.9}%

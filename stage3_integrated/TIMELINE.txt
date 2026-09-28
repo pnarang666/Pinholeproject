@@ -1,0 +1,55 @@
+TIMELINE -- stage3_integrated/
+==========================================================================
+Dates from file mtimes (repo git history only starts 2026-08-01; no
+commits touch this folder specifically beyond the initial commit).
+
+- 2026-07-27/28 -- built as "Comprehensive Theoretical Reference Dataset
+  (Phase A)" (its own README's words) -- explicitly a comparison/
+  reference dataset, NOT an optimizer, and explicitly does not modify
+  stage1_v2/, stage2/, stage2_fixed/, stage3a/, or stage3_human_vision/;
+  only reads their already-computed CSVs and imports their functions.
+
+  First step taken: cross-checked stage3a/transmission.py::
+  relative_illuminance() against stage3_human_vision/photometry.py::
+  relative_retinal_illuminance() at four test points (75/400/1200/4000um)
+  -- exact agreement at every point. STANDARDIZED on the
+  stage3_human_vision version going forward; stage3a/transmission.py
+  "retired in favor of it, not deleted" (see stage3a/TIMELINE.txt).
+
+  combine_metrics.py then merged stage3_human_vision's 105-point metric
+  sweep with stage3a's r_EE-percentile sweep into one 105-row, 32-column
+  grid, with a hard-fail check if the two source grids ever produce a
+  different row count.
+
+  Three questions investigated directly (not assumed):
+    1. Does a brightness floor explain the gap across ALL metrics, not
+       just the original 4? YES, more strongly -- 8 of 10 tested metrics
+       converge to exactly 1000um at every one of 7 myopia levels at a
+       6.25% floor (extends stage3a's finding from 4 metrics to 10; only
+       Strehl and throughput diverge, both already flagged unstable/
+       trivial elsewhere).
+    2. Is Strehl's non-monotonicity genuine or a sampling artifact?
+       GENUINE -- a 10x finer aperture grid produced MORE oscillation
+       (6-7 local maxima, up to 8.4x peak-to-peak swings), the opposite
+       of what a sampling artifact would do. Confirms and extends
+       stage3_human_vision's original finding.
+  STATUS: adopted as the standing cross-check/reference dataset; does not
+  replace stage3a or stage3_human_vision, both of which remain in use for
+  their own original purposes.
+
+- 2026-08-01 (commit 60406cd, "initial commit") -- first git-tracked
+  snapshot.
+
+- 2026-08-06 (dated via stage2_fixed's own physics audit, see
+  stage2_fixed/TIMELINE.txt item F.3) -- PARTIALLY FLAGGED STALE:
+  PHYSICS_AUDIT.md notes generate_tables.py imports stage2_fixed/
+  directly (so it will reflect the wavelength-consistency fix on its
+  next run), but combine_metrics.py/generate_plots.py read stage3a's and
+  stage3_human_vision's CSVs, which were themselves flagged stale by the
+  same audit -- i.e. this folder's own combined-grid outputs are stale
+  until those upstream CSVs are regenerated. Not confirmed done as of
+  that audit.
+
+STATUS (current): active as a reference/cross-check dataset; its combined
+CSV outputs depend on stage3a/stage3_human_vision CSVs that were flagged
+(not confirmed re-verified) stale by the 2026-08-06 optics fix.

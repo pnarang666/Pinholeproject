@@ -1,0 +1,28 @@
+TIMELINE -- Array_Design/collected data/
+Simple dated log. This folder's own ANALYSIS.md is the master narrative (flaws
+F1-F6, gaps G1-G5, improvements I1-I6, then two dated addenda) that
+array_optimization/README.md and legacy_archive/README.md both cite as "the full
+diagnosis" -- this file is the short version, not a replacement for it.
+
+undated (first pass, before either addendum below) -- ANALYSIS.md's original
+  flaws/gaps/improvements list -- names F1 (wrong ghost-separation formula,
+  everything downstream inherited it) as the top flaw, before it was fixed.
+
+2026-08-14 (Addendum, "second pass") -- scored-optimum work -- includes a real bug
+  found and fixed while building the multi-hole blur sweep: array_psf_envelope.py
+  measured blur as distance from the OPTICAL AXIS instead of from the summed
+  pattern's own intensity centroid, which for a single off-center active hole (N_eff=1)
+  reported r_EE_50 growing from 11um to 86um purely from being off-axis, with zero
+  actual change in image sharpness. Found by tracing an unexpected optimizer result
+  back to its source, not by a dedicated test. FIXED by recentering on the summed
+  pattern's own centroid; the fix changed individual alignment values on re-run but
+  not the optimizer's chosen (aperture, pitch) at any (M, packing) -- diluted by
+  averaging in the reported stats, though it would matter to anyone reading
+  array_r_EE_50_min/max_um directly.
+
+2026-08-14 (Addendum, "third pass", Defect audit) -- Defect 1 (the grid_N=2048
+  r_max_lens exclusion artifact) diagnosed with direct instrumentation and fixed --
+  this is the SAME Defect 1 covered in array_optimization/TIMELINE.txt and
+  legacy_archive/TIMELINE.txt (01_gridN2048_artifact/) -- see those for the fix
+  detail; this folder's own optimise_grid.csv/multi_hole_blur_sweep.csv were
+  re-run post-fix on 2026-08-15 (per their own file timestamps).

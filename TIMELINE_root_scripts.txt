@@ -1,0 +1,36 @@
+Root-level loose scratch scripts (fresner1.py..fresner4.py, test1.py) -- dated timeline
+(dates from file mtimes; git only shows "initial commit" 2026-08-01, confirming
+existence by then, not the exact authored date)
+==========================================================================
+
+2026-07-26 17:25 -- fresner1.py -- first exploratory script: naive closed-form Airy-disk
+  diffraction pattern (Bessel function J1, no propagation physics, no eye/retina model).
+  STATUS: superseded same evening.
+
+2026-07-26 17:29 -- fresner2.py -- second iteration, same evening (4 min later, ~2x the
+  file size of fresner1.py). STATUS: superseded same evening.
+
+2026-07-26 17:33 -- fresner3.py -- third iteration, same evening (4 min later again,
+  further size growth). STATUS: superseded same evening.
+
+2026-07-26 22:54 -- fresner4.py -- major rewrite, ~5.5 hours later and ~4x the size of
+  fresner3.py. Confirmed by reading its own docstring: this is "Stage 1 of the IYPT
+  pinhole-sunglasses optical pipeline" -- the exact scalar Angular Spectrum Method (ASM)
+  propagator (no paraxial approximation), with two independent self-validation checks
+  built in. This is the direct ancestor of what became stage1/'s real implementation.
+
+2026-07-26 23:00 -- test1.py -- companion interactive (matplotlib-slider) version of the
+  same ASM propagation, built ~6 minutes after fresner4.py; its own docstring explicitly
+  contrasts itself against "fresnel_cornea_stage.py (which runs a fixed sweep and dumps
+  PNGs)" -- i.e. this pair (fresner4.py-lineage batch script + test1.py interactive
+  slider) is the batch-sweep/interactive-slider pair the root README.md itself
+  describes as preceding stage1/.
+
+SUPERSEDED BY (per this project's own root README.md, stated directly, not inferred):
+  "earlier, single-file exploratory scripts that preceded the stage1 Streamlit tool...
+  Kept as-is; superseded by stage1_v2/ for anything beyond historical reference."
+  outputs/ (top-level folder) holds the plots/CSVs these scripts generated -- also kept
+  as historical reference only, per the same README.md line.
+
+STATUS: all five files are abandoned/superseded for any current use; kept only as
+historical reference. Not modified as part of this timeline pass.

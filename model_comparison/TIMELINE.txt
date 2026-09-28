@@ -1,0 +1,27 @@
+model_comparison -- dated timeline (date from file mtimes -- git only shows "initial
+commit" 2026-08-01, confirming existence by then, not the exact authored date)
+==========================================================================
+
+2026-07-27 (~14:52-14:56, per file mtimes) -- BUILT: a three-way benchmark of "how
+  blurry is the retinal image for a given aperture" -- Model 1 (exact ASM,
+  cornea-only, wraps stage1_v2/), Model 2 (exact ASM x2 + lens phase + axial-myopia
+  model, wraps stage2/), and Model 3 (the OLD closed-form formula chain from both
+  reference handbooks, including the classical root-sum-square r_total =
+  sqrt(r_geo^2+r_diff^2) combination) -- compared against each other and against
+  real-world clinical/commercial/literature reference values.
+
+FINDING (this IS the "which approach we abandoned and why" story for this folder):
+  Model 3's closed-form RSS-combination formula diverges from Model 2's exact
+  numerical r_EE(50%) result by 64.8% MEAN and up to 192.8% MAX, worst specifically at
+  mild myopia (M=1D), across every point on the shared comparison grid. Root cause
+  identified, not just measured: blur sources actually combine by complex-field
+  CONVOLUTION under real wave propagation, not by root-sum-square quadrature -- RSS is
+  a geometric-optics-style approximation that does not hold once diffraction and
+  defocus interact in a real near-field propagation.
+
+STATUS: Model 3 (the classical RSS/closed-form chain) is confirmed SUPERSEDED/
+DEPRECATED for any quantitative use -- kept in this folder only as the explicit
+benchmark baseline the exact models (1 and 2) are compared against, not as a
+recommended computation method. Models 1 and 2 (exact ASM propagation) are the
+adopted, currently-trusted approach project-wide. Full detail: model_comparison/
+README.md.

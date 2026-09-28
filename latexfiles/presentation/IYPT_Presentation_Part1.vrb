@@ -1,0 +1,20 @@
+\frametitle{R4b -- Gates: Source Code}
+\reservebadge
+  \begin{lstlisting}
+GHOST_FORMULA_GRID_DX_UM = 1.46484375
+GHOST_DELTA_R_UNCERTAINTY_UM = 2.0 * GHOST_FORMULA_GRID_DX_UM
+MARGIN_SAFETY_MULTIPLE = 2.0
+VIABILITY_MIN_FRACTION_OF_HOLE_AREA = 0.20
+
+def ghost_margin_threshold(df):
+    return MARGIN_SAFETY_MULTIPLE * GHOST_DELTA_R_UNCERTAINTY_UM / df.resolvable_blur_um
+
+def gate_ghost_safety(df):
+    return df.worst_case_ghost_margin >= ghost_margin_threshold(df)
+
+def gate_viability(df):
+    """Requires illuminated_area >= 0.20*pi*R_h^2 at EVERY tested gaze angle,
+    not merely at phi=0 -- closes the 'rewards blindness' degenerate case."""
+    ...
+  \end{lstlisting}
+  \small \texttt{array\_evaluation/comparison\_metric/gates.py}
